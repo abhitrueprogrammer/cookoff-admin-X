@@ -8,8 +8,13 @@ const client = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  
 });
-
+// {
+//   "email": "abhinavp@codechefvit.com",
+//   "message": "user added",
+//   "password": "7@OMY0"
+// }
 // To Pass Token in Header. Uncomment if token stored in localstorage
 
 // client.interceptors.request.use((config) => {
