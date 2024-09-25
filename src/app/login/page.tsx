@@ -73,7 +73,7 @@ export default function Login() {
               <input
                 {...register("email")}
                 type="text"
-                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 placeholder-white"
+                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 text-black"
                 placeholder="Enter Username"
                 required
               />
@@ -85,7 +85,7 @@ export default function Login() {
               <input
                 {...register("password")}
                 type="password"
-                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 placeholder-white"
+                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 text-black"
                 placeholder="Enter Password"
                 required
               />
@@ -96,7 +96,7 @@ export default function Login() {
               )}
               <br />
               <button
-                className="w-[100px] rounded-md bg-accent p-3 text-white"
+                className="w-[100px] rounded-md bg-accent p-3 text-black "
                 disabled={isLoading}
                 onClick={handleSubmit(onSubmit)}
               >
@@ -106,7 +106,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <h1 className="pt-5 text-3xl font-bold text-white">
+      <h1 className="pt-5 text-3xl font-bold ">
         NOT A COOKING COMPETITION
       </h1>
     </div>

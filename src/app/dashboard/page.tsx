@@ -1,10 +1,10 @@
 "use client";
+import { useRef } from "react";
 
-import {GetAllQuestions, QuestionResponse} from "@/api/questions"
+import { GetAllQuestions, QuestionResponse } from "@/api/questions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {useEffect, useState} from 'react';
 import {
   Table,
   TableBody,
@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useEffect, useState } from "react";
 
 import {
   Dialog,
@@ -24,7 +25,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const submitHandle = async (data: FormData) => {
   console.log(data);
@@ -32,119 +47,26 @@ const submitHandle = async (data: FormData) => {
 export default function Home() {
   return (
     <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
-      <div className="m-2 ml-auto  ">
+      <div className="m-5 ml-auto">
         <CreateButton></CreateButton>
       </div>
-      <div className=" overflow-y-auto h-2/3">
+      <div className="m-5 h-2/3 overflow-y-auto">
         <TableDemo></TableDemo>
       </div>
     </div>
   );
 }
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
 export function TableDemo() {
   const [questions, setQuestions] = useState<QuestionResponse[]>([]);
-  
-   useEffect( () => {
+
+  useEffect(() => {
     const getQues = async () => {
-      const response =  await GetAllQuestions();
-      setQuestions(response)} // Assuming this is the function returning a Promise
-      getQues();
-    },[questions]
-  )
+      const response = await GetAllQuestions();
+      setQuestions(response);
+    }; // Assuming this is the function returning a Promise
+    getQues();
+  }, []);
   return (
     <Table>
       <TableCaption>List of questions added</TableCaption>
@@ -153,8 +75,8 @@ export function TableDemo() {
           <TableHead className="w-[100px]">Title</TableHead>
           <TableHead>Points</TableHead>
           <TableHead>Round</TableHead>
-          <TableHead >View More</TableHead>
-          <TableHead >Action</TableHead>
+          <TableHead>View More</TableHead>
+          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -164,10 +86,10 @@ export function TableDemo() {
             <TableCell>{question.Points}</TableCell>
             <TableCell>{question.Round}</TableCell>
             <TableCell>
-              <Button > View More</Button>
+              <Button> View More</Button>
             </TableCell>
             <TableCell>
-              
+              <MeatBallzMenu></MeatBallzMenu>
             </TableCell>
           </TableRow>
         ))}
@@ -178,18 +100,48 @@ export function TableDemo() {
 
 //move to @/components
 export function CreateButton() {
+  const idRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const inputFormatRef = useRef<HTMLInputElement>(null);
+  const pointsRef = useRef<HTMLInputElement>(null);
+  const roundRef = useRef<HTMLInputElement>(null);
+  const constraintsRef = useRef<HTMLInputElement>(null);
+  const outputFormatRef = useRef<HTMLInputElement>(null);
+  const [round, setRound] = useState("1");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const questionResponse = {
+      ID: idRef.current?.value || "",
+      Description: descriptionRef.current?.value || "",
+      Title: titleRef.current?.value || "",
+      InputFormat: inputFormatRef.current?.value || "",
+      Points: Number(pointsRef.current?.value) || 0,
+      Round: Number(round) || 0,
+      Constraints: constraintsRef.current?.value || "",
+      OutputFormat: outputFormatRef.current?.value || "",
+    };
+
+    console.log(questionResponse);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-slate-800 hover:bg-slate-600 text-orange-500 hover:text-orange-600" variant="outline">Create Questions</Button>
+        <Button
+          className="bg-slate-800 text-orange-500 hover:bg-slate-600 hover:text-orange-600"
+          variant="outline"
+        >
+          Create Questions
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Question</DialogTitle>
           <DialogDescription>Add questions here</DialogDescription>
         </DialogHeader>
-        <form onSubmit={(e)=>{submitHandle(e)}}> 
-        
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title" className="text-right">
@@ -199,6 +151,7 @@ export function CreateButton() {
                 id="title"
                 placeholder="OP Question"
                 className="col-span-3"
+                ref={titleRef}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -209,6 +162,7 @@ export function CreateButton() {
                 id="discription"
                 placeholder="yada-yada"
                 className="col-span-3"
+                ref={descriptionRef}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -219,6 +173,7 @@ export function CreateButton() {
                 id="input_format"
                 placeholder="3 integers"
                 className="col-span-3"
+                ref={inputFormatRef}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -230,13 +185,14 @@ export function CreateButton() {
                 type="number"
                 placeholder="30"
                 className="col-span-3"
+                ref={pointsRef}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="round" className="text-right">
                 Round
               </Label>
-              <Select>
+              <Select onValueChange={(value) => setRound(value)}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Round" />
                 </SelectTrigger>
@@ -246,7 +202,6 @@ export function CreateButton() {
                   <SelectItem value="3">3</SelectItem>
                 </SelectContent>
               </Select>
-
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="constrains" className="text-right">
@@ -256,6 +211,7 @@ export function CreateButton() {
                 id="constrains"
                 placeholder="1 < x < 10"
                 className="col-span-3"
+                ref={constraintsRef}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -266,6 +222,7 @@ export function CreateButton() {
                 id="output_format"
                 placeholder="Number"
                 className="col-span-3"
+                ref={outputFormatRef}
               />
             </div>
           </div>
@@ -275,5 +232,23 @@ export function CreateButton() {
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+export function MeatBallzMenu() {
+  return (
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="text-3xl">···</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem className="cursor-pointer hover:bg-orange-100">
+            Update
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer bg-red-600 text-white hover:bg-red-500">
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
