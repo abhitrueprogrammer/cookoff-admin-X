@@ -1,7 +1,13 @@
 "use client";
 import { useRef } from "react";
 
-import { GetAllQuestions, QuestionResponse } from "@/api/questions";
+import {
+  CreateQuestion,
+  CreateQuestionParams,
+  DeleteQuestion,
+  GetAllQuestions,
+  QuestionResponse,
+} from "@/api/questions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +23,17 @@ import {
 import { useEffect, useState } from "react";
 
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -25,7 +42,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,26 +56,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ApiError } from "next/dist/server/api-utils";
+import router from "next/router";
+import toast from "react-hot-toast";
 
-const submitHandle = async (data: FormData) => {
-  console.log(data);
-};
 export default function Home() {
-  return (
-    <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
-      <div className="m-5 ml-auto">
-        <CreateButton></CreateButton>
-      </div>
-      <div className="m-5 h-2/3 overflow-y-auto">
-        <TableDemo></TableDemo>
-      </div>
-    </div>
-  );
-}
-
-export function TableDemo() {
   const [questions, setQuestions] = useState<QuestionResponse[]>([]);
-
   useEffect(() => {
     const getQues = async () => {
       const response = await GetAllQuestions();
@@ -67,6 +69,25 @@ export function TableDemo() {
     }; // Assuming this is the function returning a Promise
     getQues();
   }, []);
+  return (
+    <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
+      <div className="m-5 ml-auto">
+        <CreateButton
+          questions={questions}
+          setQuestions={setQuestions}
+        ></CreateButton>
+      </div>
+      <div className="m-5 h-2/3 overflow-y-auto">
+        <TableDemo
+          questions={questions}
+          setQuestions={setQuestions}
+        ></TableDemo>
+      </div>
+    </div>
+  );
+}
+
+export function TableDemo({ questions, setQuestions }: CreateButtonProps) {
   return (
     <Table>
       <TableCaption>List of questions added</TableCaption>
@@ -89,7 +110,11 @@ export function TableDemo() {
               <Button> View More</Button>
             </TableCell>
             <TableCell>
-              <MeatBallzMenu></MeatBallzMenu>
+              <MeatBallzMenu
+                question={question}
+                questions={questions}
+                setQuestions={setQuestions}
+              ></MeatBallzMenu>
             </TableCell>
           </TableRow>
         ))}
@@ -97,37 +122,57 @@ export function TableDemo() {
     </Table>
   );
 }
+interface CreateButtonProps {
+  questions: QuestionResponse[];
+  setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
+}
 
+interface MeatBallzProps {
+  question: QuestionResponse;
+  questions: QuestionResponse[];
+  setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
+}
 //move to @/components
-export function CreateButton() {
-  const idRef = useRef<HTMLInputElement>(null);
+export function CreateButton({ questions, setQuestions }: CreateButtonProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const descriptionRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const inputFormatRef = useRef<HTMLInputElement>(null);
   const pointsRef = useRef<HTMLInputElement>(null);
-  const roundRef = useRef<HTMLInputElement>(null);
   const constraintsRef = useRef<HTMLInputElement>(null);
   const outputFormatRef = useRef<HTMLInputElement>(null);
   const [round, setRound] = useState("1");
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleQuestionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const questionResponse = {
-      ID: idRef.current?.value || "",
-      Description: descriptionRef.current?.value || "",
-      Title: titleRef.current?.value || "",
-      InputFormat: inputFormatRef.current?.value || "",
-      Points: Number(pointsRef.current?.value) || 0,
-      Round: Number(round) || 0,
-      Constraints: constraintsRef.current?.value || "",
-      OutputFormat: outputFormatRef.current?.value || "",
+    const questionResponse: CreateQuestionParams = {
+      description: descriptionRef.current?.value || "",
+      title: titleRef.current?.value || "",
+      input_format: inputFormatRef.current?.value || "",
+      points: Number(pointsRef.current?.value) || 0,
+      round: Number(round) || 0,
+      constraints: constraintsRef.current?.value || "",
+      output_format: outputFormatRef.current?.value || "",
     };
-
-    console.log(questionResponse);
+    try {
+      const newQuestion = await toast.promise(
+        CreateQuestion(questionResponse),
+        {
+          loading: "Adding Question",
+          success: "Sucess!",
+          error: (err: ApiError) => err.message,
+        },
+      );
+      setQuestions([...questions, newQuestion]);
+      setIsOpen(false);
+    } catch (err) {
+      console.error("Couldn't add question:", err);
+    }
+    console.log();
   };
-
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
           className="bg-slate-800 text-orange-500 hover:bg-slate-600 hover:text-orange-600"
@@ -141,7 +186,7 @@ export function CreateButton() {
           <DialogTitle>Create Question</DialogTitle>
           <DialogDescription>Add questions here</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleQuestionSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title" className="text-right">
@@ -235,18 +280,62 @@ export function CreateButton() {
   );
 }
 
-export function MeatBallzMenu() {
+export function MeatBallzMenu({
+  question,
+  questions,
+  setQuestions,
+}: MeatBallzProps) {
+  async function handleDeleteRequest(id: string) {
+    try {
+      await toast.promise(DeleteQuestion(id), {
+        loading: "Deleting Question",
+        success: "Sucess!",
+        error: (err: ApiError) => err.message,
+      });
+      setQuestions(
+        questions.filter((quest) => 
+          quest.ID !== question.ID
+        ),
+      );
+      void router.push("/dashboard");
+    } catch (err) {
+      console.error("Couldn't delete question:", err);
+    }
+    console.log();
+  }
+
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger className="text-3xl">···</DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem className="cursor-pointer hover:bg-orange-100">
+          <DropdownMenuItem className="cursor-pointer p-1 hover:bg-orange-100">
             Update
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer bg-red-600 text-white hover:bg-red-500">
-            Delete
-          </DropdownMenuItem>
+          
+          <AlertDialog >
+            <AlertDialogTrigger className="cursor-pointer bg-red-600  text-white hover:bg-red-500 w-full text-left p-1" >Delete</AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    handleDeleteRequest(question.ID);
+                  }}
+                  className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>{" "}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

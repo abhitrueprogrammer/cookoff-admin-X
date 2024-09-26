@@ -48,7 +48,7 @@ export default function Login() {
               src={cookoff as HTMLImageElement}
               alt="cookoff text"
               width={700}
-              height={600}
+              heloight={600}
             /> */}
           </div>
         </div>
