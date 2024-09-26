@@ -79,9 +79,9 @@ export const QuestionsDataColumn = [
               Delete
             {/* </DropdownMenuItem> */}
           </ModalDelete>
-          <ModalUpdate row={row}>
+          {/* <ModalUpdate row={row}>
           Update
-          </ModalUpdate>
+          </ModalUpdate> */}
         </DataTableRowActions>
       </div>
     ),

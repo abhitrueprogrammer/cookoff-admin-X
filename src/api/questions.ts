@@ -24,19 +24,33 @@ export interface QuestionResponse {
   Constraints: string;
   OutputFormat: string;
 }
-interface UpdateQuestionParams {
+export interface UpdateQuestionParams {
   id: string; // ID of the question to update
   description?: string; // Optional fields for updating
 }
 
+// export interface CreateQuestionParams {
+//   description: string;
+//   title: string;
+//   input_format: string;
+//   points: number;
+//   round: number;
+//   constraints: string;
+//   output_format: string;
+// }
+
+
 export interface CreateQuestionParams {
-  description: string;
-  title: string;
-  input_format: string;
-  points: number;
-  round: number;
-  constraints: string;
-  output_format: string;
+  Description: string,
+  Title: string,
+  InputFormat: string[],
+  Points: number,
+  Round: number,
+  Constraints: string[],
+  OutputFormat: string[],
+  SampleTestInput: string[],
+  SampleTestOutput: string[],
+  Explanation: string[],
 }
 interface DeleteQuestionResponse {
   message: string;
@@ -53,13 +67,12 @@ export async function GetAllQuestions() {
 }
 
 // POST REQUEST
-export async function CreateQuestion(data: any []) {
+export async function CreateQuestion(data: CreateQuestionParams) {
   try {
     console.log(data)
     const response = await api.post<QuestionResponse>("/question/create", data);
     return response.data;
   } catch (e) {
-    console.log(data + "Data")
 
     console.log(e)
     throw handleAPIError(e);

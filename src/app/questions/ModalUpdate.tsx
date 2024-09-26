@@ -22,7 +22,12 @@ import { Label } from "@radix-ui/react-label";
 import { type Row } from "@tanstack/react-table";
 import { FormEvent, useState } from "react";
 import { type QuestionsDataProps } from "./questions-columns";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { UpdateQuestionParams, UpdateQuestion } from "@/api/questions";
+import toast from "react-hot-toast";
+import { ApiError } from "next/dist/server/api-utils";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -33,13 +38,43 @@ const ModalUpdate = ({
   row: Row<QuestionsDataProps>;
   children: React.ReactNode;
 }) => {
-    const queryClient = useQueryClient()
 
   const [isModalOpen, setModalOpen] = useState(false);
-  console.log(row.original);
-  function updateHandler(event: FormEvent<HTMLButtonElement>): void {
-    throw new Error("Function not implemented.");
-  }
+//   console.log(row.original);
+//   function updateHandler(event: FormEvent<HTMLButtonElement>): void {
+//     throw new Error("Function not implemented.");
+//   }
+const [isOpen, setIsOpen] = useState(false);
+const queryClient = useQueryClient()
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+  reset,
+} = useForm<UpdateQuestionParams>({
+})
+
+const createQuestion = useMutation({
+  mutationFn: (data: UpdateQuestionParams) => {
+    // reorder after u get docs
+    return toast.promise(
+        UpdateQuestion(data),
+        {
+          loading: "Adding Question",
+          success: "Success!",
+          error: (err: ApiError) => err.message,
+        })},
+  onSuccess: async () => {
+    await queryClient.invalidateQueries({ queryKey: ["questions"] })
+    reset()
+
+    setModalOpen(false)
+  },
+  onError: () => {
+    console.log("out of syllabus")
+    }
+    })
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
@@ -119,7 +154,7 @@ const ModalUpdate = ({
               <Label htmlFor="constrains" className="text-right">
                 Constrains
               </Label>
-              <Input
+              <Textarea
                 id="constrains"
                 placeholder="1 < x < 10"
                 className="col-span-3"
@@ -130,7 +165,7 @@ const ModalUpdate = ({
               <Label htmlFor="output_format" className="text-right">
                 Output Format
               </Label>
-              <Input
+              <Textarea
                 id="output_format"
                 placeholder="Number"
                 className="col-span-3"
@@ -140,9 +175,9 @@ const ModalUpdate = ({
           </div>{" "}
         </div>
         <DialogFooter>
-          <Button type="submit" onSubmit={updateHandler}>
+          {/* <Button type="submit" onSubmit={createQuestion}>
             Save changes
-          </Button>
+          </Button> */}
         </DialogFooter>
       </DialogContent>
     </Dialog>

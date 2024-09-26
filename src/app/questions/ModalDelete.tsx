@@ -46,11 +46,12 @@ const ModalDelete = ({
                 success: "Success!",
                 error: (err: ApiError) => err.message,
               })},
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["questions"] })
+         onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: ["questions"] })
       
         },
         onError: () => {
+            console.log("Out of syllabus error");
           }
           })
       
@@ -60,19 +61,19 @@ const ModalDelete = ({
   
 
     
-  async function handleDeleteRequest(id: string) {
-    try {
-      console.log(id);
-      await toast.promise(DeleteQuestion(id), {
-        loading: "Deleting Question",
-        success: "Sucess!",
-        error: (err: ApiError) => err.message,
-      });
-    } catch (err) {
-      console.error("Couldn't delete question:", err);
-    }
-    console.log();
-  }
+//   async function handleDeleteRequest(id: string) {
+//     try {
+//       console.log(id);
+//       await toast.promise(DeleteQuestion(id), {
+//         loading: "Deleting Question",
+//         success: "Sucess!",
+//         error: (err: ApiError) => err.message,
+//       });
+//     } catch (err) {
+//       console.error("Couldn't delete question:", err);
+//     }
+//     console.log();
+//   }
   return (
     <AlertDialog>
       <AlertDialogTrigger className="w-full cursor-pointer text-sm rounded-sm bg-red-600 p-1 text-left text-white hover:bg-red-500">
