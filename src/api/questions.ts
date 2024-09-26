@@ -81,6 +81,11 @@ export async function GetQuestionById(id: string) {
 
 // PATCH REQUEST
 export async function UpdateQuestion(data: UpdateQuestionParams) {
-  const response = await api.patch<QuestionResponse>("/question", data);
-  return response.data;
+  try
+  {
+    const response = await api.patch<QuestionResponse>("/question", data);
+    return response.data;
+  } catch (e) {
+    throw handleAPIError(e);
+  }
 }

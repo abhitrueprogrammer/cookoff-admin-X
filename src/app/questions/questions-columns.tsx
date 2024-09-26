@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import ModalDetails from "./ModalUsers";
-
+import ModalDelete from "./ModalDelete";
+import ModalUpdate from "./ModalUpdate";
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
@@ -19,17 +20,7 @@ export interface QuestionsDataProps {
 const columnHelper = createColumnHelper<QuestionsDataProps>();
 
 export const QuestionsDataColumn = [
-  // columnHelper.accessor("ID", {
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="ID" />
-  //   ),
-  //   enableSorting: true,
-  //   enableHiding: false,
-  //   meta: {
-  //     className: "text-left",
-  //     displayName: "ID",
-  //   },
-  // }),
+
   columnHelper.accessor("Title", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
@@ -41,39 +32,6 @@ export const QuestionsDataColumn = [
       displayName: "Title",
     },
   }),
-  // columnHelper.accessor("Description", {
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Description" />
-  //   ),
-  //   enableSorting: true,
-  //   enableHiding: false,
-  //   meta: {
-  //     className: "text-left",
-  //     displayName: "Description",
-  //   },
-  // }),
-  // columnHelper.accessor("InputFormat", {
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Input Format" />
-  //   ),
-  //   enableSorting: true,
-  //   enableHiding: false,
-  //   meta: {
-  //     className: "text-left",
-  //     displayName: "Input Format",
-  //   },
-  // }),
-  // columnHelper.accessor("OutputFormat", {
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Output Format" />
-  //   ),
-  //   enableSorting: true,
-  //   enableHiding: false,
-  //   meta: {
-  //     className: "text-left",
-  //     displayName: "Output Format",
-  //   },
-  // }),
   columnHelper.accessor("Points", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Points" />
@@ -96,17 +54,7 @@ export const QuestionsDataColumn = [
       displayName: "Round",
     },
   }),
-  // columnHelper.accessor("Constraints", {
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Constraints" />
-  //   ),
-  //   enableSorting: true,
-  //   enableHiding: false,
-  //   meta: {
-  //     className: "text-left",
-  //     displayName: "Constraints",
-  //   },
-  // }),
+
 
   columnHelper.display({
     id: "actions",
@@ -123,22 +71,17 @@ export const QuestionsDataColumn = [
           <Button className="px-2 py-1">View Event Details</Button>
         </ModalDetails>
         <DataTableRowActions row={row}>
-          <ModalDetails row={row}>
-            <DropdownMenuItem
+          <ModalDelete row={row}>
+            {/* <DropdownMenuItem
               onSelect={(e) => e.preventDefault()}
-              className={`p-2`}
-            >
+              className={`p-2 hover:bg-red-400`}
+            > */}
               Delete
-            </DropdownMenuItem>
-          </ModalDetails>
-          <ModalDetails row={row}>
-            <DropdownMenuItem
-              onSelect={(e) => e.preventDefault()}
-              className={`p-2`}
-            >
-              Update
-            </DropdownMenuItem>
-          </ModalDetails>
+            {/* </DropdownMenuItem> */}
+          </ModalDelete>
+          <ModalUpdate row={row}>
+          Update
+          </ModalUpdate>
         </DataTableRowActions>
       </div>
     ),

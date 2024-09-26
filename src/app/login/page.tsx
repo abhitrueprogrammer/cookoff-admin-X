@@ -4,7 +4,7 @@ import { login } from "@/api/login";
 import { loginFormSchema } from "@/schemas/forms/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type ApiError } from "next/dist/server/api-utils";
-// import Image from "next/image";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,7 +45,7 @@ export default function Login() {
           <div className="flex flex-col">
  {/* ``           <Image
               className="pl-14"
-              src={cookoff as HTMLImageElement}
+              src={cc-logo as HTMLImageElement}
               alt="cookoff text"
               width={700}
               heloight={600}
