@@ -12,7 +12,6 @@
 
 //done GetQuestionById
 
-
 import { handleAPIError } from "@/lib/error";
 import api from ".";
 export interface QuestionResponse {
@@ -44,46 +43,34 @@ interface DeleteQuestionResponse {
 }
 // GET REQUEST
 export async function GetAllQuestions() {
-  try
-  {
+  try {
     const response = await api.get<QuestionResponse[]>("/questions");
     return response.data;
-
-  }
-  catch(e)
-  {
+  } catch (e) {
     console.log(e);
-    return []
+    return [];
   }
 }
-
-
-
 
 // POST REQUEST
 export async function CreateQuestion(data: CreateQuestionParams) {
-  try
-  {
+  try {
     const response = await api.post<QuestionResponse>("/question/create", data);
-    return response.data
-
-  }
-  catch (e) {
-  throw handleAPIError(e);
+    return response.data;
+  } catch (e) {
+    throw handleAPIError(e);
   }
 }
 
-
 // DELETE REQUEST
 export async function DeleteQuestion(id: string) {
-  try
-  {
-    const response = await api.delete<DeleteQuestionResponse>(`/question/${id}`);
+  try {
+    const response = await api.delete<DeleteQuestionResponse>(
+      `/question/${id}`,
+    );
     return response.data;
-  }
-  catch(e)
-  {
-    throw handleAPIError(e)
+  } catch (e) {
+    throw handleAPIError(e);
   }
 }
 
@@ -91,9 +78,6 @@ export async function GetQuestionById(id: string) {
   const response = await api.get<QuestionResponse>(`/question/${id}`);
   return response.data;
 }
-
-
-
 
 // PATCH REQUEST
 export async function UpdateQuestion(data: UpdateQuestionParams) {
