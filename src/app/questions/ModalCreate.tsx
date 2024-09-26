@@ -26,6 +26,16 @@ import toast from "react-hot-toast";
 const CreateButton = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
+    // description: string,
+    // title: string,
+    // input_format: string[],
+    // points: number,
+    // round: number,
+    // constraints: string[],
+    // output_format: string[],
+    // sample_test_input: string[],
+    // sample_test_output: string[],
+    // example: string[],
 
   const {
     register,
@@ -36,15 +46,17 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
 
   const createQuestion = useMutation({
     mutationFn:  (data: CreateQuestionParams) => {
-      data.InputFormat = data.InputFormat?.[0]?.split("\n") ?? [];
-      data.Points = Number(data.Points);
-      data.Round = Number(data.Round);
+      data.input_format = data.input_format?.[0]?.split("\n") ?? [];
+      data.points = +data.points;
+      data.round = +data.round;
       // data.Round = 1;
 
-      data.Constraints = data.Constraints?.[0]?.split("\n") ?? [];
-      data.OutputFormat = data.OutputFormat?.[0]?.split("\n") ?? [];
-      data.SampleTestInput = data.SampleTestInput?.[0]?.split("\n") ?? [];
-      data.Explanation = data.Explanation?.[0]?.split("\n") ?? [];
+      data.constraints = data.constraints?.[0]?.split("\n") ?? [];
+      data.output_format = data.output_format?.[0]?.split("\n") ?? [];
+      data.sample_test_input = data.sample_test_input?.[0]?.split("\n") ?? [];
+      data.sample_test_output = data.sample_test_output?.[0]?.split("\n") ?? [];
+      data.explanation = data.explanation?.[0]?.split("\n") ?? [];
+      console.log(data)
       return toast.promise(CreateQuestion(data), {
         loading: "Adding Question",
         success: "Success!",
@@ -88,7 +100,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="title"
                 placeholder="OP Question"
                 className="col-span-3"
-                {...register("Title")}
+                {...register("title")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -99,7 +111,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="description"
                 placeholder="yada-yada"
                 className="col-span-3"
-                {...register("Description")}
+                {...register("description")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -110,7 +122,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="input_format"
                 placeholder="3 integers"
                 className="col-span-3"
-                {...register("InputFormat.0")}
+                {...register("input_format.0")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -122,7 +134,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 type="number"
                 placeholder="30"
                 className="col-span-3"
-                {...register("Points")}
+                {...register("points")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -130,7 +142,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 Round
               </Label>
               <select
-                {...register("Round")}
+                {...register("round")}
                 defaultValue={1}
                 id="round"
                 className="rounded-md border bg-white p-2"
@@ -148,7 +160,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="constraints"
                 placeholder="1 < x < 10"
                 className="col-span-3"
-                {...register("Constraints.0")}
+                {...register("constraints.0")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -159,7 +171,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="output_format"
                 placeholder="Number"
                 className="col-span-3"
-                {...register("OutputFormat.0")}
+                {...register("output_format.0")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -170,7 +182,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="sample_test_output"
                 placeholder="Number"
                 className="col-span-3"
-                {...register("SampleTestOutput.0")}
+                {...register("sample_test_output.0")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -181,7 +193,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="sample_test_input"
                 placeholder="Abracadabra"
                 className="col-span-3"
-                {...register("SampleTestInput.0")}
+                {...register("sample_test_input.0")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
@@ -192,7 +204,7 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="explanation"
                 placeholder="The why, the who, what, when, the where, and the how"
                 className="col-span-3"
-                {...register("Explanation.0")}
+                {...register("explanation.0")}
               />
             </div>
           </div>

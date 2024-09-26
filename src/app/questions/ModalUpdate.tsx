@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { UpdateQuestion, UpdateQuestionParams } from "@/api/questions";
 import {
   Dialog,
   DialogContent,
@@ -18,70 +18,79 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@radix-ui/react-label";
-import { type Row } from "@tanstack/react-table";
-import { FormEvent, useState } from "react";
-import { type QuestionsDataProps } from "./questions-columns";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { UpdateQuestionParams, UpdateQuestion } from "@/api/questions";
-import toast from "react-hot-toast";
-import { ApiError } from "next/dist/server/api-utils";
 import { Textarea } from "@/components/ui/textarea";
-
-
+import { Label } from "@radix-ui/react-label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type Row } from "@tanstack/react-table";
+import { ApiError } from "next/dist/server/api-utils";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { type QuestionsDataProps } from "./questions-columns";
+import { Update } from "next/dist/build/swc";
+import { UpdateIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
 
 const ModalUpdate = ({
+  id,
   row,
   children,
 }: {
+  id: string;
   row: Row<QuestionsDataProps>;
   children: React.ReactNode;
 }) => {
-
   const [isModalOpen, setModalOpen] = useState(false);
-//   console.log(row.original);
-//   function updateHandler(event: FormEvent<HTMLButtonElement>): void {
-//     throw new Error("Function not implemented.");
-//   }
-const [isOpen, setIsOpen] = useState(false);
-const queryClient = useQueryClient()
+  //   console.log(row.original);
+  //   function updateHandler(event: FormEvent<HTMLButtonElement>): void {
+  //     throw new Error("Function not implemented.");
+  //   }
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-  reset,
-} = useForm<UpdateQuestionParams>({
-})
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<UpdateQuestionParams>();
 
-const createQuestion = useMutation({
-  mutationFn: (data: UpdateQuestionParams) => {
-    // reorder after u get docs
-    return toast.promise(
-        UpdateQuestion(data),
-        {
-          loading: "Adding Question",
-          success: "Success!",
-          error: (err: ApiError) => err.message,
-        })},
-  onSuccess: async () => {
-    await queryClient.invalidateQueries({ queryKey: ["questions"] })
-    reset()
+  const createQuestion = useMutation({
+    mutationFn:  (data: UpdateQuestionParams) => {
+      data.input_format = data.input_format?.[0]?.split("\n") ?? [];
+      data.points = +data.points;
+      data.round = +data.round;
+      // data.Round = 1;
 
-    setModalOpen(false)
-  },
-  onError: () => {
-    console.log("out of syllabus")
-    }
-    })
+      data.constraints = data.constraints?.[0]?.split("\n") ?? [];
+      data.output_format = data.output_format?.[0]?.split("\n") ?? [];
+      data.sample_test_input = data.sample_test_input?.[0]?.split("\n") ?? [];
+      data.sample_test_output = data.sample_test_output?.[0]?.split("\n") ?? [];
+      data.explanation = data.explanation?.[0]?.split("\n") ?? [];
+      console.log(data)
+      return toast.promise(UpdateQuestion(data), {
+        loading: "Updating Question",
+        success: "Success!",
+        error: (err: ApiError) => err.message,
+      });
+    },
+    onSuccess: async () => {
+       await queryClient.invalidateQueries({ queryKey: ["questions"] });
+      reset();
+      setIsOpen(false);
+    },
+  });
 
+  const onSubmit = (data: UpdateQuestionParams) => {
+    createQuestion.mutate(data);
+  };
   return (
     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger className="ml-1 w-full cursor-pointer rounded-sm text-left text-sm">
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <DialogHeader>
           <DialogTitle>{children}</DialogTitle>
           <DialogDescription>Edit the fields</DialogDescription>
@@ -89,39 +98,43 @@ const createQuestion = useMutation({
         <div className="grid gap-4 py-4">
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">
+            <Label htmlFor="title" className="text-right">
                 Title
               </Label>
               <Input
                 id="title"
                 placeholder="OP Question"
                 className="col-span-3"
+                {...register("title")}
                 defaultValue={row.original.Title}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="discription" className="text-right">
-                Discription
+            <div className="grid grid-cols-4 items-center gap-2">
+              <Label htmlFor="description" className="text-right">
+                Description
               </Label>
-              <Input
-                id="discription"
+              <Textarea
+                id="description"
                 placeholder="yada-yada"
                 className="col-span-3"
+                {...register("description")}
                 defaultValue={row.original.Description}
+
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-2">
               <Label htmlFor="input_format" className="text-right">
                 Input Format
               </Label>
-              <Input
+              <Textarea
                 id="input_format"
                 placeholder="3 integers"
                 className="col-span-3"
+                {...register("input_format.0")}
                 defaultValue={row.original.InputFormat}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-2">
               <Label htmlFor="points" className="text-right">
                 Points
               </Label>
@@ -130,38 +143,41 @@ const createQuestion = useMutation({
                 type="number"
                 placeholder="30"
                 className="col-span-3"
+                {...register("points")}
                 defaultValue={row.original.Points}
+
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-2">
               <Label htmlFor="round" className="text-right">
                 Round
               </Label>
-              {/* <Select onValueChange={(value) => setRound(value)}> */}
-
-              <Select defaultValue={row.original.Round.toString()}>
-                <SelectTrigger className="w-[180px]">
-                     <SelectValue  placeholder="Round" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                </SelectContent>
-              </Select>
+              <select
+                {...register("round")}
+                defaultValue={row.original.Round}
+                id="round"
+                className="rounded-md border bg-white p-2"
+              >
+                <option value={1}>Round 1</option>
+                <option value={2}>Round 2</option>
+                <option value={3}>Round 3</option>
+              </select>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="constrains" className="text-right">
-                Constrains
+            <div className="grid grid-cols-4 items-center gap-2">
+              <Label htmlFor="constraints" className="text-right">
+                Constraints
               </Label>
               <Textarea
-                id="constrains"
+                id="constraints"
                 placeholder="1 < x < 10"
                 className="col-span-3"
                 defaultValue={row.original.Constraints}
+
+                {...register("constraints.0")}
+  
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center gap-2">
               <Label htmlFor="output_format" className="text-right">
                 Output Format
               </Label>
@@ -170,15 +186,58 @@ const createQuestion = useMutation({
                 placeholder="Number"
                 className="col-span-3"
                 defaultValue={row.original.OutputFormat}
+
+                {...register("output_format.0")}
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-2">
+              <Label htmlFor="sample_test_output" className="text-right">
+                Sample Test Output
+              </Label>
+              <Textarea
+                id="sample_test_output"
+                placeholder="Number"
+                className="col-span-3"             
+                // defaultValue={row.original.SampleTestOutput}
+
+                {...register("sample_test_output.0")}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-2">
+              <Label htmlFor="sample_test_input" className="text-right">
+                Sample Test Input
+              </Label>
+              <Textarea
+                id="sample_test_input"
+                placeholder="Abracadabra"
+                className="col-span-3"
+                {...register("sample_test_input.0")}
+                // defaultValue={row.original.SampleTestInput}
+
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-2">
+              <Label htmlFor="explanation" className="text-right">
+                Explanation
+              </Label>
+              <Textarea
+                id="explanation"
+                placeholder="The why, the who, what, when, the where, and the how"
+                className="col-span-3"
+                {...register("explanation.0")}
+                // defaultValue={row.original.Explanation}
+
+              />
+
             </div>
           </div>{" "}
         </div>
         <DialogFooter>
-          {/* <Button type="submit" onSubmit={createQuestion}>
+          <Button type="submit" >
             Save changes
-          </Button> */}
+          </Button>
         </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

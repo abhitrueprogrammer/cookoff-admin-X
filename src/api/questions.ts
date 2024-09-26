@@ -24,33 +24,43 @@ export interface QuestionResponse {
   Constraints: string;
   OutputFormat: string;
 }
+
 export interface UpdateQuestionParams {
-  id: string; // ID of the question to update
-  description?: string; // Optional fields for updating
+  id: string;
+  description: string;
+  title: string;
+  input_format: string[];
+  points: number;
+  round: number;
+  constraints: string[] ;
+  output_format: string[];
+  sample_test_input: string[];
+  sample_test_output: string[];
+  explanation: string[];
 }
 
 // export interface CreateQuestionParams {
-//   description: string;
-//   title: string;
-//   input_format: string;
-//   points: number;
-//   round: number;
-//   constraints: string;
-//   output_format: string;
+  //   description: string;
+  //   title: string;
+  //   input_format: string;
+  //   points: number;
+  //   round: number;
+  //   constraints: string;
+  //   output_format: string;
 // }
 
 
 export interface CreateQuestionParams {
-  Description: string,
-  Title: string,
-  InputFormat: string[],
-  Points: number,
-  Round: number,
-  Constraints: string[],
-  OutputFormat: string[],
-  SampleTestInput: string[],
-  SampleTestOutput: string[],
-  Explanation: string[],
+  description: string,
+  title: string,
+  input_format: string[],
+  points: number,
+  round: number,
+  constraints: string[],
+  output_format: string[],
+  sample_test_input: string[],
+  sample_test_output: string[],
+  explanation: string[],
 }
 interface DeleteQuestionResponse {
   message: string;

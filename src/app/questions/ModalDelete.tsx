@@ -20,12 +20,11 @@ import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-interface questionDelete
-{
-    id: string
-}
+// interface questionDelete
+// {
+//     id: string
+// }
 const ModalDelete = ({
-  row,
   children,
   id,
 }: {
@@ -42,7 +41,7 @@ const ModalDelete = ({
           return toast.promise(
               DeleteQuestion(id),
               {
-                loading: "Adding Question",
+                loading: "Deleting Question",
                 success: "Success!",
                 error: (err: ApiError) => err.message,
               })},
@@ -50,9 +49,7 @@ const ModalDelete = ({
           await queryClient.invalidateQueries({ queryKey: ["questions"] })
       
         },
-        onError: () => {
-            console.log("Out of syllabus error");
-          }
+  
           })
       
       const onSubmit = () => {
