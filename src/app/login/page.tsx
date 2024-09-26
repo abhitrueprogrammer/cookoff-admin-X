@@ -4,7 +4,7 @@ import { login } from "@/api/login";
 import { loginFormSchema } from "@/schemas/forms/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type ApiError } from "next/dist/server/api-utils";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

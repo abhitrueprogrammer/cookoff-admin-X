@@ -11,15 +11,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+// import {
+//   Table,
+//   TableBody,
+//   TableCaption,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 
 import {
@@ -67,7 +67,7 @@ export default function Home() {
       const response = await GetAllQuestions();
       setQuestions(response);
     }; // Assuming this is the function returning a Promise
-    getQues();
+    void getQues();
   }, []);
   return (
     <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
@@ -78,50 +78,51 @@ export default function Home() {
         ></CreateButton>
       </div>
       <div className="m-5 h-2/3 overflow-y-auto">
-        <TableDemo
+        {/* <TableDemo
           questions={questions}
           setQuestions={setQuestions}
-        ></TableDemo>
+        ></TableDemo> */}
       </div>
     </div>
   );
 }
 
-export function TableDemo({ questions, setQuestions }: CreateButtonProps) {
-  return (
-    <Table>
-      <TableCaption>List of questions added</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Title</TableHead>
-          <TableHead>Points</TableHead>
-          <TableHead>Round</TableHead>
-          <TableHead>View More</TableHead>
-          <TableHead>Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {questions.map((question) => (
-          <TableRow key={question.ID}>
-            <TableCell className="font-medium">{question.Title}</TableCell>
-            <TableCell>{question.Points}</TableCell>
-            <TableCell>{question.Round}</TableCell>
-            <TableCell>
-              <Button> View More</Button>
-            </TableCell>
-            <TableCell>
-              <MeatBallzMenu
-                question={question}
-                questions={questions}
-                setQuestions={setQuestions}
-              ></MeatBallzMenu>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
+// export function TableDemo({ questions, setQuestions }: CreateButtonProps) {
+//   return (
+    
+//     // <Table>
+//     //   <TableCaption>List of questions added</TableCaption>
+//     //   <TableHeader>
+//     //     <TableRow>
+//     //       <TableHead className="w-[100px]">Title</TableHead>
+//     //       <TableHead>Points</TableHead>
+//     //       <TableHead>Round</TableHead>
+//     //       <TableHead>View More</TableHead>
+//     //       <TableHead>Action</TableHead>
+//     //     </TableRow>
+//     //   </TableHeader>
+//     //   <TableBody>
+//     //     {questions.map((question) => (
+//     //       <TableRow key={question.ID}>
+//     //         <TableCell className="font-medium">{question.Title}</TableCell>
+//     //         <TableCell>{question.Points}</TableCell>
+//     //         <TableCell>{question.Round}</TableCell>
+//     //         <TableCell>
+//     //           <Button> View More</Button>
+//     //         </TableCell>
+//     //         <TableCell>
+//     //           <MeatBallzMenu
+//     //             question={question}
+//     //             questions={questions}
+//     //             setQuestions={setQuestions}
+//     //           ></MeatBallzMenu>
+//     //         </TableCell>
+//     //       </TableRow>
+//     //     ))}
+//     //   </TableBody>
+//     // </Table>
+//   );
+// }
 interface CreateButtonProps {
   questions: QuestionResponse[];
   setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
@@ -133,7 +134,7 @@ interface MeatBallzProps {
   setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
 }
 //move to @/components
-export function CreateButton({ questions, setQuestions }: CreateButtonProps) {
+ const CreateButton = ({ questions, setQuestions }: CreateButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -147,13 +148,13 @@ export function CreateButton({ questions, setQuestions }: CreateButtonProps) {
     e.preventDefault();
 
     const questionResponse: CreateQuestionParams = {
-      description: descriptionRef.current?.value || "",
-      title: titleRef.current?.value || "",
-      input_format: inputFormatRef.current?.value || "",
-      points: Number(pointsRef.current?.value) || 0,
-      round: Number(round) || 0,
-      constraints: constraintsRef.current?.value || "",
-      output_format: outputFormatRef.current?.value || "",
+      description: descriptionRef.current?.value ?? "",
+      title: titleRef.current?.value ?? "",
+      input_format: inputFormatRef.current?.value ?? "",
+      points: Number(pointsRef.current?.value) ?? 0,
+      round: Number(round) ?? 0,
+      constraints: constraintsRef.current?.value ?? "",
+      output_format: outputFormatRef.current?.value ?? "",
     };
     try {
       const newQuestion = await toast.promise(
@@ -280,11 +281,11 @@ export function CreateButton({ questions, setQuestions }: CreateButtonProps) {
   );
 }
 
-export function MeatBallzMenu({
+ const MeatBallzMenu = ({
   question,
   questions,
   setQuestions,
-}: MeatBallzProps) {
+}: MeatBallzProps) => {
   async function handleDeleteRequest(id: string) {
     try {
       await toast.promise(DeleteQuestion(id), {
@@ -327,7 +328,7 @@ export function MeatBallzMenu({
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
-                    handleDeleteRequest(question.ID);
+                    void handleDeleteRequest(question.ID);
                   }}
                   className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
                 >
