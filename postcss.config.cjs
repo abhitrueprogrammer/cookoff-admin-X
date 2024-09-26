@@ -1,4 +1,4 @@
-rconst config = {
+const config = {
   plugins: {
     tailwindcss: {},
   },
