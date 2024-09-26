@@ -17,14 +17,49 @@ import {
 import { DeleteQuestion } from "@/api/questions";
 import { ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
+interface questionDelete
+{
+    id: string
+}
 const ModalDelete = ({
   row,
   children,
+  id,
 }: {
   row: Row<QuestionsDataProps>;
   children: React.ReactNode;
+  id: string;
 }) => {
+    const queryClient = useQueryClient()
+
+
+
+    const handleDelete = useMutation({
+        mutationFn: (id: string) => {
+          return toast.promise(
+              DeleteQuestion(id),
+              {
+                loading: "Adding Question",
+                success: "Success!",
+                error: (err: ApiError) => err.message,
+              })},
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["questions"] })
+      
+        },
+        onError: () => {
+          }
+          })
+      
+      const onSubmit = () => {
+        handleDelete.mutate(id)
+      }
+  
+
+    
   async function handleDeleteRequest(id: string) {
     try {
       console.log(id);
@@ -54,7 +89,7 @@ const ModalDelete = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => handleDeleteRequest(row.original.ID)}
+            onClick={onSubmit}
             className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
           >
             Continue

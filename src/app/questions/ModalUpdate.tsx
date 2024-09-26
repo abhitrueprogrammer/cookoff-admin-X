@@ -22,6 +22,10 @@ import { Label } from "@radix-ui/react-label";
 import { type Row } from "@tanstack/react-table";
 import { FormEvent, useState } from "react";
 import { type QuestionsDataProps } from "./questions-columns";
+import { useQueryClient } from "@tanstack/react-query";
+
+
+
 const ModalUpdate = ({
   row,
   children,
@@ -29,6 +33,8 @@ const ModalUpdate = ({
   row: Row<QuestionsDataProps>;
   children: React.ReactNode;
 }) => {
+    const queryClient = useQueryClient()
+
   const [isModalOpen, setModalOpen] = useState(false);
   console.log(row.original);
   function updateHandler(event: FormEvent<HTMLButtonElement>): void {

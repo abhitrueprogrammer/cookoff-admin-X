@@ -96,7 +96,7 @@ export default function Login() {
               )}
               <br />
               <button
-                className="w-[100px] rounded-md bg-accent p-3 text-black "
+                className="w-[100px] rounded-md bg-accent p-3 text-black bg-white"
                 disabled={isLoading}
                 onClick={handleSubmit(onSubmit)}
               >

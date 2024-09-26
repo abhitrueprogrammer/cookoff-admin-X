@@ -71,7 +71,7 @@ export const QuestionsDataColumn = [
           <Button className="px-2 py-1">View Event Details</Button>
         </ModalDetails>
         <DataTableRowActions row={row}>
-          <ModalDelete row={row}>
+          <ModalDelete row={row} id={row.original.ID}>
             {/* <DropdownMenuItem
               onSelect={(e) => e.preventDefault()}
               className={`p-2 hover:bg-red-400`}

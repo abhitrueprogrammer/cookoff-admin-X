@@ -1,64 +1,104 @@
 import {
   CreateQuestion,
   CreateQuestionParams,
-  QuestionResponse,
 } from "@/api/questions";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ApiError } from "next/dist/server/api-utils";
 import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 // interface CreateButtonProps {
 //     questions: QuestionResponse[];
 //     setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
 //   }
 
+
+
+
 const CreateButton = ({
-  // setQuestions,
-  children,
+    // setQuestions,
+    children,
 }: {
-  // setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
-  children: React.ReactNode;
+    // setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
+    children: React.ReactNode;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+    
+    // const descriptionRef = useRef<HTMLInputElement>(null);
+    // const titleRef = useRef<HTMLInputElement>(null);
+    // const inputFormatRef = useRef<HTMLInputElement>(null);
+    // const pointsRef = useRef<HTMLInputElement>(null);
+    // const constraintsRef = useRef<HTMLInputElement>(null);
+    // const outputFormatRef = useRef<HTMLInputElement>(null);
+    // const [round, setRound] = useState("1");
+    const [isOpen, setIsOpen] = useState(false);
+    const queryClient = useQueryClient()
+    
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      reset,
+    } = useForm<CreateQuestionParams>({
+    })
 
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const inputFormatRef = useRef<HTMLInputElement>(null);
-  const pointsRef = useRef<HTMLInputElement>(null);
-  const constraintsRef = useRef<HTMLInputElement>(null);
-  const outputFormatRef = useRef<HTMLInputElement>(null);
-  const [round, setRound] = useState("1");
-  const handleQuestionSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const questionResponse: CreateQuestionParams = {
-      description: descriptionRef.current?.value ?? "",
-      title: titleRef.current?.value ?? "",
-      input_format: inputFormatRef.current?.value ?? "",
-      points: Number(pointsRef.current?.value) ?? 0,
-      round: Number(round) ?? 0,
-      constraints: constraintsRef.current?.value ?? "",
-      output_format: outputFormatRef.current?.value ?? "",
-    };
-    try {
-      const newQuestion = await toast.promise(
-        CreateQuestion(questionResponse),
-        {
-          loading: "Adding Question",
-          success: "Sucess!",
-          error: (err: ApiError) => err.message,
-        },
-      );
-      setIsOpen(false);
-    } catch (err) {
-      console.error("Couldn't add question:", err);
+    const createQuestion = useMutation({
+      mutationFn: (data: CreateQuestionParams) => {
+        // reorder after u get docs
+        let dataArr = [data.title, data.description, data.round, data.points, data.output_format, data.input_format, data.constraints,]
+        return toast.promise(
+            CreateQuestion(dataArr),
+            {
+              loading: "Adding Question",
+              success: "Success!",
+              error: (err: ApiError) => err.message,
+            })},
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["questions"] })
+        reset()
+    
+        setIsOpen(false)
+      },
+      onError: () => {
+        }
+        })
+    
+    
+    
+    const onSubmit = (data: CreateQuestionParams) => {
+      createQuestion.mutate(data)
     }
-  };
+    //   const handleQuestionSubmit = async (e: React.FormEvent) => {
+        //     e.preventDefault();
+        
+        // //     const questionResponse: CreateQuestionParams = {
+            // //       description: descriptionRef.current?.value ?? "",
+            // //       title: titleRef.current?.value ?? "",
+            // //       input_format: inputFormatRef.current?.value ?? "",
+            // //       points: Number(pointsRef.current?.value) ?? 0,
+            // //       round: Number(round) ?? 0,
+            // //       constraints: constraintsRef.current?.value ?? "",
+            // //       output_format: outputFormatRef.current?.value ?? "",
+            // //     };
+            // //     try {
+// //       const newQuestion = await toast.promise(
+// //         CreateQuestion(questionResponse),
+// //         {
+    // //           loading: "Adding Question",
+    // //           success: "Sucess!",
+    // //           error: (err: ApiError) => err.message,
+    // //         },
+    // //       );
+    // //       setIsOpen(false);
+    // //     } catch (err) {
+// //       console.error("Couldn't add question:", err);
+// //     }
+//   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -74,7 +114,7 @@ const CreateButton = ({
           <DialogTitle>Create Question</DialogTitle>
           <DialogDescription>Add questions here</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleQuestionSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title" className="text-right">
@@ -84,7 +124,7 @@ const CreateButton = ({
                 id="title"
                 placeholder="OP Question"
                 className="col-span-3"
-                ref={titleRef}
+                {...register("title")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -95,7 +135,7 @@ const CreateButton = ({
                 id="discription"
                 placeholder="yada-yada"
                 className="col-span-3"
-                ref={descriptionRef}
+                {...register("description")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -106,7 +146,7 @@ const CreateButton = ({
                 id="input_format"
                 placeholder="3 integers"
                 className="col-span-3"
-                ref={inputFormatRef}
+                {...register("input_format")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -118,14 +158,16 @@ const CreateButton = ({
                 type="number"
                 placeholder="30"
                 className="col-span-3"
-                ref={pointsRef}
+                {...register("points")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="round" className="text-right">
                 Round
               </Label>
-              <Select onValueChange={(value) => setRound(value)}>
+              <Select {...register("round")} >
+              
+              {/* <Select {...register("round")} onValueChange={(value) => setRound(value)}> */}
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Round" />
                 </SelectTrigger>
@@ -144,7 +186,7 @@ const CreateButton = ({
                 id="constrains"
                 placeholder="1 < x < 10"
                 className="col-span-3"
-                ref={constraintsRef}
+                {...register("constraints")}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -155,7 +197,7 @@ const CreateButton = ({
                 id="output_format"
                 placeholder="Number"
                 className="col-span-3"
-                ref={outputFormatRef}
+                {...register("output_format")}
               />
             </div>
           </div>

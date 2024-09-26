@@ -53,11 +53,15 @@ export async function GetAllQuestions() {
 }
 
 // POST REQUEST
-export async function CreateQuestion(data: CreateQuestionParams) {
+export async function CreateQuestion(data: any []) {
   try {
+    console.log(data)
     const response = await api.post<QuestionResponse>("/question/create", data);
     return response.data;
   } catch (e) {
+    console.log(data + "Data")
+
+    console.log(e)
     throw handleAPIError(e);
   }
 }
