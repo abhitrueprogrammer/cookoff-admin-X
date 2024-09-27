@@ -14,16 +14,8 @@
 
 import { handleAPIError } from "@/lib/error";
 import api from ".";
-export interface QuestionResponse {
-  ID: string;
-  Description: string;
-  Title: string;
-  InputFormat: string;
-  Points: number;
-  Round: number;
-  Constraints: string;
-  OutputFormat: string;
-}
+
+
 
 export interface UpdateQuestionParams {
   id: string;
@@ -36,7 +28,7 @@ export interface UpdateQuestionParams {
   output_format: string[];
   sample_test_input: string[];
   sample_test_output: string[];
-  explanation: string[];
+  sample_explanation: string[];
 }
 
 // export interface CreateQuestionParams {
@@ -49,6 +41,19 @@ export interface UpdateQuestionParams {
   //   output_format: string;
 // }
 
+export interface  QuestionResponse {
+  ID: string;
+  Description: string;
+  Title: string;
+  InputFormat: string[];
+  Points: number;
+  Round: number;
+  Constraints: string[] | null;
+  OutputFormat: string[];
+  SampleTestInput: string[];
+  SampleTestOutput: string[];
+  Explanation: string[];
+}
 
 export interface CreateQuestionParams {
   description: string,
@@ -60,7 +65,7 @@ export interface CreateQuestionParams {
   output_format: string[],
   sample_test_input: string[],
   sample_test_output: string[],
-  explanation: string[],
+  sample_explanation: string[],
 }
 interface DeleteQuestionResponse {
   message: string;

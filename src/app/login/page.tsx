@@ -34,7 +34,7 @@ export default function Login() {
         success: "Logged in successfully!",
         error: (err: ApiError) => err.message,
       });
-      setTimeout(() => router.push("/questions"), 1000);
+      setTimeout(() => router.push("/question"), 1000);
     } catch (err) {
       console.error("Login failed:", err);
     }

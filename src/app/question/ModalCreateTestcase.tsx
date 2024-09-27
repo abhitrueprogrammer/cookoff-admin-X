@@ -55,7 +55,6 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
       data.output_format = data.output_format?.[0]?.split("\n") ?? [];
       data.sample_test_input = data.sample_test_input?.[0]?.split("\n") ?? [];
       data.sample_test_output = data.sample_test_output?.[0]?.split("\n") ?? [];
-      data.explanation = data.explanation?.[0]?.split("\n") ?? [];
       console.log(data)
       return toast.promise(CreateQuestion(data), {
         loading: "Adding Question",
@@ -204,7 +203,6 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
                 id="explanation"
                 placeholder="The why, the who, what, when, the where, and the how"
                 className="col-span-3"
-                {...register("explanation.0")}
               />
             </div>
           </div>

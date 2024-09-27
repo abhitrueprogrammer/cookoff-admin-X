@@ -48,11 +48,11 @@ const ModalDetails = ({
               />
               <ModalDetailText
                 label="Input Format: "
-                content={row.original.InputFormat}
+                content={row.original.InputFormat?.join("\n")}
               />
               <ModalDetailText
                 label="Output Format: "
-                content={row.original.OutputFormat}
+                content={row.original.OutputFormat?.join("\n")}
               />
               <ModalDetailText
                 label="Points: "
@@ -63,8 +63,17 @@ const ModalDetails = ({
                 content={row.original.Round?.toString()}
               />
               <ModalDetailText
+                label="Sample Input: "
+                content={row.original.SampleTestInput?.join("\n")}
+              />
+              <ModalDetailText label="Sample Explanation: " content={row.original.Explanation?.join("\n")}></ModalDetailText>
+              <ModalDetailText
+                label="Sample Output: "
+                content={row.original.SampleTestOutput?.join("\n")}
+              />
+              <ModalDetailText
                 label="Constraints: "
-                content={row.original.Constraints}
+                content={row.original.Constraints?.join("\n")}
               />
 
               {/* <h4 className="text-md mt-4 font-medium">Metadata</h4> */}

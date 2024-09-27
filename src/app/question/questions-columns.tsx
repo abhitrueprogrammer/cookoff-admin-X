@@ -2,22 +2,24 @@ import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader"
 import { DataTableRowActions } from "@/components/Table/DataTableRowActions";
 import { Button } from "@/components/ui/button";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import ModalDelete from "./ModalDelete";
 import ModalUpdate from "./ModalUpdate";
+import ModalDelete from "./ModalDelete";
 import ModalDetails from "./ModalView";
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
   Title: string;
-  InputFormat: string;
+  InputFormat: string[];
   Points: number;
   Round: number;
-  Constraints: string;
-  OutputFormat: string;
+  Constraints: string[] | null;
+  OutputFormat: string[];
+  SampleTestInput: string[];
+  SampleTestOutput: string[];
+  Explanation: string[];
 }
 
 const columnHelper = createColumnHelper<QuestionsDataProps>();
-
 export const QuestionsDataColumn = [
   columnHelper.accessor("Title", {
     header: ({ column }) => (
@@ -90,9 +92,13 @@ export const QuestionsDataColumn = [
             Delete
             {/* </DropdownMenuItem> */}
           </ModalDelete>
-          <ModalUpdate id={row.original.ID} row={row}>
-            Update
+          {/* <Button onSubmit={()=>{router.push(`/questions/${row.original.ID}`)}}></Button> */}
+          <ModalUpdate id={row.original.ID}>
+              Update
           </ModalUpdate>
+          {/* <ModalUpdate id={row.original.ID} row={row}>
+            Update
+          </ModalUpdate> */}
         </DataTableRowActions>
       </div>
     ),
@@ -108,17 +114,16 @@ export const QuestionsDataColumn = [
       displayName: "test-cases",
     },
     cell: ({ row }) => (
-
-        <div className="flex  justify-center  ">
-          <DataTableRowActions row={row}>
-            {/* <ModalDelete row={row} id={row.original.ID}>
+      <div className="flex justify-center">
+        <DataTableRowActions row={row}>
+          {/* <ModalDelete row={row} id={row.original.ID}>
               Delete Test Cases
             </ModalDelete>
             <ModalUpdate id={row.original.ID} row={row}>
               Update Test Cases
             </ModalUpdate> */}
-          </DataTableRowActions>
-        </div>
+        </DataTableRowActions>
+      </div>
     ),
   }),
 ] as ColumnDef<QuestionsDataProps>[];
