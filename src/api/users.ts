@@ -26,3 +26,28 @@ export async function GetUsers()
         return [];
     }
 }
+
+export async function Roast(id: string)
+{
+    try
+    {
+        const response = await api.post<{message: string}>("/roast", {user_id: id});
+        return response.data
+    }
+    catch(error)
+    {
+        throw handleAPIError(error);
+    }
+}
+
+export async function UnRoast(id: string) {
+    try
+    {
+        const response = await api.post<{message: string}>("/unroast",{user_id:id})
+        return response.data
+    }
+    catch(error)
+    {
+        throw handleAPIError(error);
+    }
+}

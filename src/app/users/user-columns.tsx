@@ -1,38 +1,39 @@
-import { User } from "@/api/users";
+import { Roast, User } from "@/api/users";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ApiError } from "next/dist/server/api-utils";
+import toast from "react-hot-toast";
+import BanBtn from "./user-ban";
 
 const columnHelper = createColumnHelper<User>();
 
 export const UserDataColumn = [
-
-    {
-        id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-            className="translate-y-[2px]"
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-            className="translate-y-[2px]"
-          />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-      },
-
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
 
   columnHelper.accessor("Name", {
     header: ({ column }) => (
@@ -85,30 +86,65 @@ export const UserDataColumn = [
       displayName: "Score",
     },
   }),
-  columnHelper.display(
-    {
-        id:"roast",
-        header:"Roast/Unroast",
-        enableSorting: false,
-        enableHiding: true,
-        meta: 
-        {
-            className: "text-center",
-            displayName: "roast",
-        },
-        cell: ({row}) => 
-        (
-            <div>
-                {row.original.IsBanned ?
-                <div><Button>Roast</Button></div>
-                : <div><Button>Unroast</Button> </div>
-            }
-            </div>
-        )
-
-    }
-  )
+  columnHelper.display({
+    id: "roast",
+    header: "Roast/Unroast",
+    enableSorting: false,
+    enableHiding: true,
+    meta: {
+      className: "text-center",
+      displayName: "roast",
+    },
+    cell: ({ row }) => (
+      <div>
+        <BanBtn row={row}></BanBtn>
+        {/* {row.original.IsBanned ?
+                <div><Button >Unroast</Button></div>
+                : <div><Button onClick={()=>{Ban(row.original.ID)}}>Roast</Button> </div>
+            } */}
+      </div>
+    ),
+  }),
 ] as ColumnDef<User>[];
+
+function Ban(id: string) {
+  const queryClient = useQueryClient();
+  const handleBan = useMutation({
+    mutationFn: (id: string) => {
+      return toast.promise(Roast(id), {
+        loading: "Roasting...",
+        success: "Roast success",
+        error: (err: ApiError) => err.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+  handleBan.mutate(id);
+}
+// const queryClient = useQueryClient()
+
+// const handleDelete = useMutation({
+//     mutationFn: (id: string) => {
+//       return toast.promise(
+//           DeleteQuestion(id),
+//           {
+//             loading: "Deleting Question",
+//             success: "Success!",
+//             error: (err: ApiError) => err.message,
+//           })},
+//      onSuccess: async () => {
+//       await queryClient.invalidateQueries({ queryKey: ["questions"] })
+
+//     },
+
+//       })
+
+//   const onSubmit = () => {
+//     handleDelete.mutate(id)
+//   }
+
 // name reg email round score roast/unroast
 
 // columnHelper.display({
