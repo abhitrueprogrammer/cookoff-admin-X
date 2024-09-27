@@ -54,7 +54,23 @@ export const QuestionsDataColumn = [
       displayName: "Round",
     },
   }),
-
+  columnHelper.display({
+    id: "view-more",
+    header: "View More",
+    enableSorting: false,
+    enableHiding: true,
+    meta: {
+      className: "text-center",
+      displayName: "view-more",
+    },
+    cell: ({ row }) => (
+      <div className="flex justify-center  gap-2">
+        <ModalDetails row={row}>
+          <Button className="px-2 py-1">View Event Details</Button>
+        </ModalDetails>
+      </div>
+    ),
+  }),
 
   columnHelper.display({
     id: "actions",
@@ -62,15 +78,13 @@ export const QuestionsDataColumn = [
     enableSorting: false,
     enableHiding: true,
     meta: {
-      className: "text-center",
+      className: "text-left",
       displayName: "actions",
     },
     cell: ({ row }) => (
       <div className="flex w-fit items-center gap-2">
-        <ModalDetails row={row}>
-          <Button className="px-2 py-1">View Event Details</Button>
-        </ModalDetails>
-        <DataTableRowActions row={row}>
+
+        <DataTableRowActions  row={row}>
           <ModalDelete row={row} id={row.original.ID}>
             {/* <DropdownMenuItem
               onSelect={(e) => e.preventDefault()}

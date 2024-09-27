@@ -45,7 +45,7 @@ const ModalUpdate = ({
   //   function updateHandler(event: FormEvent<HTMLButtonElement>): void {
   //     throw new Error("Function not implemented.");
   //   }
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const {
@@ -57,6 +57,7 @@ const ModalUpdate = ({
 
   const createQuestion = useMutation({
     mutationFn:  (data: UpdateQuestionParams) => {
+      data.id = id;
       data.input_format = data.input_format?.[0]?.split("\n") ?? [];
       data.points = +data.points;
       data.round = +data.round;
@@ -77,7 +78,7 @@ const ModalUpdate = ({
     onSuccess: async () => {
        await queryClient.invalidateQueries({ queryKey: ["questions"] });
       reset();
-      setIsOpen(false);
+      // setIsOpen(false);
     },
   });
 
