@@ -1,19 +1,22 @@
 "use client";
-import { login } from "@/api/login";
-// import cookoff from "@/assets/images/cookoff.svg";
-import { loginFormSchema } from "@/schemas/forms/login";
+import cookoff from "@/assets/images/cookoff.svg";
+import mm from "@/assets/images/mm.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type ApiError } from "next/dist/server/api-utils";
+import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type * as z from "zod";
+import { loginFormSchema } from "@/schemas/forms/login";
+import { login } from "@/api/login";
+import { type ApiError } from "next/dist/server/api-utils";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -31,83 +34,104 @@ export default function Login() {
         success: "Logged in successfully!",
         error: (err: ApiError) => err.message,
       });
-      void router.push("/dashboard");
+      setTimeout(() => router.push("/questions"), 1000);
     } catch (err) {
       console.error("Login failed:", err);
     }
     setIsLoading(false);
   }
+
   return (
-    <div className="min-w-screen flex min-h-screen flex-col items-center justify-center bg-[#202020] text-accent">
-      <h1 className="pt-5 text-3xl font-bold">CODECHEF PRESENTS</h1>
+    <div className="min-w-screen flex h-screen flex-col items-center justify-center gap-10 bg-[#202020] text-accent">
+      <h1 className="s-sling pt-5 text-3xl font-bold text-accent">
+        CODECHEF PRESENTS
+      </h1>
       <div className="mt-8 flex w-full flex-row">
         <div className="flex w-1/2 flex-col">
           <div className="flex flex-col">
- {/* ``           <Image
-              className="pl-14"
-              src={cc-logo as HTMLImageElement}
+            <Image
+              className="ml-20 mr-10 pl-14"
+              src={cookoff as HTMLImageElement}
               alt="cookoff text"
-              width={700}
-              heloight={600}
-            /> */}
+              width={580}
+              height={400}
+            />
+            <div className="relative">
+              {/* <Image
+                className="absolute translate-x-[95%]"
+                src={mm as HTMLImageElement}
+                alt="muscle mind logo"
+                width={150}
+                height={150}
+              /> */}
+            </div>
           </div>
         </div>
         <div className="flex w-1/2">
           <div
-            className="bg-viewSubmission mx-auto flex h-[510px] w-[420px] flex-col items-center justify-center text-white"
+            className="mx-auto flex h-[510px] w-[450px] flex-col items-center justify-center bg-viewSubmission text-white"
             style={{
               clipPath:
                 "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
             }}
           >
             <div
-              className="flex h-[575px] w-[435px] scale-95 flex-col items-center justify-center bg-black text-white"
+              className="flex h-[575px] w-[450px] scale-95 flex-col items-center justify-center bg-black text-white"
               style={{
                 clipPath:
                   "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
               }}
             >
-              <h1 className="accent mb-6 p-5 text-3xl font-bold">
-                START COOKING
+              <h1 className="accent s-sling mb-6 p-5 text-3xl font-bold">
+                ADMIN LOGIN
               </h1>
-              <input
-                {...register("email")}
-                type="text"
-                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 text-black"
-                placeholder="Enter Username"
-                required
-              />
-              {errors?.email?.message && (
-                <p className="text-viewSubmission mb-4">
-                  {errors.email.message}
-                </p>
-              )}
-              <input
-                {...register("password")}
-                type="password"
-                className="bg-viewSubmission mb-6 w-[390px] rounded-sm p-3 text-black"
-                placeholder="Enter Password"
-                required
-              />
-              {errors?.password?.message && (
-                <p className="text-viewSubmission mb-4">
-                  {errors.password.message}
-                </p>
-              )}
-              <br />
-              <button
-                className="w-[100px] rounded-md bg-accent p-3 text-black bg-white"
-                disabled={isLoading}
-                onClick={handleSubmit(onSubmit)}
-              >
-                Login
-              </button>
+              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                <input
+                  {...register("email")}
+                  type="text"
+                  className="mb-6 w-[390px] rounded-sm bg-viewSubmission p-3 placeholder-white"
+                  placeholder="Enter Username"
+                  required
+                />
+                {errors?.email?.message && (
+                  <p className="mb-4 text-viewSubmission">
+                    {errors.email.message}
+                  </p>
+                )}
+                <div className="relative">
+                  <input
+                    {...register("password")}
+                    type={showPassword ? "text" : "password"}
+                    className="w-[390px] rounded-sm bg-viewSubmission p-3 pr-10 placeholder-white"
+                    placeholder="Enter Password"
+                    required
+                  />
+                  <span
+                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-black"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </span>
+                </div>
+                {errors?.password?.message && (
+                  <p className="mb-4 text-viewSubmission">
+                    {errors.password.message}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="s-sling mt-4 w-[100px] rounded-md bg-accent p-3 text-white"
+                  disabled={isLoading}
+                >
+                  Login
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-      <h1 className="pt-5 text-3xl font-bold ">
-        NOT A COOKING COMPETITION
+      <h1 className="s-sling pt-5 text-3xl font-bold text-white">
+        A COOKING COMPETITION
       </h1>
     </div>
   );
