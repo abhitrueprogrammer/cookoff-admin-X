@@ -20,16 +20,7 @@ const ModalDetails = ({
     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="overflow-visible p-0 sm:max-w-fit">
-        {/* <div className="absolute right-0 top-0 pr-3 pt-3">
-          <button
-            type="button"
-            className="p-2"
-            onClick={() => setModalOpen(false)}
-            aria-label="Close"
-          >
-            <RiCloseLine className="size-5 shrink-0" aria-hidden={true} />
-          </button>
-        </div> */}
+
         <div className="border-b px-6 py-4">
           <h3 className="font-medium capitalize">Details</h3>
         </div>

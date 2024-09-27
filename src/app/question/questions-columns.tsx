@@ -5,6 +5,7 @@ import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import ModalUpdate from "./ModalUpdate";
 import ModalDelete from "./ModalDelete";
 import ModalDetails from "./ModalView";
+import ModalGetTestcase from "./ModalGetTestcase";
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
@@ -116,6 +117,9 @@ export const QuestionsDataColumn = [
     cell: ({ row }) => (
       <div className="flex justify-center">
         <DataTableRowActions row={row}>
+          <ModalGetTestcase id={row.original.ID}>
+              {row.original.Title}
+          </ModalGetTestcase>
           {/* <ModalDelete row={row} id={row.original.ID}>
               Delete Test Cases
             </ModalDelete>

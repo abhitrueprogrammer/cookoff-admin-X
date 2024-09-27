@@ -23,19 +23,9 @@ import toast from "react-hot-toast";
 //     setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
 //   }
 
-const CreateButton = ({ children }: { children: React.ReactNode }) => {
+const CreateTestcaseButton = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
-    // description: string,
-    // title: string,
-    // input_format: string[],
-    // points: number,
-    // round: number,
-    // constraints: string[],
-    // output_format: string[],
-    // sample_test_input: string[],
-    // sample_test_output: string[],
-    // example: string[],
 
   const {
     register,
@@ -215,4 +205,4 @@ const CreateButton = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default CreateButton;
+export default CreateTestcaseButton;
