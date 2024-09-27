@@ -1,11 +1,10 @@
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/Table/DataTableRowActions";
 import { Button } from "@/components/ui/button";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import ModalDetails from "./ModalUsers";
 import ModalDelete from "./ModalDelete";
 import ModalUpdate from "./ModalUpdate";
+import ModalDetails from "./ModalView";
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
@@ -20,7 +19,6 @@ export interface QuestionsDataProps {
 const columnHelper = createColumnHelper<QuestionsDataProps>();
 
 export const QuestionsDataColumn = [
-
   columnHelper.accessor("Title", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
@@ -64,40 +62,63 @@ export const QuestionsDataColumn = [
       displayName: "view-more",
     },
     cell: ({ row }) => (
-      <div className="flex justify-center  gap-2">
+      <div className="flex justify-center gap-2">
         <ModalDetails row={row}>
-          <Button className="px-2 py-1">View Event Details</Button>
+          <Button className="px-2 py-1">View More Details</Button>
         </ModalDetails>
       </div>
     ),
   }),
 
   columnHelper.display({
-    id: "actions",
-    header: "Actions",
+    id: "questions",
+    header: "Questions",
     enableSorting: false,
     enableHiding: true,
     meta: {
-      className: "text-left",
-      displayName: "actions",
+      className: "text-center",
+      displayName: "questions",
     },
     cell: ({ row }) => (
-      <div className="flex w-fit items-center gap-2">
-
-        <DataTableRowActions  row={row}>
+      <div className="flex justify-center">
+        <DataTableRowActions row={row}>
           <ModalDelete row={row} id={row.original.ID}>
             {/* <DropdownMenuItem
               onSelect={(e) => e.preventDefault()}
               className={`p-2 hover:bg-red-400`}
             > */}
-              Delete
+            Delete
             {/* </DropdownMenuItem> */}
           </ModalDelete>
           <ModalUpdate id={row.original.ID} row={row}>
-          Update
+            Update
           </ModalUpdate>
         </DataTableRowActions>
       </div>
+    ),
+  }),
+
+  columnHelper.display({
+    id: "test-cases",
+    header: "Test Cases",
+    enableSorting: false,
+    enableHiding: true,
+    meta: {
+      className: "text-center",
+      displayName: "test-cases",
+    },
+    cell: ({ row }) => (
+
+        <div className="flex  justify-center  ">
+          <DataTableRowActions row={row}>
+            {/* <ModalDelete row={row} id={row.original.ID}>
+              Delete Test Cases
+            </ModalDelete>
+            <ModalUpdate id={row.original.ID} row={row}>
+              Update Test Cases
+            </ModalUpdate> */}
+          </DataTableRowActions>
+        </div>
     ),
   }),
 ] as ColumnDef<QuestionsDataProps>[];

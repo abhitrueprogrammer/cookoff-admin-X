@@ -18,7 +18,6 @@ import { DeleteQuestion } from "@/api/questions";
 import { ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
 
 // interface questionDelete
 // {
@@ -80,8 +79,8 @@ const ModalDelete = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete the
+            question. Dekh lo.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

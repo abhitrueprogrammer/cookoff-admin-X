@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateQuestion, UpdateQuestionParams } from "@/api/questions";
+import { UpdateQuestion, type UpdateQuestionParams } from "@/api/questions";
 import {
   Dialog,
   DialogContent,
