@@ -1,138 +1,365 @@
-"use client";
-import cookoff from "@/assets/images/cookoff.svg";
-import mm from "@/assets/images/mm.svg";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import type * as z from "zod";
-import { loginFormSchema } from "@/schemas/forms/login";
-import { login } from "@/api/login";
-import { type ApiError } from "next/dist/server/api-utils";
+// "use client";
+// import { useRef } from "react";
 
-export default function Login() {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
+// import {
+//   CreateQuestion,
+//   CreateQuestionParams,
+//   DeleteQuestion,
+//   GetAllQuestions,
+//   QuestionResponse,
+// } from "@/api/questions";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import {
+//   Table,
+//   TableBody,
+//   TableCaption,
+//   TableCell,
+//   TableHead,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { useEffect, useState } from "react";
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
-  });
+// import {
+//   AlertDialog,
+//   AlertDialogAction,
+//   AlertDialogCancel,
+//   AlertDialogContent,
+//   AlertDialogDescription,
+//   AlertDialogFooter,
+//   AlertDialogHeader,
+//   AlertDialogTitle,
+//   AlertDialogTrigger,
+// } from "@/components/ui/alert-dialog";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
-  async function onSubmit(data: z.infer<typeof loginFormSchema>) {
-    setIsLoading(true);
-    try {
-      await toast.promise(login(data), {
-        loading: "Cooking...",
-        success: "Logged in successfully!",
-        error: (err: ApiError) => err.message,
-      });
-      setTimeout(() => router.push("/question"), 1000);
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
-    setIsLoading(false);
-  }
-
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { ApiError } from "next/dist/server/api-utils";
+// import router from "next/router";
+// import toast from "react-hot-toast";
+export default function Home() 
+{
   return (
-    <div className="min-w-screen flex h-screen flex-col items-center justify-center gap-10 bg-[#202020] text-accent">
-      <h1 className="s-sling pt-5 text-3xl font-bold text-accent">
-        CODECHEF PRESENTS
-      </h1>
-      <div className="mt-8 flex w-full flex-row">
-        <div className="flex w-1/2 flex-col">
-          <div className="flex flex-col">
-            <Image
-              className="ml-20 mr-10 pl-14"
-              src={cookoff as HTMLImageElement}
-              alt="cookoff text"
-              width={580}
-              height={400}
-            />
-            <div className="relative">
-              {/* <Image
-                className="absolute translate-x-[95%]"
-                src={mm as HTMLImageElement}
-                alt="muscle mind logo"
-                width={150}
-                height={150}
-              /> */}
-            </div>
-          </div>
-        </div>
-        <div className="flex w-1/2">
-          <div
-            className="mx-auto flex h-[510px] w-[450px] flex-col items-center justify-center bg-viewSubmission text-white"
-            style={{
-              clipPath:
-                "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
-            }}
-          >
-            <div
-              className="flex h-[575px] w-[450px] scale-95 flex-col items-center justify-center bg-black text-white"
-              style={{
-                clipPath:
-                  "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
-              }}
-            >
-              <h1 className="accent s-sling mb-6 p-5 text-3xl font-bold">
-                ADMIN LOGIN
-              </h1>
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-                <input
-                  {...register("email")}
-                  type="text"
-                  className="mb-6 w-[390px] rounded-sm bg-viewSubmission p-3 placeholder-white"
-                  placeholder="Enter Username"
-                  required
-                />
-                {errors?.email?.message && (
-                  <p className="mb-4 text-viewSubmission">
-                    {errors.email.message}
-                  </p>
-                )}
-                <div className="relative">
-                  <input
-                    {...register("password")}
-                    type={showPassword ? "text" : "password"}
-                    className="w-[390px] rounded-sm bg-viewSubmission p-3 pr-10 placeholder-white"
-                    placeholder="Enter Password"
-                    required
-                  />
-                  <span
-                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-black"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </span>
-                </div>
-                {errors?.password?.message && (
-                  <p className="mb-4 text-viewSubmission">
-                    {errors.password.message}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  className="s-sling mt-4 w-[100px] rounded-md bg-accent p-3 text-white"
-                  disabled={isLoading}
-                >
-                  Login
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <h1 className="s-sling pt-5 text-3xl font-bold text-white">
-        A COOKING COMPETITION
-      </h1>
-    </div>
-  );
+    <div></div>
+  )
 }
+// export default function Home() {
+//   const [questions, setQuestions] = useState<QuestionResponse[]>([]);
+//   useEffect(() => {
+//     const getQues = async () => {
+//       const response = await GetAllQuestions();
+//       setQuestions(response);
+//     }; // Assuming this is the function returning a Promise
+//     void getQues();
+//   }, []);
+//   return (
+//     <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
+//       <div className="m-5 ml-auto">
+//         <CreateButton
+//           questions={questions}
+//           setQuestions={setQuestions}
+//         ></CreateButton>
+//       </div>
+//       <div className="m-5 h-2/3 overflow-y-auto">
+//         <TableDemo
+//           questions={questions}
+//           setQuestions={setQuestions}
+//         ></TableDemo>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export function TableDemo({ questions, setQuestions }: CreateButtonProps) {
+//   return (
+    
+//     <Table>
+//       <TableCaption>List of questions added</TableCaption>
+//         <TableRow>
+//           <TableHead className="w-[100px]">Title</TableHead>
+//           <TableHead>Points</TableHead>
+//           <TableHead>Round</TableHead>
+//           <TableHead>View More</TableHead>
+//           <TableHead>Action</TableHead>
+//         </TableRow>
+//       <TableBody>
+//         {questions.map((question) => (
+//           <TableRow key={question.ID}>
+//             <TableCell className="font-medium">{question.Title}</TableCell>
+//             <TableCell>{question.Points}</TableCell>
+//             <TableCell>{question.Round}</TableCell>
+//             <TableCell>
+//               <ViewMore question={question}></ViewMore>
+//             </TableCell>
+//             <TableCell>
+//               <MeatBallzMenu
+//                 question={question}
+//                 questions={questions}
+//                 setQuestions={setQuestions}
+//               ></MeatBallzMenu>
+//             </TableCell>
+//           </TableRow>
+//         ))}
+//       </TableBody>
+//     </Table>
+//   );
+// }
+// interface CreateButtonProps {
+//   questions: QuestionResponse[];
+//   setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
+// }
+
+// interface MeatBallzProps {
+//   question: QuestionResponse;
+//   questions: QuestionResponse[];
+//   setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
+// }
+// //move to @/components
+//  const CreateButton = ({ questions, setQuestions }: CreateButtonProps) => {
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   const descriptionRef = useRef<HTMLInputElement>(null);
+//   const titleRef = useRef<HTMLInputElement>(null);
+//   const inputFormatRef = useRef<HTMLInputElement>(null);
+//   const pointsRef = useRef<HTMLInputElement>(null);
+//   const constraintsRef = useRef<HTMLInputElement>(null);
+//   const outputFormatRef = useRef<HTMLInputElement>(null);
+//   const [round, setRound] = useState("1");
+//   const handleQuestionSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+
+//     const questionResponse: CreateQuestionParams = {
+//       description: descriptionRef.current?.value ?? "",
+//       title: titleRef.current?.value ?? "",
+//       input_format: inputFormatRef.current?.value ?? "",
+//       points: Number(pointsRef.current?.value) ?? 0,
+//       round: Number(round) ?? 0,
+//       constraints: constraintsRef.current?.value ?? "",
+//       output_format: outputFormatRef.current?.value ?? "",
+//     };
+//     try {
+//       const newQuestion = await toast.promise(
+//         CreateQuestion(questionResponse),
+//         {
+//           loading: "Adding Question",
+//           success: "Sucess!",
+//           error: (err: ApiError) => err.message,
+//         },
+//       );
+//       setQuestions([...questions, newQuestion]);
+//       setIsOpen(false);
+//     } catch (err) {
+//       console.error("Couldn't add question:", err);
+//     }
+//     console.log();
+//   };
+//   return (
+//     <Dialog open={isOpen} onOpenChange={setIsOpen}>
+//       <DialogTrigger asChild>
+//         <Button
+//           className="bg-slate-800 text-orange-500 hover:bg-slate-600 hover:text-orange-600"
+//           variant="outline"
+//         >
+//           Create Questions
+//         </Button>
+//       </DialogTrigger>
+//       <DialogContent className="sm:max-w-[425px]">
+//         <DialogHeader>
+//           <DialogTitle>Create Question</DialogTitle>
+//           <DialogDescription>Add questions here</DialogDescription>
+//         </DialogHeader>
+//         <form onSubmit={handleQuestionSubmit}>
+//           <div className="grid gap-4 py-4">
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="title" className="text-right">
+//                 Title
+//               </Label>
+//               <Input
+//                 id="title"
+//                 placeholder="OP Question"
+//                 className="col-span-3"
+//                 ref={titleRef}
+//               />
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="discription" className="text-right">
+//                 Discription
+//               </Label>
+//               <Input
+//                 id="discription"
+//                 placeholder="yada-yada"
+//                 className="col-span-3"
+//                 ref={descriptionRef}
+//               />
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="input_format" className="text-right">
+//                 Input Format
+//               </Label>
+//               <Input
+//                 id="input_format"
+//                 placeholder="3 integers"
+//                 className="col-span-3"
+//                 ref={inputFormatRef}
+//               />
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="points" className="text-right">
+//                 Points
+//               </Label>
+//               <Input
+//                 id="points"
+//                 type="number"
+//                 placeholder="30"
+//                 className="col-span-3"
+//                 ref={pointsRef}
+//               />
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="round" className="text-right">
+//                 Round
+//               </Label>
+//               <Select onValueChange={(value) => setRound(value)}>
+//                 <SelectTrigger className="w-[180px]">
+//                   <SelectValue placeholder="Round" />
+//                 </SelectTrigger>
+//                 <SelectContent>
+//                   <SelectItem value="1">1</SelectItem>
+//                   <SelectItem value="2">2</SelectItem>
+//                   <SelectItem value="3">3</SelectItem>
+//                 </SelectContent>
+//               </Select>
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="constrains" className="text-right">
+//                 Constrains
+//               </Label>
+//               <Input
+//                 id="constrains"
+//                 placeholder="1 < x < 10"
+//                 className="col-span-3"
+//                 ref={constraintsRef}
+//               />
+//             </div>
+//             <div className="grid grid-cols-4 items-center gap-4">
+//               <Label htmlFor="output_format" className="text-right">
+//                 Output Format
+//               </Label>
+//               <Input
+//                 id="output_format"
+//                 placeholder="Number"
+//                 className="col-span-3"
+//                 ref={outputFormatRef}
+//               />
+//             </div>
+//           </div>
+//           <DialogFooter>
+            // <Button type="submit">Submit</Button>
+//           </DialogFooter>
+//         </form>
+//       </DialogContent>
+//     </Dialog>
+//   );
+// }
+
+//  const MeatBallzMenu = ({
+//   question,
+//   questions,
+//   setQuestions,
+// }: MeatBallzProps) => {
+//   async function handleDeleteRequest(id: string) {
+//     try {
+//       await toast.promise(DeleteQuestion(id), {
+//         loading: "Deleting Question",
+//         success: "Sucess!",
+//         error: (err: ApiError) => err.message,
+//       });
+//       setQuestions(
+//         questions.filter((quest) => 
+//           quest.ID !== question.ID
+//         ),
+//       );
+//       void router.push("/dashboard");
+//     } catch (err) {
+//       console.error("Couldn't delete question:", err);
+//     }
+//     console.log();
+//   }
+
+//   return (
+//     <div>
+//       <DropdownMenu>
+//         <DropdownMenuTrigger className="text-3xl">···</DropdownMenuTrigger>
+//         <DropdownMenuContent>
+//           <DropdownMenuItem className="cursor-pointer p-1 hover:bg-orange-100">
+//             Update
+//           </DropdownMenuItem>
+          
+//           <AlertDialog >
+//             <AlertDialogTrigger className="cursor-pointer bg-red-600  text-white hover:bg-red-500 w-full text-left p-1" >Delete</AlertDialogTrigger>
+//             <AlertDialogContent>
+//               <AlertDialogHeader>
+//                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+//                 <AlertDialogDescription>
+//                   This action cannot be undone. This will permanently delete
+//                   your account and remove your data from our servers.
+//                 </AlertDialogDescription>
+//               </AlertDialogHeader>
+//               <AlertDialogFooter>
+//                 <AlertDialogCancel>Cancel</AlertDialogCancel>
+//                 <AlertDialogAction
+//                   onClick={() => {
+//                     void handleDeleteRequest(question.ID);
+//                   }}
+//                   className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
+//                 >
+//                   Continue
+//                 </AlertDialogAction>
+//               </AlertDialogFooter>
+//             </AlertDialogContent>
+//           </AlertDialog>{" "}
+//         </DropdownMenuContent>
+//       </DropdownMenu>
+//     </div>
+//   );
+// }
+// const ViewMore = ({question}: {question: QuestionResponse}) => 
+// {
+//   return (
+//     <Dialog >
+//       <DialogTrigger asChild>
+//         <Button  >View More</Button>
+//       </DialogTrigger>
+//       <DialogContent className="sm:max-w-[425px]">
+//         <DialogHeader>
+//           <DialogTitle>Details</DialogTitle>
+//           {/* <DialogDescription>
+//             More details
+//           </DialogDescription> */}
+//         </DialogHeader>
+
+//       </DialogContent>
+//     </Dialog>
+//   )
+// }

@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button";
 import Providers from "@/lib/Providers";
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
-
+import { FaHome } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 export const metadata: Metadata = {
   title: "CodeChef-VIT",
   description: "Made with ♡ by CodeChef-VIT",
@@ -24,7 +26,6 @@ export const metadata: Metadata = {
     "CodeChef-VIT",
   ],
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
