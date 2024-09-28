@@ -19,8 +19,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import { useRouter } from "next/navigation";
-import { getData } from "./editor";
 import { FaHome } from "react-icons/fa";
+import { getData } from "./editor";
 // interface CreateButtonProps {
 //     questions: QuestionResponse[];
 //     setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
@@ -46,9 +46,7 @@ const Create = () => {
       // if (editor) {
 
       const markdown = await getData();
-      if(markdown)
-      {
-
+      if (markdown) {
         data.description = markdown;
       }
       // }
@@ -84,10 +82,16 @@ const Create = () => {
 
   return (
     <div className="m-10 space-y-10 text-white">
-
       <div className="flex items-center">
-        <Button onClick={()=>{ router.push("/dashboard")}} className="bg-bb  hover:bg-slate-950" ><FaHome size={20} className="text-white"></FaHome></Button>
-        <h1 className="s-sling flex-grow font- text-center text-2xl font-bold text-accent">
+        <Button
+          onClick={() => {
+            router.push("/dashboard");
+          }}
+          className="bg-bb hover:bg-slate-950"
+        >
+          <FaHome size={20} className="text-white"></FaHome>
+        </Button>
+        <h1 className="s-sling font- flex-grow text-center text-2xl font-bold text-accent">
           Add Questions
         </h1>
       </div>
@@ -158,6 +162,7 @@ const Create = () => {
             id="round"
             className="rounded-md border bg-gray-200 p-2 text-black"
           >
+            <option value={0}>Round 0</option>
             <option value={1}>Round 1</option>
             <option value={2}>Round 2</option>
             <option value={3}>Round 3</option>

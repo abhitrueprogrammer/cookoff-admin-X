@@ -28,7 +28,7 @@ const Page = () => {
           <FaHome size={20} className="text-white"></FaHome>
         </Button>
 
-        <Button className="m-2`" disabled>Promote users</Button>
+        {/* <Button className="m-2`" disabled>Promote users</Button> */}
       </div>
       <div>
         <ClientTable
