@@ -1,79 +1,138 @@
+"use client";
+import cookoff from "@/assets/images/cookoff.svg";
+import mm from "@/assets/images/mm.svg";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import logo from "../../public/cc-logo.svg";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import type * as z from "zod";
+import { loginFormSchema } from "@/schemas/forms/login";
+import { login } from "@/api/login";
+import { type ApiError } from "next/dist/server/api-utils";
 
-export default function HomePage() {
+export default function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+  });
+
+  async function onSubmit(data: z.infer<typeof loginFormSchema>) {
+    setIsLoading(true);
+    try {
+      await toast.promise(login(data), {
+        loading: "Cooking...",
+        success: "Logged in successfully!",
+        error: (err: ApiError) => err.message,
+      });
+      setTimeout(() => router.push("/dashboard"), 1000);
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+    setIsLoading(false);
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-xl rounded-lg bg-white p-8 text-center text-black shadow-lg">
-        <Image
-          src={logo as HTMLImageElement}
-          alt="CodeChef-VIT Logo"
-          width={150}
-          height={150}
-          className="mx-auto mb-4"
-        />
-        <h1 className="mb-4 text-6xl font-bold">CodeChef-VIT</h1>
-        <p className="mb-6 text-2xl">Portal Template Repository</p>
-        <p className="mb-2 text-lg font-semibold text-gray-700">
-          TanStack Query is Initialised in this Repository
-        </p>
-        <div className="flex flex-row gap-2">
-          <Link
-            href="/todo"
-            className="mx-auto w-fit rounded-md bg-gray-100 p-3 text-lg font-medium text-indigo-600 transition-all duration-200 hover:bg-gray-200 hover:text-indigo-800 active:scale-95"
-          >
-            Sample GET Request
-          </Link>
-          <Link
-            href="/post"
-            className="mx-auto w-fit rounded-md bg-gray-100 p-3 text-lg font-medium text-indigo-600 transition-all duration-200 hover:bg-gray-200 hover:text-indigo-800 active:scale-95"
-          >
-            Sample POST Request
-          </Link>
-        </div>
-
-        <div className="mt-2">
-          <p className="text-lg font-semibold text-gray-700">
-            Shadcn is Initialised in this Repository
-          </p>
-          <p className="mt-4 text-gray-700">
-            Custom toast hook is created. You can use it by importing{" "}
-            <code className="rounded bg-gray-100 p-1">useToast</code> from{" "}
-            <code className="rounded bg-gray-100 p-1">
-              &quot;@/lib/toast.tsx&quot;
-            </code>{" "}
-            and then calling the create method with message and type as
-            arguments.
-          </p>
-          <div className="mt-4 text-gray-700">
-            <p>Example: </p>
-            <div className="rounded-md bg-gray-100 p-2 text-left">
-              <p>
-                <span className="text-blue-600">const</span>{" "}
-                <span className="text-green-600">toast</span> ={" "}
-                <span className="text-blue-600">useToast</span>();
-              </p>
-              <p>
-                <span className="text-green-600">toast</span>.
-                <span className="text-blue-600">create</span>(
-                <span className="text-red-600">&quot;Hello World&quot;</span>,{" "}
-                <span className="text-red-600">&quot;success&quot;</span>);
-              </p>
+    <div className="min-w-screen flex h-screen flex-col items-center justify-center gap-10 bg-[#202020] text-accent">
+      <h1 className="s-sling pt-5 text-3xl font-bold text-accent">
+        CODECHEF PRESENTS
+      </h1>
+      <div className="mt-8 flex w-full flex-row">
+        <div className="flex w-1/2 flex-col">
+          <div className="flex flex-col">
+            <Image
+              className="ml-20 mr-10 pl-14"
+              src={cookoff as HTMLImageElement}
+              alt="cookoff text"
+              width={580}
+              height={400}
+            />
+            <div className="relative">
+              {/* <Image
+                className="absolute translate-x-[95%]"
+                src={mm as HTMLImageElement}
+                alt="muscle mind logo"
+                width={150}
+                height={150}
+              /> */}
             </div>
           </div>
-          <p className="mt-4 text-gray-700">
-            There are 3 variants configured:{" "}
-            <span className="font-bold">success</span>,{" "}
-            <span className="font-bold">error</span>, and{" "}
-            <span className="font-bold">info</span>.
-          </p>
-          <p className="mt-4 text-gray-700">
-            You can add more in{" "}
-            <code className="rounded bg-gray-100 p-1">toast.tsx</code> file
-          </p>
+        </div>
+        <div className="flex w-1/2">
+          <div
+            className="mx-auto flex h-[510px] w-[450px] flex-col items-center justify-center bg-viewSubmission text-white"
+            style={{
+              clipPath:
+                "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
+            }}
+          >
+            <div
+              className="flex h-[575px] w-[450px] scale-95 flex-col items-center justify-center bg-black text-white"
+              style={{
+                clipPath:
+                  "polygon(0 90px, 90px 0, 100% 0, 100% 10px, 100% 85%, 80% 100%, 0 100%, 0 100%)",
+              }}
+            >
+              <h1 className="accent s-sling mb-6 p-5 text-3xl font-bold">
+                ADMIN LOGIN
+              </h1>
+              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                <input
+                  {...register("email")}
+                  type="text"
+                  className="mb-6 w-[390px] rounded-sm bg-viewSubmission p-3 placeholder-white"
+                  placeholder="Enter Username"
+                  required
+                />
+                {errors?.email?.message && (
+                  <p className="mb-4 text-viewSubmission">
+                    {errors.email.message}
+                  </p>
+                )}
+                <div className="relative">
+                  <input
+                    {...register("password")}
+                    type={showPassword ? "text" : "password"}
+                    className="w-[390px] rounded-sm bg-viewSubmission p-3 pr-10 placeholder-white"
+                    placeholder="Enter Password"
+                    required
+                  />
+                  <span
+                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-black"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </span>
+                </div>
+                {errors?.password?.message && (
+                  <p className="mb-4 text-viewSubmission">
+                    {errors.password.message}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="s-sling mt-4 w-[100px] rounded-md bg-accent p-3 text-white"
+                  disabled={isLoading}
+                >
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-    </main>
+      <h1 className="s-sling pt-5 text-3xl font-bold text-white">
+        A COOKING COMPETITION
+      </h1>
+    </div>
   );
 }

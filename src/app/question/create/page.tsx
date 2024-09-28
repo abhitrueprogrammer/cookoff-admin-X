@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 
 import { useRouter } from "next/navigation";
 import { getData } from "./editor";
+import { FaHome } from "react-icons/fa";
 // interface CreateButtonProps {
 //     questions: QuestionResponse[];
 //     setQuestions: React.Dispatch<React.SetStateAction<QuestionResponse[]>>;
@@ -83,9 +84,13 @@ const Create = () => {
 
   return (
     <div className="m-10 space-y-10 text-white">
-      <h1 className="s-sling font- text-center text-2xl font-bold text-accent">
-        Add Questions
-      </h1>
+
+      <div className="flex items-center">
+        <Button onClick={()=>{ router.push("/dashboard")}} className="bg-bb  hover:bg-slate-950" ><FaHome size={20} className="text-white"></FaHome></Button>
+        <h1 className="s-sling flex-grow font- text-center text-2xl font-bold text-accent">
+          Add Questions
+        </h1>
+      </div>
       <form className="space-y-10" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 items-center gap-4">
           <Label

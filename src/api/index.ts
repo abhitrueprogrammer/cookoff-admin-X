@@ -34,7 +34,7 @@ api.interceptors.response.use(
 
       try {
         await axios.post<ApiResponse>(
-          `${process.env.NEXT_PUBLIC_CLIENTVAR}/token/refresh`,
+          `${process.env.NEXT_PUBLIC_BASEURL}/token/refresh`,
           {
             withCredentials: true,
           },
@@ -44,7 +44,7 @@ api.interceptors.response.use(
         // Handle refresh token error or redirect to login
         toast.error("Session expired. Please login again.");
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/";
         }, 2000);
       }
     }

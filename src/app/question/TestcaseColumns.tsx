@@ -59,7 +59,11 @@ export const TestcaseDataColumn = [
           <DialogTrigger>
             <Button variant="outline">Input</Button>
           </DialogTrigger>
-          <DialogContent>{row.original.Input}</DialogContent>
+          <div className="max-w-10 break-all">
+            <DialogContent className="break-all max-h-[85vh] overflow-y-auto">
+              {row.original.Input}
+            </DialogContent>
+          </div>
         </Dialog>
       </div>
     ),
@@ -125,8 +129,8 @@ export const TestcaseDataColumn = [
       <div className="flex justify-center gap-2">
         <DataTableRowActions row={row}>
           <div className="space-y-1">
-          <TestcaseDelete id={row.original.ID}>Delete</TestcaseDelete>
-          <ModalTestcaseUpdate row={row}>Update</ModalTestcaseUpdate>
+            <TestcaseDelete id={row.original.ID}>Delete</TestcaseDelete>
+            <ModalTestcaseUpdate row={row}>Update</ModalTestcaseUpdate>
           </div>
         </DataTableRowActions>
       </div>
