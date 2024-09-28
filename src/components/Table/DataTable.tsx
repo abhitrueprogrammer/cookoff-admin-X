@@ -92,13 +92,13 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                   <TableRow
                     key={row.id}
                     // onClick={() => row.toggleSelected(!row.getIsSelected())}
-                    className="group hover:bg-gray-50"
+                    className="group hover:bg-[#F14A16]"
                   >
                     {row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
                         className={cx(
-                          row.getIsSelected() ? "bg-gray-50" : "",
+                          row.getIsSelected() ? "bg-[#F14A16]" : "",
                           "relative whitespace-nowrap px-1 py-1.5 text-white first:w-10 dark:text-gray-400",
                           cell.column.columnDef.meta?.className,
                         )}

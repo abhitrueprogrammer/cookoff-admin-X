@@ -24,7 +24,7 @@ export function DataTableColumnHeader<TData, TValue>({
       onClick={column.getToggleSortingHandler()}
       className={cn(
         column.columnDef.enableSorting === true
-          ? "-mx-2 inline-flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-50 hover:dark:bg-gray-900"
+          ? "-mx-2 inline-flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1 hover:bg-[#F14A16] hover:dark:bg-gray-900"
           : "",
       )}
     >
