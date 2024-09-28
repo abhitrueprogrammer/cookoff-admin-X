@@ -14,7 +14,7 @@ const Page = () => {
   // <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
   const router = useRouter();
   return (
-    <div className="flex h-screen flex-col bg-black text-slate-100">
+    <div className="flex h-screen flex-col bg-black text-white">
       <div>
         <ClientTable
           data={data}

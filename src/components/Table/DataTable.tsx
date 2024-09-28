@@ -22,7 +22,6 @@ import {
   TableHeaderCell,
   TableRow,
 } from "../ui/table";
-import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { DataTableToolbar } from "./DataTableToolbar";
 
 interface DataTableProps<TData> {
@@ -55,20 +54,19 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
 
   return (
     <>
-      <div className="space-y-3">
+      <div className="space-y-3 rounded-md border-[1px] border-white/50 p-4">
         <DataTableToolbar table={table} />
         {/* <Filterbar table={table} /> */}
         {/* <PromoteButton table={table}></PromoteButton> */}
         <div className="relative overflow-hidden overflow-x-auto">
-          <Table>
+          <Table className="border-[1px] border-white">
             <TableHead>
               {/* {table.getSelectedRowModel().rows.map((data)=>{console.log(data.id)})} */}
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className="border-y border-gray-200 dark:border-gray-800"
+                  className="border-y border-gray-200"
                 >
-                  
                   {headerGroup.headers.map((header) => (
                     <TableHeaderCell
                       key={header.id}
@@ -94,16 +92,14 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                   <TableRow
                     key={row.id}
                     // onClick={() => row.toggleSelected(!row.getIsSelected())}
-                    className="group hover:bg-gray-50 hover:dark:bg-gray-900"
+                    className="group hover:bg-gray-50"
                   >
                     {row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
                         className={cx(
-                          row.getIsSelected()
-                            ? "bg-gray-50 dark:bg-gray-900"
-                            : "",
-                          "relative whitespace-nowrap px-1 py-1.5 text-gray-600 first:w-10 dark:text-gray-400",
+                          row.getIsSelected() ? "bg-gray-50" : "",
+                          "relative whitespace-nowrap px-1 py-1.5 text-white first:w-10 dark:text-gray-400",
                           cell.column.columnDef.meta?.className,
                         )}
                       >

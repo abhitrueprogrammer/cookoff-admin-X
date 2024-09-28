@@ -41,7 +41,7 @@ const useToast = () => {
             </div>
             <div className="my-auto ml-3 flex h-full flex-1 items-center">
               <div>
-                <p className="text-sm font-semibold text-gray-900">
+                <p className="text-sm font-semibold text-white">
                   {type === "success"
                     ? "Success"
                     : type === "error"

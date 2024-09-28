@@ -59,11 +59,11 @@ export function DataTablePagination<TData>({
       <div className="flex items-center gap-x-6 lg:gap-x-8">
         <p className="hidden text-sm tabular-nums text-gray-500 sm:block">
           Showing{" "}
-          <span className="font-medium text-gray-900 dark:text-gray-50">
+          <span className="font-medium text-white dark:text-gray-50">
             {firstRowIndex}-{lastRowIndex}
           </span>{" "}
           of{" "}
-          <span className="font-medium text-gray-900 dark:text-gray-50">
+          <span className="font-medium text-white dark:text-gray-50">
             {totalRows}
           </span>
         </p>

@@ -14,16 +14,14 @@ const Page = () => {
     queryFn: GetAllQuestions,
   });
   // <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
-  const router = useRouter()
+  const router = useRouter();
   return (
-    
     <div>
-      <div className="flex h-screen flex-col  bg-black text-slate-100">
-        <div className="flex justify-between items-end">
-        <Button onClick={()=>{ router.push("/dashboard")}} className="bg-bb m-4 hover:bg-slate-950" ><FaHome size={20} className="text-white"></FaHome></Button>
-          {data && <CreateButton  >Create</CreateButton>}
+      <div className="flex h-screen flex-col bg-black text-slate-100">
+        <div className="flex items-end justify-between">
+          {data && <CreateButton>Create</CreateButton>}
         </div>
-        <div >
+        <div>
           <ClientTable
             data={data}
             error={error}

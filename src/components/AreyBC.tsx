@@ -9,7 +9,7 @@ const AreyBC = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <div>
+    <div className="p-12">
       <Providers>
         <div className="flex flex-col bg-black">
           {pathname !== "/" && (

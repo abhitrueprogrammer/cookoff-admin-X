@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <div className="dark">
+        <div className="bg-black">
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
           <AreyBC>{children}</AreyBC>
         </div>
