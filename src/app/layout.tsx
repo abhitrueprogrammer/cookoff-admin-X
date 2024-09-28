@@ -30,8 +30,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        <div className="bg-[#FFF8D8] ">
+      <body className="bg-dark">
+        <div className="dark">
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
           <Providers>{children}</Providers>
         </div>
