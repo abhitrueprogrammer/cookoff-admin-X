@@ -89,7 +89,7 @@ const Create = () => {
           }}
           className="bg-bb hover:bg-slate-950"
         >
-          <FaHome size={20} className="text-white"></FaHome>
+          <FaHome size={20} className="text-white" />
         </Button>
         <h1 className="s-sling font- flex-grow text-center text-2xl font-bold text-accent">
           Add Questions

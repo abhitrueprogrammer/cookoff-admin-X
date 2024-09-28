@@ -1,11 +1,8 @@
-import { Button } from "@/components/ui/button";
-import Providers from "@/lib/Providers";
+import AreyBC from "@/components/AreyBC";
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
-import { FaHome } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 export const metadata: Metadata = {
   title: "CodeChef-VIT",
   description: "Made with ♡ by CodeChef-VIT",
@@ -31,10 +28,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-dark">
+      <body>
         <div className="dark">
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
-          <Providers>{children}</Providers>
+          <AreyBC>{children}</AreyBC>
         </div>
       </body>
     </html>
