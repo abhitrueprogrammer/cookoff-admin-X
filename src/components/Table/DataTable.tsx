@@ -23,6 +23,8 @@ import {
   TableRow,
 } from "../ui/table";
 import PromoteButton from "@/app/users/PromoteButton";
+import { DataTableColumnHeader } from "./DataTableColumnHeader";
+import { DataTableToolbar } from "./DataTableToolbar";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
@@ -55,16 +57,19 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
   return (
     <>
       <div className="space-y-3">
+        <DataTableToolbar table={table} />
         {/* <Filterbar table={table} /> */}
         {/* <PromoteButton table={table}></PromoteButton> */}
         <div className="relative overflow-hidden overflow-x-auto">
           <Table>
             <TableHead>
+              {/* {table.getSelectedRowModel().rows.map((data)=>{console.log(data.id)})} */}
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
                   className="border-y border-gray-200 dark:border-gray-800"
                 >
+                  
                   {headerGroup.headers.map((header) => (
                     <TableHeaderCell
                       key={header.id}
