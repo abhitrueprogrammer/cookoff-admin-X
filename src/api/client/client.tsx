@@ -8,7 +8,6 @@ const client = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  
 });
 // {
 //   "email": "abhinavp@codechefvit.com",

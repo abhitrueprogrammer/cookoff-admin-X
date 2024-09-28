@@ -60,7 +60,7 @@ export const TestcaseDataColumn = [
             <Button variant="outline">Input</Button>
           </DialogTrigger>
           <div className="max-w-10 break-all">
-            <DialogContent className="break-all max-h-[85vh] overflow-y-auto">
+            <DialogContent className="max-h-[85vh] overflow-y-auto break-all">
               {row.original.Input}
             </DialogContent>
           </div>

@@ -83,7 +83,7 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <div className="relative w-full">
           <Input
-            placeholder="Search by Name or RegNo"
+            placeholder="Search"
             value={(table.getState().globalFilter as string) ?? ""}
             onChange={(event) => table.setGlobalFilter(event.target.value)}
             className="h-8 w-full rounded-[8px] border-[1px] pl-8"

@@ -33,7 +33,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await axios.post<ApiResponse>(
+        await api.post<ApiResponse>(
           `${process.env.NEXT_PUBLIC_BASEURL}/token/refresh`,
           {},
           {
