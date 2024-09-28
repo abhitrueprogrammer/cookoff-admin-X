@@ -3,6 +3,7 @@
 import { getTestcaseByQuestion, TestCaseResponse } from "@/api/testcases";
 import ClientTable from "@/components/Table/ClientTable";
 import { Button } from "@/components/ui/button";
+import { CopyButton } from "@/components/ui/CopyButton";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +15,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import ModalCreateTestcase from "./ModalCreateTestcase";
 import { TestcaseDataColumn } from "./TestcaseColumns";
-import { CopyButton } from "@/components/ui/CopyButton";
 const Page = ({ id }: { id: string }) => {
   const { data, error, isLoading } = useQuery<TestCaseResponse[], Error>({
     queryKey: ["testcases", id],

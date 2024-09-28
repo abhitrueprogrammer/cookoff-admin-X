@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="bg-dark">
-      <div className="dark">
+        <div className="dark">
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
           <Providers>{children}</Providers>
         </div>
@@ -39,5 +39,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

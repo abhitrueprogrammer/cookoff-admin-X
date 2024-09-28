@@ -1,5 +1,12 @@
 import { handleAPIError } from "@/lib/error";
 import api from ".";
+export interface TestCaseUpdateParams {
+  expected_output: string;
+  input: string;
+  memory: number;
+  runtime: number;
+  hidden: boolean;
+}
 
 export interface TestCaseResponse {
     ID: string;
@@ -47,6 +54,24 @@ export  interface CreateTestCaseParams {
         console.log(e)
         // handleAPIError(e)
         return []
+    }
+  }
+  export async function DeleteTestCase(id: string) {
+    try {
+      const response = await api.delete<{message: string}>(`/testcase/${id}`,);
+      return response.data;
+    } catch (e) {
+      throw handleAPIError(e);
+    }
+  }
+
+  export async function UpdateTestCase(id: string, data: TestCaseUpdateParams) {
+    try
+    {
+      const response = await api.put<TestCaseResponse>(`/testcase/${id}`, data);
+      return response.data;
+    } catch (e) {
+      throw handleAPIError(e);
     }
   }
   

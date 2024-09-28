@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { GrHide } from "react-icons/gr";
+import TestcaseDelete from "./ModalTestcaseDelete";
+import ModalTestcaseUpdate from "./ModalTestcaseUpdate";
 
 const columnHelper = createColumnHelper<TestCaseResponse>();
 export const TestcaseDataColumn = [
@@ -55,11 +57,9 @@ export const TestcaseDataColumn = [
       <div className="flex justify-center gap-2">
         <Dialog>
           <DialogTrigger>
-            <Button variant="outline" >Input</Button>
-            </DialogTrigger>
-          <DialogContent>
-            {row.original.Input}
-          </DialogContent>
+            <Button variant="outline">Input</Button>
+          </DialogTrigger>
+          <DialogContent>{row.original.Input}</DialogContent>
         </Dialog>
       </div>
     ),
@@ -124,13 +124,10 @@ export const TestcaseDataColumn = [
     cell: ({ row }) => (
       <div className="flex justify-center gap-2">
         <DataTableRowActions row={row}>
-          {/* <ModalDelete row={row} id={row.original.ID}>
-
-            Delete
-          </ModalDelete>
-          <ModalUpdate id={row.original.ID}>
-              Update
-          </ModalUpdate> */}
+          <div className="space-y-1">
+          <TestcaseDelete id={row.original.ID}>Delete</TestcaseDelete>
+          <ModalTestcaseUpdate row={row}>Update</ModalTestcaseUpdate>
+          </div>
         </DataTableRowActions>
       </div>
     ),

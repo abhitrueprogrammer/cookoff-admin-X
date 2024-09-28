@@ -90,7 +90,7 @@ export default ModalUpdate;
 //     createQuestion.mutate(data);
 //   };
 //   return (
-//     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+    // <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
 //       <DialogTrigger className="ml-1 w-full cursor-pointer rounded-sm text-left text-sm">
 //         {children}
 //       </DialogTrigger>
