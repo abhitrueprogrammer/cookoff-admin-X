@@ -8,7 +8,6 @@ import { FaCrown } from "react-icons/fa6";
 
 import toast from "react-hot-toast";
 import BanBtn from "./user-ban";
-import PromoteButton from "./PromoteButton";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -117,7 +116,7 @@ export const UserDataColumn = [
     cell: ({ row, table }) => (
       <div>
         <BanBtn row={row}></BanBtn>
-        <PromoteButton table={table}></PromoteButton>
+        {/* <PromoteButton table={table}></PromoteButton> */}
         {/* {row.original.IsBanned ?
                 <div><Button >Unroast</Button></div>
                 : <div><Button onClick={()=>{Ban(row.original.ID)}}>Roast</Button> </div>

@@ -11,7 +11,26 @@ export interface User {
     Name: string;
     IsBanned: boolean;
   }
+export interface SetUserRoundProps {
+    user_ids: string[];
+    round: number;
+  }
+
+export async function SetUserRound(data: SetUserRoundProps) {
+    try {
+
+      console.log(data)
+      const response = await api.post<SetUserRoundProps>("/upgrade",{
+        round: Number(data.round),
+        user_ids: data.user_ids,
+      });
+      return response.data;
+    } catch (e) {
   
+      console.log(e)
+      throw handleAPIError(e);
+    }
+  }
 
 export async function GetUsers()
 {

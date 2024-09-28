@@ -22,7 +22,6 @@ import {
   TableHeaderCell,
   TableRow,
 } from "../ui/table";
-import PromoteButton from "@/app/users/PromoteButton";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { DataTableToolbar } from "./DataTableToolbar";
 

@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Row } from "@tanstack/react-table";
 import { ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
-import PromoteButton from "./PromoteButton";
 const BanBtn = ({ row }: { row: Row<User> }) => {
   const queryClient = useQueryClient();
   const handleUnban = useMutation({
