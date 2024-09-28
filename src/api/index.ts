@@ -35,6 +35,7 @@ api.interceptors.response.use(
       try {
         await axios.post<ApiResponse>(
           `${process.env.NEXT_PUBLIC_BASEURL}/token/refresh`,
+          {},
           {
             withCredentials: true,
           },
