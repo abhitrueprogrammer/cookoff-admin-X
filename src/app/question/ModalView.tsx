@@ -20,14 +20,13 @@ const ModalDetails = ({
     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="overflow-visible p-0 sm:max-w-fit">
-
         <div className="border-b px-6 py-4">
           <h3 className="font-medium capitalize">Details</h3>
         </div>
         <div className="flex flex-col-reverse md:flex-row">
           <div className="flex flex-col justify-between md:border-r">
-            <div className="border-t p-6 md:border-none space-y-1">
-              <h4 className="text-md font-medium ">Info</h4>
+            <div className="space-y-1 border-t p-6 md:border-none">
+              <h4 className="text-md font-medium">Info</h4>
               <ModalDetailText label="Title: " content={row.original.Title} />
               <div className="flex flex-row items-center">
                 <ModalDetailText label="ID: " content={row.original.ID} />
@@ -57,7 +56,10 @@ const ModalDetails = ({
                 label="Sample Input: "
                 content={row.original.SampleTestInput?.join("\n")}
               />
-              <ModalDetailText label="Sample Explanation: " content={row.original.Explanation?.join("\n")}></ModalDetailText>
+              <ModalDetailText
+                label="Sample Explanation: "
+                content={row.original.Explanation?.join("\n")}
+              ></ModalDetailText>
               <ModalDetailText
                 label="Sample Output: "
                 content={row.original.SampleTestOutput?.join("\n")}
@@ -77,5 +79,3 @@ const ModalDetails = ({
 };
 
 export default ModalDetails;
-
-

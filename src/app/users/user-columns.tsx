@@ -4,8 +4,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ApiError } from "next/dist/server/api-utils";
+import { FaCrown } from "react-icons/fa6";
+
 import toast from "react-hot-toast";
 import BanBtn from "./user-ban";
+import PromoteButton from "./PromoteButton";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -34,17 +37,33 @@ export const UserDataColumn = [
     enableSorting: false,
     enableHiding: false,
   },
-
-  columnHelper.accessor("Name", {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    enableSorting: true,
-    meta: {
-      className: "text-left",
-      displayName: "Name",
-    },
-  }),
+    columnHelper.accessor("Name", {
+        header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Name" />
+        ),
+        cell: ({ row }) => (
+        <div className="flex gap-2">
+            {row.original.Role === "admin" && <FaCrown size={16} />}
+            {row.getValue("Name")}
+        </div>
+        ),
+        enableSorting: true,
+        enableHiding: false,
+        meta: {
+        className: "text-left",
+        displayName: "Name",
+        },
+    }),
+//   columnHelper.accessor("Name", {
+//     header: ({ column }) => (
+//       <DataTableColumnHeader column={column} title="Name" />
+//     ),
+//     enableSorting: true,
+//     meta: {
+//       className: "text-left",
+//       displayName: "Name",
+//     },
+//   }),
 
   columnHelper.accessor("RegNo", {
     header: ({ column }) => (
@@ -95,9 +114,10 @@ export const UserDataColumn = [
       className: "text-center",
       displayName: "roast",
     },
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div>
         <BanBtn row={row}></BanBtn>
+        <PromoteButton table={table}></PromoteButton>
         {/* {row.original.IsBanned ?
                 <div><Button >Unroast</Button></div>
                 : <div><Button onClick={()=>{Ban(row.original.ID)}}>Roast</Button> </div>

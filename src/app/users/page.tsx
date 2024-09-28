@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 // import CreateButton from "./ModalCreate";
 import { GetUsers, User } from "@/api/users";
 import { UserDataColumn } from "./user-columns";
+
+import { Button } from "@/components/ui/button";
 const Page = () => {
   const { data, error, isLoading } = useQuery<User[], Error>({
     queryKey: ["users"],
@@ -15,6 +17,7 @@ const Page = () => {
   return (
     <div className="flex h-screen flex-col bg-black text-slate-100">
       <div className="left m-5 ml-auto">
+        <Button disabled>Promote users</Button>
       </div>
       <div>
         <ClientTable

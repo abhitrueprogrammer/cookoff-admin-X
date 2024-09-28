@@ -48,6 +48,7 @@ export const QuestionsDataColumn = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Round" />
     ),
+    
     enableSorting: true,
     enableHiding: false,
     meta: {
@@ -116,17 +117,20 @@ export const QuestionsDataColumn = [
     },
     cell: ({ row }) => (
       <div className="flex justify-center">
-        <DataTableRowActions row={row}>
+        {/* <DataTableRowActions row={row}> */}
           <ModalGetTestcase id={row.original.ID}>
-              {row.original.Title}
+
           </ModalGetTestcase>
+          {/* <ModalGetTestcase id={row.original.ID}>
+              {row.original.Title}
+          </ModalGetTestcase> */}
           {/* <ModalDelete row={row} id={row.original.ID}>
               Delete Test Cases
             </ModalDelete>
             <ModalUpdate id={row.original.ID} row={row}>
               Update Test Cases
             </ModalUpdate> */}
-        </DataTableRowActions>
+        {/* </DataTableRowActions> */}
       </div>
     ),
   }),

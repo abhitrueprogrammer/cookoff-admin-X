@@ -22,6 +22,7 @@ import {
   TableHeaderCell,
   TableRow,
 } from "../ui/table";
+import PromoteButton from "@/app/users/PromoteButton";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
@@ -55,6 +56,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
     <>
       <div className="space-y-3">
         {/* <Filterbar table={table} /> */}
+        {/* <PromoteButton table={table}></PromoteButton> */}
         <div className="relative overflow-hidden overflow-x-auto">
           <Table>
             <TableHead>
