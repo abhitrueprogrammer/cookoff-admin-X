@@ -154,7 +154,14 @@ const Create = () => {
           >
             Description
           </Label>
-          <Editor />
+          {/* <Editor /> */}
+          <Textarea
+            id="description"
+            placeholder="teri-mummy"
+            className="col-span-3"
+            {...register("description")}
+            rows={50}
+          ></Textarea>
         </div>
 
         {/* Input Format Section */}
