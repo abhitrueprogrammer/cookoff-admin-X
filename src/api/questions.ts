@@ -1,16 +1,4 @@
-//Refer GET request and POST request from ./getTODO.ts and ./createPost.ts
 
-//Define API related interfaces here
-
-//Done CreateQuestion
-
-//UpdateQuestion
-
-//done DeleteQuestion
-
-//done GetAllQuestions
-
-//done GetQuestionById
 
 import { handleAPIError } from "@/lib/error";
 import api from ".";
@@ -30,16 +18,6 @@ export interface UpdateQuestionParams {
   sample_test_output: string[];
   sample_explanation: string[];
 }
-
-// export interface CreateQuestionParams {
-  //   description: string;
-  //   title: string;
-  //   input_format: string;
-  //   points: number;
-  //   round: number;
-  //   constraints: string;
-  //   output_format: string;
-// }
 
 export interface  QuestionResponse {
   ID: string;

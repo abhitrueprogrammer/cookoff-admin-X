@@ -87,20 +87,13 @@ export const QuestionsDataColumn = [
       <div className="flex justify-center">
         <DataTableRowActions row={row}>
           <ModalDelete row={row} id={row.original.ID}>
-            {/* <DropdownMenuItem
-              onSelect={(e) => e.preventDefault()}
-              className={`p-2 hover:bg-red-400`}
-            > */}
+
             Delete
-            {/* </DropdownMenuItem> */}
           </ModalDelete>
-          {/* <Button onSubmit={()=>{router.push(`/questions/${row.original.ID}`)}}></Button> */}
           <ModalUpdate id={row.original.ID}>
               Update
           </ModalUpdate>
-          {/* <ModalUpdate id={row.original.ID} row={row}>
-            Update
-          </ModalUpdate> */}
+
         </DataTableRowActions>
       </div>
     ),
@@ -117,20 +110,10 @@ export const QuestionsDataColumn = [
     },
     cell: ({ row }) => (
       <div className="flex justify-center">
-        {/* <DataTableRowActions row={row}> */}
           <ModalGetTestcase id={row.original.ID}>
 
           </ModalGetTestcase>
-          {/* <ModalGetTestcase id={row.original.ID}>
-              {row.original.Title}
-          </ModalGetTestcase> */}
-          {/* <ModalDelete row={row} id={row.original.ID}>
-              Delete Test Cases
-            </ModalDelete>
-            <ModalUpdate id={row.original.ID} row={row}>
-              Update Test Cases
-            </ModalUpdate> */}
-        {/* </DataTableRowActions> */}
+
       </div>
     ),
   }),

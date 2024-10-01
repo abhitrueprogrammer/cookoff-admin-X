@@ -1,8 +1,8 @@
-import { Roast, UnRoast, User } from "@/api/users";
+import { Roast, UnRoast, type User } from "@/api/users";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Row } from "@tanstack/react-table";
-import { ApiError } from "next/dist/server/api-utils";
+import { type Row } from "@tanstack/react-table";
+import {type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 const BanBtn = ({ row }: { row: Row<User> }) => {
   const queryClient = useQueryClient();

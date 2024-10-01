@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 // import "./ModalCreate";
 // import CreateButton from "./ModalCreate";
 import { GetUsers, User } from "@/api/users";
-import { useRouter } from "next/navigation";
 import { UserDataColumn } from "./user-columns";
 const Page = () => {
   const { data, error, isLoading } = useQuery<User[], Error>({
@@ -12,7 +11,6 @@ const Page = () => {
     queryFn: GetUsers,
   });
   // <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
-  const router = useRouter();
   return (
     <div className="flex h-screen flex-col bg-black text-white">
       <div>

@@ -1,10 +1,12 @@
 import AreyBC from "@/components/AreyBC";
+import Sidebar from "@/components/ui/sidebar";
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
+
 export const metadata: Metadata = {
-  title: "CodeChef-VIT",
+  title: "Cookoff Admin",
   description: "Made with ♡ by CodeChef-VIT",
   icons: [{ rel: "icon", url: "/cc-logo.svg" }],
   openGraph: {
@@ -21,6 +23,7 @@ export const metadata: Metadata = {
     "VIT",
     "Vellore Institute of Technology",
     "CodeChef-VIT",
+    "Cookoff"
   ],
 };
 export default function RootLayout({
@@ -29,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <div className="bg-black">
+        <Sidebar />
+        <div className=" z-0 bg-black">
+
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
           <AreyBC>{children}</AreyBC>
         </div>

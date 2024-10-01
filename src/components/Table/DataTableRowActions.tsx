@@ -2,7 +2,7 @@
 
 
 import { RiMoreFill } from "react-icons/ri"
-import { Row } from "@tanstack/react-table"
+import {type Row } from "@tanstack/react-table"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 

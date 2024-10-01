@@ -1,13 +1,12 @@
 "use client";
 
-import { CreateQuestion, CreateQuestionParams } from "@/api/questions";
+import { CreateQuestion, type CreateQuestionParams } from "@/api/questions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "next/dist/server/api-utils";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +14,7 @@ import toast from "react-hot-toast";
 import { FaHome } from "react-icons/fa";
 import { getData } from "./editor";
 
-const Editor = dynamic(() => import("./editor"), { ssr: false });
+// const Editor = dynamic(() => import("./editor"), { ssr: false });
 
 const Create = () => {
   const router = useRouter();
@@ -24,7 +23,6 @@ const Create = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
   } = useForm<CreateQuestionParams>();
 

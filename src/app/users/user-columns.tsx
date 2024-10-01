@@ -1,12 +1,9 @@
-import { Roast, User } from "@/api/users";
+import { type  User } from "@/api/users";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { ApiError } from "next/dist/server/api-utils";
+import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { FaCrown } from "react-icons/fa6";
 
-import toast from "react-hot-toast";
 import BanBtn from "./user-ban";
 
 const columnHelper = createColumnHelper<User>();
@@ -113,73 +110,12 @@ export const UserDataColumn = [
       className: "text-center",
       displayName: "roast",
     },
-    cell: ({ row, table }) => (
+    cell: ({ row }) => (
       <div>
         <BanBtn row={row}></BanBtn>
-        {/* <PromoteButton table={table}></PromoteButton> */}
-        {/* {row.original.IsBanned ?
-                <div><Button >Unroast</Button></div>
-                : <div><Button onClick={()=>{Ban(row.original.ID)}}>Roast</Button> </div>
-            } */}
+
       </div>
     ),
   }),
 ] as ColumnDef<User>[];
 
-function Ban(id: string) {
-  const queryClient = useQueryClient();
-  const handleBan = useMutation({
-    mutationFn: (id: string) => {
-      return toast.promise(Roast(id), {
-        loading: "Roasting...",
-        success: "Roast success",
-        error: (err: ApiError) => err.message,
-      });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
-    },
-  });
-  handleBan.mutate(id);
-}
-// const queryClient = useQueryClient()
-
-// const handleDelete = useMutation({
-//     mutationFn: (id: string) => {
-//       return toast.promise(
-//           DeleteQuestion(id),
-//           {
-//             loading: "Deleting Question",
-//             success: "Success!",
-//             error: (err: ApiError) => err.message,
-//           })},
-//      onSuccess: async () => {
-//       await queryClient.invalidateQueries({ queryKey: ["questions"] })
-
-//     },
-
-//       })
-
-//   const onSubmit = () => {
-//     handleDelete.mutate(id)
-//   }
-
-// name reg email round score roast/unroast
-
-// columnHelper.display({
-//     id: "view-more",
-//     header: "View More",
-//     enableSorting: false,
-//     enableHiding: true,
-//     meta: {
-//       className: "text-center",
-//       displayName: "view-more",
-//     },
-//     cell: ({ row }) => (
-//       <div className="flex justify-center gap-2">
-//         <ModalDetails row={row}>
-//           <Button className="px-2 py-1">View More Details</Button>
-//         </ModalDetails>
-//       </div>
-//     ),
-//   }),

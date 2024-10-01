@@ -13,13 +13,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "next/dist/server/api-utils";
+import {type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 
-// interface questionDelete
-// {
-//     id: string
-// }
 const ModalDelete = ({
   children,
   id,

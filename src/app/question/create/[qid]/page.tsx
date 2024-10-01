@@ -3,25 +3,22 @@ import { useParams } from "next/navigation";
 
 import {
   GetQuestionById,
-  QuestionResponse,
+  type QuestionResponse,
   UpdateQuestion,
-  UpdateQuestionParams,
+  type UpdateQuestionParams,
 } from "@/api/questions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { useCreateBlockNote } from "@blocknote/react";
-// import { BlockNoteView } from "@blocknote/mantine";
 import dynamic from "next/dynamic";
 
-import { ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const Editor = dynamic(() => import("../editor"), { ssr: false });
-// import { useCreateBlockNote } from "@blocknote/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { changeData } from "../editor";
@@ -37,11 +34,8 @@ const CreateButton = () => {
       GetQuestionById(params.qid).then(async (q) => {
         setQuestion(q);
         
-        //  editor = useCreateBlockNote({
-        //   initialContent: data
-        //  })
+
         void changeData(q)
-        // await editor.tryParseMarkdownToBlocks(q.Description).then((md)=>{editor.replaceBlocks(editor.document, md )})
       }),
       {
         loading: "Getting Question",
@@ -49,12 +43,10 @@ const CreateButton = () => {
         error: (err: ApiError) => err.message,
       },
     );
-  }, []);
-  // const question = await GetQuestionById(params.qid)
+  }, [params.qid]);
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
   } = useForm<UpdateQuestionParams>();
   const createQuestion = useMutation({
@@ -63,7 +55,6 @@ const CreateButton = () => {
       data.input_format = data.input_format?.[0]?.split("\n") ?? [];
       data.points = +data.points;
       data.round = +data.round;
-      // data.Round = 1;
 
       data.constraints = data.constraints?.[0]?.split("\n") ?? [];
       data.output_format = data.output_format?.[0]?.split("\n") ?? [];
@@ -81,7 +72,6 @@ const CreateButton = () => {
       await queryClient.invalidateQueries({ queryKey: ["questions"] });
       reset();
       router.push("/question");
-      // setIsOpen(false);
     },
   });
 
@@ -117,7 +107,6 @@ const CreateButton = () => {
           >
             Description
           </Label>
-          {/* <Editor editor={editor} /> */}
           <Editor />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">

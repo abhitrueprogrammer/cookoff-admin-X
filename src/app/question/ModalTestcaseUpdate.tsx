@@ -1,6 +1,6 @@
 "use client";
 
-import { TestCaseResponse, TestCaseUpdateParams, UpdateTestCase } from "@/api/testcases";
+import {type  TestCaseResponse,type TestCaseUpdateParams, UpdateTestCase } from "@/api/testcases";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type Row } from "@tanstack/react-table";
-import { ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -35,7 +35,7 @@ const ModalTestcaseUpdate = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     reset,
   } = useForm<TestCaseUpdateParams>();
 

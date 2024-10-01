@@ -1,42 +1,17 @@
 "use client";
 import Providers from "@/lib/Providers";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
-import { Button } from "./ui/button";
 
 const AreyBC = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <div className="p-12">
+    <div className="">
       <Providers>
-        <div className="flex flex-col bg-black">
-          {pathname !== "/" && (
-            <div className="my-4 flex flex-row gap-4">
-              <Button
-                onClick={() => {
-                  router.push("/dashboard");
-                }}
-              >
-                Home
-              </Button>
-              <Button
-                onClick={() => {
-                  router.push("/users");
-                }}
-              >
-                Users
-              </Button>
-              <Button
-                onClick={() => {
-                  router.push("/question");
-                }}
-              >
-                Questions
-              </Button>
-            </div>
-          )}
+        <div className={` flex ml- flex-col ${pathname !== "/"? "p-12 ml-44":""} bg-black`}>
+
           {children}
         </div>
       </Providers>

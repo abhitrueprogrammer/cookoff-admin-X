@@ -5,7 +5,7 @@ function Dashboard() {
   const router = useRouter();
   return (
     <div>
-      <div className="flex h-screen w-screen items-center justify-around gap-20">
+      <div className="flex h-screen w-full items-center justify-around gap-20">
         <Button
           onClick={() => {
             router.push("/question");

@@ -24,8 +24,6 @@ const ModalDetails = ({
           <ModalDetailText label="" content={row.original.Title} />
         </div>
         <div className="space-y-3 border-t p-6 pt-0 sm:max-w-7xl md:border-none">
-          {/* <ModalDetailText
-                label="Description: " */}
 
           <div className="flex flex-row items-center">
             <ModalDetailText label="ID: " content={row.original.ID} />
@@ -71,7 +69,6 @@ const ModalDetails = ({
             content={row.original.Constraints?.join("\n")}
           />
 
-          {/* <h4 className="text-md mt-4 font-medium">Metadata</h4> */}
         </div>
       </DialogContent>
     </Dialog>

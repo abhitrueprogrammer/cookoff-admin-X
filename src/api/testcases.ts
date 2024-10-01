@@ -75,15 +75,3 @@ export  interface CreateTestCaseParams {
     }
   }
   
-// export async function getTestcase(id: string) {
-    
-//     try
-//     {
-//         const response = api.get<TestCaseResponse>(`/questions/${id}`)
-//     }
-//     catch(e)
-//     {
-//         console.log(e)
-//         handleAPIError(e)
-//     }
-// }

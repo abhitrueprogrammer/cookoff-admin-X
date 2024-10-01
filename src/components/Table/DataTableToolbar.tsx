@@ -1,10 +1,10 @@
 "use client";
 
-import { SetUserRound, SetUserRoundProps, User } from "@/api/users";
+import { SetUserRound, type SetUserRoundProps, type User } from "@/api/users";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table } from "@tanstack/react-table";
-import { ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -42,7 +42,6 @@ export function DataTableToolbar<TData>({
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
     reset,
   } = useForm<SetUserRoundProps>();
 

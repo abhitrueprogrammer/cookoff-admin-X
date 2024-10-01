@@ -5,16 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import "./ModalCreate";
 import CreateButton from "./ModalCreate";
 import { QuestionsDataColumn } from "./questions-columns";
-import { Button } from "@/components/ui/button";
-import { FaHome } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+
 const Page = () => {
   const { data, error, isLoading } = useQuery<QuestionResponse[], Error>({
     queryKey: ["questions"],
     queryFn: GetAllQuestions,
   });
-  // <div className="flex h-screen flex-col justify-end bg-black text-slate-100">
-  const router = useRouter();
   return (
     <div>
       <div className="flex h-screen flex-col bg-black text-slate-100">

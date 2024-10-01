@@ -1,17 +1,16 @@
 "use client";
+import { login } from "@/api/login";
 import cookoff from "@/assets/images/cookoff.svg";
-import mm from "@/assets/images/mm.svg";
+import { loginFormSchema } from "@/schemas/forms/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
+import { type ApiError } from "next/dist/server/api-utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type * as z from "zod";
-import { loginFormSchema } from "@/schemas/forms/login";
-import { login } from "@/api/login";
-import { type ApiError } from "next/dist/server/api-utils";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -57,13 +56,7 @@ export default function Login() {
               height={400}
             />
             <div className="relative">
-              {/* <Image
-                className="absolute translate-x-[95%]"
-                src={mm as HTMLImageElement}
-                alt="muscle mind logo"
-                width={150}
-                height={150}
-              /> */}
+
             </div>
           </div>
         </div>

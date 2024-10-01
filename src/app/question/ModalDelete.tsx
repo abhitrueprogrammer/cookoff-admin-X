@@ -1,7 +1,6 @@
 "use client";
 
 import { type Row } from "@tanstack/react-table";
-import { useState } from "react";
 import { type QuestionsDataProps } from "./questions-columns";
 import {
   AlertDialog,
@@ -15,14 +14,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DeleteQuestion } from "@/api/questions";
-import { ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// interface questionDelete
-// {
-//     id: string
-// }
+
 const ModalDelete = ({
   children,
   id,
@@ -57,19 +53,7 @@ const ModalDelete = ({
   
 
     
-//   async function handleDeleteRequest(id: string) {
-//     try {
-//       console.log(id);
-//       await toast.promise(DeleteQuestion(id), {
-//         loading: "Deleting Question",
-//         success: "Sucess!",
-//         error: (err: ApiError) => err.message,
-//       });
-//     } catch (err) {
-//       console.error("Couldn't delete question:", err);
-//     }
-//     console.log();
-//   }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger className="w-full cursor-pointer text-sm rounded-sm bg-red-600 p-1 text-left text-white hover:bg-red-500">

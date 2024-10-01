@@ -1,4 +1,4 @@
-import { TestCaseResponse } from "@/api/testcases";
+import { type TestCaseResponse } from "@/api/testcases";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/Table/DataTableRowActions";
 import { Button } from "@/components/ui/button";
@@ -10,23 +10,7 @@ import ModalTestcaseUpdate from "./ModalTestcaseUpdate";
 
 const columnHelper = createColumnHelper<TestCaseResponse>();
 export const TestcaseDataColumn = [
-  // columnHelper.accessor("ID", {
-  //     header: ({ column }) => (
-  //         <DataTableColumnHeader column={column} title="ID" />
-  //     ),
-  //     cell: ({ row }) => (
-  //         <div className="flex gap-2">
-  //             {row.original.Hidden && <GrHide size={16} />}
-  //             {row.getValue("ID")}
-  //         </div>
-  //         ),
-  //         enableSorting: true,
-  //         enableHiding: false,
-  //         meta: {
-  //             className: "text-left",
-  //             displayName: "ID",
-  //         },
-  //     }),
+
   columnHelper.accessor("ID", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ID" />

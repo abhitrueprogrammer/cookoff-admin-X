@@ -1,6 +1,6 @@
 "use client";
 
-import { getTestcaseByQuestion, TestCaseResponse } from "@/api/testcases";
+import { getTestcaseByQuestion, type TestCaseResponse } from "@/api/testcases";
 import ClientTable from "@/components/Table/ClientTable";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/CopyButton";
@@ -55,14 +55,5 @@ const Page = ({ id }: { id: string }) => {
   );
 };
 
-// const ModalDetails = ({
-//   id,
-//   children,
-// }: {
-//   id: string;
-//   children: React.ReactNode;
-// }) => {
-//   // const [testcase]
-// };
 
 export default Page;
