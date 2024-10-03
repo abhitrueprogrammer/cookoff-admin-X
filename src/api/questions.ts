@@ -2,6 +2,7 @@
 
 import { handleAPIError } from "@/lib/error";
 import api from ".";
+import { generateSampleData } from "./sampleData";
 
 
 
@@ -45,14 +46,17 @@ export interface CreateQuestionParams {
   sample_test_output: string[],
   sample_explanation: string[],
 }
+
+
 interface DeleteQuestionResponse {
   message: string;
 }
 // GET REQUEST
 export async function GetAllQuestions() {
   try {
-    const response = await api.get<QuestionResponse[]>("/questions");
-    return response.data;
+    // const response = await api.get<QuestionResponse[]>("/questions");
+    // return response.data;
+    return generateSampleData()
   } catch (e) {
     console.log(e);
     return [];

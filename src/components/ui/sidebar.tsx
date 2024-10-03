@@ -31,7 +31,7 @@ export default function Sidebar() {
           onClick={() => {
             router.push("/dashboard");
           }}
-          className="mt-11 rounded-md p-5 text-left text-lg text-accent hover:bg-black"
+          className={`mt-11 rounded-md mx-3 border  hover:border-white border-transparent hover:border m-2 p-3 text-left text-lg ${pathname == "/dashboard" ? "bg-accent hover:bg-[#f25c2d] border ": ""}text-white  hover:bg-black`}
         >
           <div className="flex items-center gap-3">
             <FaHome />
@@ -42,7 +42,7 @@ export default function Sidebar() {
           onClick={() => {
             router.push("/question");
           }}
-          className="rounded-md bg-[#101010] p-5 text-left text-lg text-white hover:bg-black"
+          className={`rounded-md border  hover:border-white border-transparent bg-[#101010] hover:border mx-3 p-3 m-2 text-left text-lg ${pathname.startsWith("/question") ? "bg-accent hover:bg-[#f25c2d] border ": ""}text-white   hover:bg-black`}
         >
           <div className="flex items-center gap-3">
             <FaQuestion />
@@ -53,7 +53,8 @@ export default function Sidebar() {
           onClick={() => {
             router.push("/users");
           }}
-          className="rounded-md p-5 text-left text-lg text-white hover:bg-black"
+          //p-5 originally no m-2
+          className={`rounded-md p-3 mx-3 m-2 hover:border-white hover:border border border-transparent text-left text-lg ${pathname == "/users" ? "bg-accent hover:bg-[#f25c2d] border ": ""}text-white  hover:bg-black`}
         >
           <div className="flex items-center gap-3">
             <FaUser />

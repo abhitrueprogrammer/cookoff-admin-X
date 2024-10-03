@@ -17,7 +17,7 @@ const Page = () => {
         <div className="flex items-end justify-between">
           {data && <CreateButton>Create</CreateButton>}
         </div>
-        <div>
+        <div className="overflow-y-auto">
           <ClientTable
             data={data}
             error={error}
