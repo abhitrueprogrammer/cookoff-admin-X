@@ -84,8 +84,8 @@ export const QuestionsDataColumn = [
       displayName: "questions",
     },
     cell: ({ row }) => (
-      <div className="flex justify-center">
-        <DataTableRowActions row={row}>
+      <DataTableRowActions row={row}>
+          <div className="flex flex-col justify-center gap-1">
           <ModalDelete row={row} id={row.original.ID}>
 
             Delete
@@ -94,8 +94,8 @@ export const QuestionsDataColumn = [
               Update
           </ModalUpdate>
 
-        </DataTableRowActions>
       </div>
+        </DataTableRowActions>
     ),
   }),
 

@@ -105,3 +105,8 @@
   background: #5c5957;
   border-radius: 1rem;
 }
+.markdown > * {
+  all: revert;
+  padding: 1;
+  margin: 0;
+}

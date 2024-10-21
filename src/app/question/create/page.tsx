@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {type ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import Markdown from "react-markdown";
 
 // const Editor = dynamic(() => import("./editor"), { ssr: false });
 
@@ -18,20 +19,15 @@ const Create = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<CreateQuestionParams>();
+  const { register, handleSubmit, reset } = useForm<CreateQuestionParams>();
 
   const [sampleInputs, setSampleInputs] = useState<string[]>([""]);
   const [sampleOutputs, setSampleOutputs] = useState<string[]>([""]);
   const [explanations, setExplanations] = useState<string[]>([""]);
   const [inputFormats, setInputFormats] = useState<string[]>([""]);
-
+  const [description, setDescription] = useState<string>("teri-mummy");
   const createQuestion = useMutation({
     mutationFn: async (data: CreateQuestionParams) => {
-
       data.input_format = inputFormats;
       data.points = +data.points;
       data.round = +data.round;
@@ -111,17 +107,16 @@ const Create = () => {
 
   return (
     <div className="m-10 space-y-10 text-white">
-      <div className="flex items-center">
-
-        <h1 className="flex-grow text-center text-2xl font-bold text-accent">
+      <div className="flex  items-center">
+        <h1 className="s-sling flex-grow text-center text-2xl font-bold text-accent">
           Add Questions
         </h1>
       </div>
-      <form className="space-y-10 " onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-4 items-center  gap-4">
+      <form className="space-y-10" onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="title"
-            className="text-right text-lg  font-bold text-white"
+            className="text-right text-lg font-bold text-white"
           >
             Title
           </Label>
@@ -140,14 +135,20 @@ const Create = () => {
           >
             Description
           </Label>
-          {/* <Editor /> */}
-          <Textarea
-            id="description"
-            placeholder="teri-mummy"
-            className="col-span-3"
-            {...register("description")}
-            rows={10}
-          ></Textarea>
+          <div className="flex gap-2 col-span-3">
+            {/* <Editor /> */}
+            <Textarea
+              id="description"
+              defaultValue={description}
+          
+              className="w-full"
+              {...register("description")}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={10}
+            ></Textarea>
+            <Markdown className="p-2
+             markdown w-full border ">{description}</Markdown>
+          </div>
         </div>
 
         {/* Input Format Section */}
@@ -162,8 +163,8 @@ const Create = () => {
             <Button type="button" onClick={addInputFormat}>
               +
             </Button>
-          </div >
-          <div className="col-span-3 gap-2 flex w-full flex-col">
+          </div>
+          <div className="col-span-3 flex w-full flex-col gap-2">
             {inputFormats.map((format, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Textarea
@@ -253,8 +254,8 @@ const Create = () => {
         </div>
 
         {/* Sample Test Output Section */}
-        <div className="grid  grid-cols-4 items-center gap-4">
-          <div className="flex justify-end flex-row items-center gap-2">
+        <div className="grid grid-cols-4 items-center gap-4">
+          <div className="flex flex-row items-center justify-end gap-2">
             <Label
               htmlFor="sample_test_output"
               className="whitespace-nowrap text-right text-lg font-bold text-white"
@@ -265,7 +266,7 @@ const Create = () => {
               +
             </Button>
           </div>
-          <div className="col-span-3 gap-2 flex w-full flex-col">
+          <div className="col-span-3 flex w-full flex-col gap-2">
             {sampleOutputs.map((output, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Textarea
@@ -290,7 +291,7 @@ const Create = () => {
 
         {/* Sample Test Input Section */}
         <div className="grid grid-cols-4 items-center gap-4">
-          <div className="flex justify-end flex-row items-center gap-2">
+          <div className="flex flex-row items-center justify-end gap-2">
             <Label
               htmlFor="sample_test_input"
               className="whitespace-nowrap text-right text-lg font-bold text-white"
@@ -301,7 +302,7 @@ const Create = () => {
               +
             </Button>
           </div>
-          <div className="col-span-3 gap-2 flex w-full flex-col">
+          <div className="col-span-3 flex w-full flex-col gap-2">
             {sampleInputs.map((input, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Textarea
@@ -326,7 +327,7 @@ const Create = () => {
 
         {/* Sample Explanation Section */}
         <div className="grid grid-cols-4 items-center gap-4">
-          <div className="flex justify-end flex-row items-center gap-2">
+          <div className="flex flex-row items-center justify-end gap-2">
             <Label
               htmlFor="sample_explanation"
               className="whitespace-nowrap text-right text-lg font-bold text-white"
@@ -337,7 +338,7 @@ const Create = () => {
               +
             </Button>
           </div>
-          <div className="col-span-3 gap-2 flex w-full flex-col">
+          <div className="col-span-3 flex w-full flex-col gap-2">
             {explanations.map((explanation, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Textarea

@@ -5,7 +5,7 @@ const  ModalUpdate = ({id, children}: {id:string, children: React.ReactNode;}) =
 {
   const router = useRouter()
   console.log(id)
-  return(<Button className="bg-white flex justify-start p-0 text-black pl-1 hover:bg-orange-200 w-full text-left" onClick={()=>{router.push(`/question/create/${id}`)}}>{children}</Button>)
+  return(<div className=" cursor-pointer text-sm flex justify-start p-1 rounded-md text-white bg-gray-500 pl-1 hover:bg-gray-400 w-full text-left" onClick={()=>{router.push(`/question/create/${id}`)}}>{children}</div>)
 
 }
 

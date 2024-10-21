@@ -12,30 +12,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
 
 import { type ApiError } from "next/dist/server/api-utils";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-const Editor = dynamic(() => import("../editor"), { ssr: false });
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { changeData } from "../editor";
+import Markdown from "react-markdown";
 
 const CreateButton = () => {
   const params = useParams<{ qid: string }>();
 
   const router = useRouter();
   const [question, setQuestion] = useState<QuestionResponse>();
+  const [description, setDescription] = useState<string>("teri-mummy");
   const queryClient = useQueryClient();
   useEffect(() => {
     void toast.promise(
       GetQuestionById(params.qid).then(async (q) => {
         setQuestion(q);
-        
-
-        void changeData(q)
       }),
       {
         loading: "Getting Question",
@@ -44,18 +40,13 @@ const CreateButton = () => {
       },
     );
   }, [params.qid]);
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<UpdateQuestionParams>();
+  const { register, handleSubmit, reset } = useForm<UpdateQuestionParams>();
   const createQuestion = useMutation({
     mutationFn: (data: UpdateQuestionParams) => {
       data.id = params.qid;
       data.input_format = data.input_format?.[0]?.split("\n") ?? [];
       data.points = +data.points;
       data.round = +data.round;
-
       data.constraints = data.constraints?.[0]?.split("\n") ?? [];
       data.output_format = data.output_format?.[0]?.split("\n") ?? [];
       data.sample_test_input = data.sample_test_input?.[0]?.split("\n") ?? [];
@@ -88,7 +79,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="title"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold  text-white"
           >
             Title
           </Label>
@@ -103,16 +94,29 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="description"
-            className="col-span-1 text-right text-lg font-bold text-primary"
+            className="col-span-1 text-right text-lg font-bold text-white"
           >
             Description
           </Label>
-          <Editor />
+          <div className="col-span-3 flex gap-2">
+            {/* <Editor /> */}
+            <Textarea
+              id="description"
+              defaultValue={description}
+              className="w-full"
+              {...register("description")}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={10}
+            ></Textarea>
+            <Markdown className="markdown w-full border p-2">
+              {description}
+            </Markdown>
+          </div>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="input_format"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Input Format
           </Label>
@@ -127,7 +131,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="points"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Points
           </Label>
@@ -143,7 +147,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="round"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Round
           </Label>
@@ -161,7 +165,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="constraints"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Constraints
           </Label>
@@ -176,7 +180,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="output_format"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Output Format
           </Label>
@@ -191,7 +195,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="sample_test_input"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Sample Test Input
           </Label>
@@ -206,7 +210,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="sample_test_output"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Sample Test Output
           </Label>
@@ -221,7 +225,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="explanation"
-            className="text-right text-lg font-bold text-primary"
+            className="text-right text-lg font-bold text-white"
           >
             Explanation
           </Label>
