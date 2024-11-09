@@ -4,7 +4,7 @@
 <h2 align="center">  Cookoff 9.0 Admin</h2>
 <br/>
 
->Cook off is CodeChef VIT’s flagship competitive coding event that tests the coding skills of developers across the country. This is the Code of Cookoff 9.0 Admin portal, your one-stop destination to manage users, questions and testcases for cookoff 9.0. Our powerful and user-friendly admin portal is designed to provide you with all the tools you need to oversee all admin related tasks. Easy navigation in this portal makes carrying out these tasks a breeze.
+>Cook off is CodeChef VIT’s flagship competitive coding event that tests the coding skills of developers across the country. This is the Code of Cookoff 9.0 Admin portal, your one-stop destination to manage users, questions and testcases for cookoff 9.0. Our powerful and user-friendly admin portal is designed to provide you with all the tools you need to oversee all admin related tasks. Easy navigation in this portal makes carrying out these tasks a breeze
 
 ## 🌐 Deploy
 
