@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <Sidebar />
-        <div className=" z-0 bg-black">
+        <div className=" z-0  bg-black">
 
           <Toaster position="top-right" toastOptions={{ id: "_toast" }} />
           <AreyBC>{children}</AreyBC>

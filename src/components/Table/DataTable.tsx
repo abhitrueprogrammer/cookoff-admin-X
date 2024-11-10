@@ -21,7 +21,7 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-} from "../ui/table";
+} from "../ui/tableReact";
 import { DataTableToolbar } from "./DataTableToolbar";
 
 interface DataTableProps<TData> {
