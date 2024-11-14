@@ -1,4 +1,4 @@
-import { type  User } from "@/api/users";
+import { type User } from "@/api/users";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
@@ -33,33 +33,33 @@ export const UserDataColumn = [
     enableSorting: false,
     enableHiding: false,
   },
-    columnHelper.accessor("Name", {
-        header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
-        ),
-        cell: ({ row }) => (
-        <div className="flex gap-2">
-            {row.original.Role === "admin" && <FaCrown size={16} />}
-            {row.getValue("Name")}
-        </div>
-        ),
-        enableSorting: true,
-        enableHiding: false,
-        meta: {
-        className: "text-left",
-        displayName: "Name",
-        },
-    }),
-//   columnHelper.accessor("Name", {
-//     header: ({ column }) => (
-//       <DataTableColumnHeader column={column} title="Name" />
-//     ),
-//     enableSorting: true,
-//     meta: {
-//       className: "text-left",
-//       displayName: "Name",
-//     },
-//   }),
+  columnHelper.accessor("Name", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        {row.original.Role === "admin" && <FaCrown size={16} />}
+        {row.getValue("Name")}
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
+    meta: {
+      className: "text-left",
+      displayName: "Name",
+    },
+  }),
+  //   columnHelper.accessor("Name", {
+  //     header: ({ column }) => (
+  //       <DataTableColumnHeader column={column} title="Name" />
+  //     ),
+  //     enableSorting: true,
+  //     meta: {
+  //       className: "text-left",
+  //       displayName: "Name",
+  //     },
+  //   }),
 
   columnHelper.accessor("RegNo", {
     header: ({ column }) => (
@@ -113,9 +113,7 @@ export const UserDataColumn = [
     cell: ({ row }) => (
       <div>
         <BanBtn row={row}></BanBtn>
-
       </div>
     ),
   }),
 ] as ColumnDef<User>[];
-

@@ -3,8 +3,7 @@
 import cookoff from "@/assets/images/codechef_logo.svg";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { FaHome, FaQuestion, FaUser, FaArrowAltCircleUp } from "react-icons/fa";
-
+import { FaHome, FaQuestion, FaUser } from "react-icons/fa";
 
 // import { Router } from "";
 export default function Sidebar() {
@@ -62,8 +61,6 @@ export default function Sidebar() {
             Users
           </div>{" "}
         </button>
-
-
       </>
       )
     </nav>

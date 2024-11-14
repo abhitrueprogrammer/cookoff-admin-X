@@ -36,14 +36,10 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(10); // State for rows per page
+  // const [rowsPerPage, setRowsPerPage] = useState(10); // State for rows per page
   const pathname = usePathname();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-  } = useForm<SetUserRoundProps>();
+  const { register, handleSubmit, setValue, reset } =
+    useForm<SetUserRoundProps>();
 
   const promoteUsers = useMutation({
     mutationFn: (data: SetUserRoundProps) => {

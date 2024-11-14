@@ -1,17 +1,8 @@
 "use client";
-import { GetLeaderBoard, LeaderBoardUser } from "@/api/adminDashboard";
+import { GetLeaderBoard,type  LeaderBoardUser } from "@/api/adminDashboard";
 import Round from "@/components/round";
-import {
-  Table,
-  TableBody,
-  // TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { useQuery } from "@tanstack/react-query";
-import { table } from "console";
 
 function Dashboard() {
   const { data, error, isLoading } = useQuery<LeaderBoardUser[], Error>({
@@ -30,7 +21,16 @@ function Dashboard() {
       <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
         Leaderboard
       </div>
-      {data && data.length > 0 ? (
+      {/* Add Loading and Error Handling here */}
+      {isLoading ? (
+        <div className="text-center mt-5">
+          <p>Loading leaderboard...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center mt-5 text-red-500">
+          <p>Error loading leaderboard: {error.message}</p>
+        </div>
+      ) : data && data.length > 0 ? (
         <div className="m-5 flex flex-col items-center gap-5">
           <p
             className="w-fit cursor-pointer rounded-sm border bg-yellow-700 p-2 text-lg hover:bg-yellow-600"
@@ -62,6 +62,7 @@ function Dashboard() {
       ) : (
         <p>No data available</p>
       )}
+
       <div className="flex justify-center">
         <table className="border-collapse">
           {data?.slice(3, 6).map((user, index) => (

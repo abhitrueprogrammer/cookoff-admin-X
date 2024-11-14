@@ -1,5 +1,3 @@
-
-
 import { CreateTestCase, type CreateTestCaseParams } from "@/api/testcases"; // Update import
 import { Button } from "@/components/ui/button";
 import {
@@ -15,30 +13,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {type ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-const CreateTestcaseButton = ({ id, children }: { id:string, children: React.ReactNode }) => {
+const CreateTestcaseButton = ({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<CreateTestCaseParams>();
+  const { register, handleSubmit, reset } = useForm<CreateTestCaseParams>();
 
   const createTestCase = useMutation({
     mutationFn: (data: CreateTestCaseParams) => {
-        data.question_iD = id;
-        if (typeof data.hidden === "string") {
-            data.hidden = data.hidden === "true"; // Convert "true"/"false" to boolean
-        }
-        data.memory = Number(data.memory);
-        data.runtime = Number(data.runtime);
-        console.log(data); // Logging for debugging
+      data.question_iD = id;
+      if (typeof data.hidden === "string") {
+        data.hidden = data.hidden === "true"; // Convert "true"/"false" to boolean
+      }
+      data.memory = Number(data.memory);
+      data.runtime = Number(data.runtime);
+      console.log(data); // Logging for debugging
       return toast.promise(CreateTestCase(data), {
         loading: "Adding Test Case",
         success: "Success!",
@@ -135,7 +135,6 @@ const CreateTestcaseButton = ({ id, children }: { id:string, children: React.Rea
                   {...register("runtime")}
                 />
               </div>
-
             </div>
             <DialogFooter>
               <Button type="submit">Submit</Button>
@@ -148,6 +147,3 @@ const CreateTestcaseButton = ({ id, children }: { id:string, children: React.Rea
 };
 
 export default CreateTestcaseButton;
-
-
-

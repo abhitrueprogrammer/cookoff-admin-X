@@ -55,9 +55,7 @@ export default function Login() {
               width={580}
               height={400}
             />
-            <div className="relative">
-
-            </div>
+            <div className="relative"></div>
           </div>
         </div>
         <div className="flex w-1/2">

@@ -24,23 +24,23 @@ const Page = ({ id }: { id: string }) => {
   });
   console.log(data);
   return (
-    <div>
+    <div className="">
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-slate-900 text-white hover:bg-slate-700">
             Test Case Info
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-fit">
+        <DialogContent className="max-h-[83.33vh] max-w-fit overflow-y-auto bg-black text-white">
           <DialogHeader>
             <DialogTitle>
               QID: {id} <CopyButton content={id} />{" "}
             </DialogTitle>
             <DialogDescription>A table all about test cases</DialogDescription>
           </DialogHeader>
-          <div className="bg-white">
+          <div className="bg-black">
             <ModalCreateTestcase id={id}> Create</ModalCreateTestcase>
-            <div>
+            <div className="max-w-xl md:max-w-7xl">
               <ClientTable
                 data={data}
                 error={error}
@@ -55,5 +55,14 @@ const Page = ({ id }: { id: string }) => {
   );
 };
 
+// const ModalDetails = ({
+//   id,
+//   children,
+// }: {
+//   id: string;
+//   children: React.ReactNode;
+// }) => {
+//   // const [testcase]
+// };
 
 export default Page;

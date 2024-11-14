@@ -15,7 +15,7 @@ const Page = () => {
     <div>
       <div className="flex h-screen flex-col bg-black text-slate-100">
         <div className="flex items-end justify-between">
-          {data && <CreateButton>Create</CreateButton>}
+          <CreateButton>Create</CreateButton>
         </div>
         <div className="overflow-y-auto">
           <ClientTable

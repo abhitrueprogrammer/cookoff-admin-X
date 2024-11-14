@@ -1,24 +1,27 @@
-"use client"
+"use client";
 
-
-import { RiMoreFill } from "react-icons/ri"
-import {type Row } from "@tanstack/react-table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Button } from "../ui/button"
-
+import { RiMoreFill } from "react-icons/ri";
+import { type Row } from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 interface Action<TData> {
-  label: string
-  onClick: (row: Row<TData>) => void
-  className?: string
+  label: string;
+  onClick: (row: Row<TData>) => void;
+  className?: string;
 }
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
-  editAction?: Action<TData>
-  destructiveAction?: Action<TData>
-  additionalActions?: Action<TData>[]
-  children?: React.ReactNode
+  row: Row<TData>;
+  editAction?: Action<TData>;
+  destructiveAction?: Action<TData>;
+  additionalActions?: Action<TData>[];
+  children?: React.ReactNode;
 }
 
 export function DataTableRowActions<TData>({
@@ -70,5 +73,5 @@ export function DataTableRowActions<TData>({
         {children}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
