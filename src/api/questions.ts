@@ -1,10 +1,6 @@
-
-
 import { handleAPIError } from "@/lib/error";
 import api from ".";
-import { generateSampleData } from "./sampleData";
-
-
+// import { generateSampleData } from "./sampleData";
 
 export interface UpdateQuestionParams {
   id: string;
@@ -13,14 +9,14 @@ export interface UpdateQuestionParams {
   input_format: string[];
   points: number;
   round: number;
-  constraints: string[] ;
+  constraints: string[];
   output_format: string[];
   sample_test_input: string[];
   sample_test_output: string[];
   sample_explanation: string[];
 }
 
-export interface  QuestionResponse {
+export interface QuestionResponse {
   ID: string;
   Description: string;
   Title: string;
@@ -35,18 +31,17 @@ export interface  QuestionResponse {
 }
 
 export interface CreateQuestionParams {
-  description: string,
-  title: string,
-  input_format: string[],
-  points: number,
-  round: number,
-  constraints: string[],
-  output_format: string[],
-  sample_test_input: string[],
-  sample_test_output: string[],
-  sample_explanation: string[],
+  description: string;
+  title: string;
+  input_format: string[];
+  points: number;
+  round: number;
+  constraints: string[];
+  output_format: string[];
+  sample_test_input: string[];
+  sample_test_output: string[];
+  sample_explanation: string[];
 }
-
 
 interface DeleteQuestionResponse {
   message: string;
@@ -66,12 +61,11 @@ export async function GetAllQuestions() {
 // POST REQUEST
 export async function CreateQuestion(data: CreateQuestionParams) {
   try {
-    console.log(data)
+    console.log(data);
     const response = await api.post<QuestionResponse>("/question/create", data);
     return response.data;
   } catch (e) {
-
-    console.log(e)
+    console.log(e);
     throw handleAPIError(e);
   }
 }
@@ -95,8 +89,7 @@ export async function GetQuestionById(id: string) {
 
 // PATCH REQUEST
 export async function UpdateQuestion(data: UpdateQuestionParams) {
-  try
-  {
+  try {
     const response = await api.patch<QuestionResponse>("/question", data);
     return response.data;
   } catch (e) {

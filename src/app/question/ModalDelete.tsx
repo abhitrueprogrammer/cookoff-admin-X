@@ -18,7 +18,6 @@ import { type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-
 const ModalDelete = ({
   children,
   id,
@@ -27,36 +26,28 @@ const ModalDelete = ({
   children: React.ReactNode;
   id: string;
 }) => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
+  const handleDelete = useMutation({
+    mutationFn: (id: string) => {
+      return toast.promise(DeleteQuestion(id), {
+        loading: "Deleting Question",
+        success: "Success!",
+        error: (err: ApiError) => err.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["questions"] });
+    },
+  });
 
-
-    const handleDelete = useMutation({
-        mutationFn: (id: string) => {
-          return toast.promise(
-              DeleteQuestion(id),
-              {
-                loading: "Deleting Question",
-                success: "Success!",
-                error: (err: ApiError) => err.message,
-              })},
-         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: ["questions"] })
-      
-        },
-  
-          })
-      
-      const onSubmit = () => {
-        handleDelete.mutate(id)
-      }
-  
-
-    
+  const onSubmit = () => {
+    handleDelete.mutate(id);
+  };
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="w-full cursor-pointer text-sm rounded-sm bg-red-600 p-1 text-left text-white hover:bg-red-500">
+      <AlertDialogTrigger className="w-full cursor-pointer rounded-sm bg-red-600 p-1 text-left text-sm text-white hover:bg-red-500">
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent>

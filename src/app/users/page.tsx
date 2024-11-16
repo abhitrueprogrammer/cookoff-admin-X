@@ -3,7 +3,7 @@ import ClientTable from "@/components/Table/ClientTable";
 import { useQuery } from "@tanstack/react-query";
 // import "./ModalCreate";
 // import CreateButton from "./ModalCreate";
-import { GetUsers,type User } from "@/api/users";
+import { GetUsers, type User } from "@/api/users";
 import { UserDataColumn } from "./user-columns";
 const Page = () => {
   const { data, error, isLoading } = useQuery<User[], Error>({

@@ -48,7 +48,7 @@ export const QuestionsDataColumn = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Round" />
     ),
-    
+
     enableSorting: true,
     enableHiding: false,
     meta: {
@@ -85,17 +85,13 @@ export const QuestionsDataColumn = [
     },
     cell: ({ row }) => (
       <DataTableRowActions row={row}>
-          <div className="flex flex-col justify-center gap-1">
+        <div className="flex flex-col justify-center gap-1">
           <ModalDelete row={row} id={row.original.ID}>
-
             Delete
           </ModalDelete>
-          <ModalUpdate id={row.original.ID}>
-              Update
-          </ModalUpdate>
-
-      </div>
-        </DataTableRowActions>
+          <ModalUpdate id={row.original.ID}>Update</ModalUpdate>
+        </div>
+      </DataTableRowActions>
     ),
   }),
 
@@ -110,10 +106,7 @@ export const QuestionsDataColumn = [
     },
     cell: ({ row }) => (
       <div className="flex justify-center">
-          <ModalGetTestcase id={row.original.ID}>
-
-          </ModalGetTestcase>
-
+        <ModalGetTestcase id={row.original.ID}></ModalGetTestcase>
       </div>
     ),
   }),

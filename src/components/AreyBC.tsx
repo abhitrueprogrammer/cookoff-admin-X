@@ -10,8 +10,9 @@ const AreyBC = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="">
       <Providers>
-        <div className={` flex ml- flex-col ${pathname !== "/"? "p-12 ml-44":""} bg-black`}>
-
+        <div
+          className={`ml- flex flex-col ${pathname !== "/" ? "ml-44 p-12" : ""} bg-black`}
+        >
           {children}
         </div>
       </Providers>

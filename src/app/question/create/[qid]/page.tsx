@@ -27,32 +27,88 @@ const CreateButton = () => {
   const router = useRouter();
   const [question, setQuestion] = useState<QuestionResponse>();
   const [description, setDescription] = useState<string>("teri-mummy");
+
+  const [sampleInputs, setSampleInputs] = useState<string[]>([""]);
+  const [sampleOutputs, setSampleOutputs] = useState<string[]>([""]);
+  const [explanations, setExplanations] = useState<string[]>([""]);
+  const [inputFormats, setInputFormats] = useState<string[]>([""]);
   const queryClient = useQueryClient();
+  const handleInputChange = (index: number, value: string, type: string) => {
+    if (type === "input") {
+      const newInputs = [...sampleInputs];
+      newInputs[index] = value;
+      setSampleInputs(newInputs);
+    } else if (type === "output") {
+      const newOutputs = [...sampleOutputs];
+      newOutputs[index] = value;
+      setSampleOutputs(newOutputs);
+    } else if (type === "explanation") {
+      const newExplanations = [...explanations];
+      newExplanations[index] = value;
+      setExplanations(newExplanations);
+    } else if (type === "format") {
+      const newFormats = [...inputFormats];
+      newFormats[index] = value;
+      setInputFormats(newFormats);
+    }
+  };
+
+  const deleteEntry = (index: number, type: string) => {
+    if (type === "input") {
+      setSampleInputs(sampleInputs.filter((_, i) => i !== index));
+    } else if (type === "output") {
+      setSampleOutputs(sampleOutputs.filter((_, i) => i !== index));
+    } else if (type === "explanation") {
+      setExplanations(explanations.filter((_, i) => i !== index));
+    } else if (type === "format") {
+      setInputFormats(inputFormats.filter((_, i) => i !== index));
+    }
+  };
+
+  const { setValue, register, handleSubmit, reset } =
+    useForm<UpdateQuestionParams>();
+
   useEffect(() => {
-    void toast.promise(
-      GetQuestionById(params.qid).then(async (q) => {
+    const fetchQuestion = async () => {
+      try {
+        const q = await GetQuestionById(params.qid);
+
         setQuestion(q);
-      }),
-      {
-        loading: "Getting Question",
-        success: "Success!",
-        error: (err: ApiError) => err.message,
-      },
-    );
-  }, [params.qid]);
-  const { register, handleSubmit, reset } = useForm<UpdateQuestionParams>();
+        setDescription(q.Description);
+        setExplanations(q.Explanation);
+        setInputFormats(q.InputFormat);
+        setSampleOutputs(q.SampleTestOutput);
+        setSampleInputs(q.SampleTestInput);
+
+        if (q.Constraints) {
+          setValue("constraints.0", q.Constraints.join("\n"));
+        }
+        if (q.OutputFormat) {
+          setValue("output_format.0", q.OutputFormat.join("\n"));
+        }
+        if (q.Round) {
+          setValue("round", q.Round);
+        }
+      } catch (error) {
+        console.error("Error fetching question:", error);
+      }
+    };
+
+    void fetchQuestion();
+  }, [params.qid, setValue]);
+
   const createQuestion = useMutation({
     mutationFn: (data: UpdateQuestionParams) => {
       data.id = params.qid;
-      data.input_format = data.input_format?.[0]?.split("\n") ?? [];
+      data.input_format = inputFormats;
       data.points = +data.points;
       data.round = +data.round;
       data.constraints = data.constraints?.[0]?.split("\n") ?? [];
       data.output_format = data.output_format?.[0]?.split("\n") ?? [];
-      data.sample_test_input = data.sample_test_input?.[0]?.split("\n") ?? [];
-      data.sample_test_output = data.sample_test_output?.[0]?.split("\n") ?? [];
-      data.sample_explanation = data.sample_explanation?.[0]?.split("\n") ?? [];
-      console.log(data);
+      data.sample_test_input = sampleInputs;
+      data.sample_test_output = sampleOutputs;
+      data.sample_explanation = explanations;
+      console.log("data", data);
       return toast.promise(UpdateQuestion(data), {
         loading: "Updating Question",
         success: "Success!",
@@ -69,6 +125,21 @@ const CreateButton = () => {
   const onSubmit = (data: UpdateQuestionParams) => {
     createQuestion.mutate(data);
   };
+  const addSampleInput = () => {
+    setSampleInputs([...sampleInputs, ""]);
+  };
+
+  const addSampleOutput = () => {
+    setSampleOutputs([...sampleOutputs, ""]);
+  };
+
+  const addExplanation = () => {
+    setExplanations([...explanations, ""]);
+  };
+
+  const addInputFormat = () => {
+    setInputFormats([...inputFormats, ""]);
+  };
 
   return (
     <div className="m-10 space-y-10 text-white">
@@ -79,7 +150,7 @@ const CreateButton = () => {
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="title"
-            className="text-right text-lg font-bold  text-white"
+            className="text-right text-lg font-bold text-white"
           >
             Title
           </Label>
@@ -102,7 +173,7 @@ const CreateButton = () => {
             {/* <Editor /> */}
             <Textarea
               id="description"
-              defaultValue={description}
+              defaultValue={question?.Description}
               className="w-full"
               {...register("description")}
               onChange={(e) => setDescription(e.target.value)}
@@ -113,7 +184,42 @@ const CreateButton = () => {
             </Markdown>
           </div>
         </div>
+        {/* Input Format Section */}
         <div className="grid grid-cols-4 items-center gap-4">
+          <div className="flex flex-row items-center justify-end gap-2">
+            <Label
+              htmlFor="input_format"
+              className="col-span-3 whitespace-nowrap text-right text-lg font-bold text-white"
+            >
+              Input Format
+            </Label>
+            <Button type="button" onClick={addInputFormat}>
+              +
+            </Button>
+          </div>
+          <div className="col-span-3 flex w-full flex-col gap-2">
+            {inputFormats.map((format, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Textarea
+                  value={format}
+                  placeholder="3 integers"
+                  className="col-span-3"
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, "format")
+                  }
+                />
+                <Button
+                  type="button"
+                  onClick={() => deleteEntry(index, "format")}
+                  className="text-red-500"
+                >
+                  Delete
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="input_format"
             className="text-right text-lg font-bold text-white"
@@ -127,7 +233,7 @@ const CreateButton = () => {
             defaultValue={question?.InputFormat.join("\n")}
             {...register("input_format.0")}
           />
-        </div>
+        </div> */}
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="points"
@@ -192,50 +298,112 @@ const CreateButton = () => {
             {...register("output_format.0")}
           />
         </div>
+        {/* Sample Test Output Section */}
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label
-            htmlFor="sample_test_input"
-            className="text-right text-lg font-bold text-white"
-          >
-            Sample Test Input
-          </Label>
-          <Textarea
-            id="sample_test_input"
-            placeholder="Abracadabra"
-            className="col-span-3"
-            defaultValue={question?.SampleTestOutput.join("\n")}
-            {...register("sample_test_input.0")}
-          />
+          <div className="flex flex-row items-center justify-end gap-2">
+            <Label
+              htmlFor="sample_test_output"
+              className="whitespace-nowrap text-right text-lg font-bold text-white"
+            >
+              Sample Test Output
+            </Label>
+            <Button type="button" onClick={addSampleOutput}>
+              +
+            </Button>
+          </div>
+          <div className="col-span-3 flex w-full flex-col gap-2">
+            {sampleOutputs.map((output, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Textarea
+                  value={output}
+                  placeholder="Number"
+                  className="w-full"
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, "output")
+                  }
+                />
+                <Button
+                  type="button"
+                  onClick={() => deleteEntry(index, "output")}
+                  className="text-red-500"
+                >
+                  Delete
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Sample Test Input Section */}
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label
-            htmlFor="sample_test_output"
-            className="text-right text-lg font-bold text-white"
-          >
-            Sample Test Output
-          </Label>
-          <Textarea
-            id="sample_test_output"
-            placeholder="Number"
-            className="col-span-3"
-            defaultValue={question?.SampleTestOutput.join("\n")}
-            {...register("sample_test_output.0")}
-          />
+          <div className="flex flex-row items-center justify-end gap-2">
+            <Label
+              htmlFor="sample_test_input"
+              className="whitespace-nowrap text-right text-lg font-bold text-white"
+            >
+              Sample Test Input
+            </Label>
+            <Button type="button" onClick={addSampleInput}>
+              +
+            </Button>
+          </div>
+          <div className="col-span-3 flex w-full flex-col gap-2">
+            {sampleInputs.map((input, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Textarea
+                  value={input}
+                  placeholder="Input"
+                  className="w-full"
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, "input")
+                  }
+                />
+                <Button
+                  type="button"
+                  onClick={() => deleteEntry(index, "input")}
+                  className="text-red-500"
+                >
+                  Delete
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Sample Explanation Section */}
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label
-            htmlFor="explanation"
-            className="text-right text-lg font-bold text-white"
-          >
-            Explanation
-          </Label>
-          <Textarea
-            id="explanation"
-            placeholder="The why, the who, what, when, the where, and the how"
-            className="col-span-3"
-            defaultValue={question?.Explanation.join("\n")}
-            {...register("sample_explanation.0")}
-          />
+          <div className="flex flex-row items-center justify-end gap-2">
+            <Label
+              htmlFor="sample_explanation"
+              className="whitespace-nowrap text-right text-lg font-bold text-white"
+            >
+              Sample Explanation
+            </Label>
+            <Button type="button" onClick={addExplanation}>
+              +
+            </Button>
+          </div>
+          <div className="col-span-3 flex w-full flex-col gap-2">
+            {explanations.map((explanation, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Textarea
+                  value={explanation}
+                  placeholder="Explanation"
+                  className="w-full"
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value, "explanation")
+                  }
+                />
+                <Button
+                  type="button"
+                  onClick={() => deleteEntry(index, "explanation")}
+                  className="text-red-500"
+                >
+                  Delete
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
 
         <Button className="ml-auto flex" type="submit">

@@ -1,6 +1,10 @@
 "use client";
 
-import {type  TestCaseResponse,type TestCaseUpdateParams, UpdateTestCase } from "@/api/testcases";
+import {
+  type TestCaseResponse,
+  type TestCaseUpdateParams,
+  UpdateTestCase,
+} from "@/api/testcases";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -42,7 +46,7 @@ const ModalTestcaseUpdate = ({
   const createQuestion = useMutation({
     mutationFn: (data: TestCaseUpdateParams) => {
       if (typeof data.hidden === "string") {
-          data.hidden = data.hidden === "true"; // Convert "true"/"false" to boolean
+        data.hidden = data.hidden === "true"; // Convert "true"/"false" to boolean
       }
       data.memory = Number(data.memory);
       data.runtime = Number(data.runtime);
@@ -56,7 +60,7 @@ const ModalTestcaseUpdate = ({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["testcases"] });
       reset();
-      setModalOpen(false)
+      setModalOpen(false);
       // setIsOpen(false);
     },
   });
@@ -66,12 +70,10 @@ const ModalTestcaseUpdate = ({
   };
   return (
     <div className="flex">
-    <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
-    {/* <Dialog open={isOpen} onOpenChange={setIsOpen}> */}
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+        {/* <Dialog open={isOpen} onOpenChange={setIsOpen}> */}
         <DialogTrigger asChild>
-          <div
-            className="w-full text-accent cursor-pointer rounded-sm  p-1 text-left text-sm  hover:bg-slate-200"
-          >
+          <div className="w-full cursor-pointer rounded-sm p-1 text-left text-sm text-accent hover:bg-slate-200">
             {children}
           </div>
         </DialogTrigger>
@@ -145,7 +147,6 @@ const ModalTestcaseUpdate = ({
                   {...register("runtime")}
                 />
               </div>
-
             </div>
             <DialogFooter>
               <Button type="submit">Submit</Button>

@@ -107,7 +107,7 @@ const Create = () => {
 
   return (
     <div className="m-10 space-y-10 text-white">
-      <div className="flex  items-center">
+      <div className="flex items-center">
         <h1 className="s-sling flex-grow text-center text-2xl font-bold text-accent">
           Add Questions
         </h1>
@@ -135,19 +135,19 @@ const Create = () => {
           >
             Description
           </Label>
-          <div className="flex gap-2 col-span-3">
+          <div className="col-span-3 flex gap-2">
             {/* <Editor /> */}
             <Textarea
               id="description"
               defaultValue={description}
-          
               className="w-full"
               {...register("description")}
               onChange={(e) => setDescription(e.target.value)}
               rows={10}
             ></Textarea>
-            <Markdown className="p-2
-             markdown w-full border ">{description}</Markdown>
+            <Markdown className="markdown w-full border p-2">
+              {description}
+            </Markdown>
           </div>
         </div>
 

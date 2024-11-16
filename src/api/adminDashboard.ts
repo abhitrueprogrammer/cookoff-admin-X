@@ -1,6 +1,6 @@
 import { handleAPIError } from "@/lib/error";
 import api from ".";
-import { generateSampleLeaderboard as generateSampleLeaderBoard } from "./sampleData";
+// import { generateSampleLeaderboard as generateSampleLeaderBoard } from "./sampleData";
 
 export interface RoundParams {
   round_id: number;
@@ -31,10 +31,9 @@ export async function GetLeaderBoard() {
       .slice(0, 10); // Take the top 10
 
     // return generateSampleLeaderBoard()
-    // .filter((user) => user.Score !== null) 
+    // .filter((user) => user.Score !== null)
     // .sort((a, b) => b.Score! - a.Score!)
     // .slice(0, 10);
-
   } catch (e) {
     throw handleAPIError(e);
   }

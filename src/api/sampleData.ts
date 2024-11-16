@@ -1,4 +1,4 @@
-import { LeaderBoardUser } from "./adminDashboard";
+import { type LeaderBoardUser } from "./adminDashboard";
 import { type QuestionResponse } from "./questions";
 
 const generateSampleData = (): QuestionResponse[] => {
@@ -34,7 +34,7 @@ const generateSampleLeaderboard = (): LeaderBoardUser[] => {
     },
     {
       ID: "01922fc8-5e18-7c90-89ee-5f2f3e1012c8",
-      Name: "abc",
+      Name: "InRandomOrder",
       Score: 100000,
     },
     {

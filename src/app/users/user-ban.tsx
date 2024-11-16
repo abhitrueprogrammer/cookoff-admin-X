@@ -2,7 +2,7 @@ import { Roast, UnRoast, type User } from "@/api/users";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type Row } from "@tanstack/react-table";
-import {type ApiError } from "next/dist/server/api-utils";
+import { type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 const BanBtn = ({ row }: { row: Row<User> }) => {
   const queryClient = useQueryClient();
@@ -36,16 +36,23 @@ const BanBtn = ({ row }: { row: Row<User> }) => {
   };
   const onunRoastSubmit = (id: string) => {
     handleUnban.mutate(id);
-  }
+  };
   return (
     <div>
       {row.original.IsBanned ? (
         <div>
-          <Button onClick={()=>{onunRoastSubmit(row.original.ID)}}>unRoast</Button>
+          <Button
+            onClick={() => {
+              onunRoastSubmit(row.original.ID);
+            }}
+          >
+            unRoast
+          </Button>
         </div>
       ) : (
         <div>
           <Button
+            disabled={row.original.Role === "admin"}
             onClick={() => {
               onRoastSubmit(row.original.ID);
             }}
@@ -53,7 +60,6 @@ const BanBtn = ({ row }: { row: Row<User> }) => {
             Roast
           </Button>{" "}
         </div>
-        
       )}
     </div>
   );
