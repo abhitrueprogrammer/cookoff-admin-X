@@ -8,6 +8,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASEURL,
+  withCredentials: true,
 });
 
 // Add a request interceptor
@@ -34,13 +35,11 @@ api.interceptors.response.use(
 
       try {
         await api.post<ApiResponse>(
-          `${process.env.NEXT_PUBLIC_BASEURL}/token/refresh`,
+          "/refreshToken",
           {},
-          {
-            withCredentials: true,
-          },
+          { withCredentials: true },
         );
-        return api(originalRequest); // Use the api instance to retry the request
+        return api(originalRequest);
       } catch {
         // Handle refresh token error or redirect to login
         toast.error("Session expired. Please login again.");

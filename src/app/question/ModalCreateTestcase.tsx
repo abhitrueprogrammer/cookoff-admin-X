@@ -1,4 +1,6 @@
-import { CreateTestCase, type CreateTestCaseParams } from "@/api/testcases"; // Update import
+"use client";
+
+import { CreateTestCase, type CreateTestCaseParams } from "@/api/testcases";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type ApiError } from "next/dist/server/api-utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -32,21 +33,31 @@ const CreateTestcaseButton = ({
 
   const createTestCase = useMutation({
     mutationFn: (data: CreateTestCaseParams) => {
-      data.question_iD = id;
-      if (typeof data.hidden === "string") {
-        data.hidden = data.hidden === "true"; // Convert "true"/"false" to boolean
-      }
-      data.memory = Number(data.memory);
-      data.runtime = Number(data.runtime);
-      console.log(data); // Logging for debugging
-      return toast.promise(CreateTestCase(data), {
+      const hidden =
+        typeof data.hidden === "string"
+          ? data.hidden === "true"
+          : !!data.hidden;
+
+      const payload = {
+        expected_output: data.expected_output,
+        input: data.input,
+        memory: data.memory ? String(data.memory) : "0",
+        runtime: data.runtime ? String(data.runtime) : "0",
+        hidden,
+        question_id: id,
+      };
+
+      console.log("Payload sent to backend:", payload);
+
+      return toast.promise(CreateTestCase(payload), {
         loading: "Adding Test Case",
-        success: "Success!",
-        error: (err: ApiError) => err.message,
+        success: "Test Case added successfully!",
+        error: (err: unknown) =>
+          err instanceof Error ? err.message : "Error creating testcase",
       });
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["testcases"] }); // Adjust if needed
+      await queryClient.invalidateQueries({ queryKey: ["testcases"] });
       reset();
       setIsOpen(false);
     },
@@ -88,6 +99,7 @@ const CreateTestcaseButton = ({
                   {...register("input")}
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-2">
                 <Label htmlFor="expected_output" className="text-right">
                   Expected Output
@@ -96,9 +108,10 @@ const CreateTestcaseButton = ({
                   id="expected_output"
                   placeholder="Expected output"
                   className="col-span-3"
-                  {...register("expected_output")}
+                  {...register("expected_output", { required: true })}
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-2">
                 <Label htmlFor="memory" className="text-right">
                   Memory
@@ -111,6 +124,7 @@ const CreateTestcaseButton = ({
                   {...register("memory")}
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-2">
                 <Label htmlFor="hidden" className="text-right">
                   Hidden
@@ -118,18 +132,20 @@ const CreateTestcaseButton = ({
                 <select
                   {...register("hidden")}
                   id="hidden"
-                  className="rounded-md border bg-white p-2"
+                  className="col-span-3 rounded-md border bg-white p-2"
                 >
                   <option value="false">No</option>
                   <option value="true">Yes</option>
                 </select>
               </div>
+
               <div className="grid grid-cols-4 items-center gap-2">
                 <Label htmlFor="runtime" className="text-right">
                   Runtime
                 </Label>
                 <Input
                   id="runtime"
+                  type="number"
                   placeholder="Runtime limit"
                   className="col-span-3"
                   {...register("runtime")}

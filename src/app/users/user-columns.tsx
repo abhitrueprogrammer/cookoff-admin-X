@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { FaCrown } from "react-icons/fa6";
 
+import Link from "next/dist/client/link";
 import BanBtn from "./user-ban";
 
 const columnHelper = createColumnHelper<User>();
@@ -50,17 +51,6 @@ export const UserDataColumn = [
       displayName: "Name",
     },
   }),
-  //   columnHelper.accessor("Name", {
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Name" />
-  //     ),
-  //     enableSorting: true,
-  //     meta: {
-  //       className: "text-left",
-  //       displayName: "Name",
-  //     },
-  //   }),
-
   columnHelper.accessor("RegNo", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="RegNo" />
@@ -91,29 +81,31 @@ export const UserDataColumn = [
       displayName: "Round",
     },
   }),
-  columnHelper.accessor("Score", {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Score" />
-    ),
-    enableSorting: true,
-    meta: {
-      className: "text-left",
-      displayName: "Score",
-    },
-  }),
   columnHelper.display({
-    id: "roast",
-    header: "Roast/Unroast",
+    id: "ban",
+    header: "Ban / Unban",
     enableSorting: false,
     enableHiding: true,
     meta: {
       className: "text-center",
-      displayName: "roast",
+      displayName: "Ban / Unban",
     },
     cell: ({ row }) => (
       <div>
-        <BanBtn row={row}></BanBtn>
+        <BanBtn row={row} />
       </div>
+    ),
+  }),
+  columnHelper.display({
+    id: "link",
+    header: "Submissions",
+    cell: ({ row }) => (
+      <Link
+        href={`/admin/users/${row.original.ID}/submissions`}
+        className="text-blue-400 hover:underline"
+      >
+        View
+      </Link>
     ),
   }),
 ] as ColumnDef<User>[];

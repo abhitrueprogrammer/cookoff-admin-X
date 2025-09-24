@@ -13,33 +13,40 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
 
-const ModalDelete = ({
-  children,
-  id,
-}: {
+interface ModalDeleteProps {
   children: React.ReactNode;
   id: string;
-}) => {
+  questionID?: string;
+}
+
+const ModalDelete = ({ children, id, questionID }: ModalDeleteProps) => {
   const queryClient = useQueryClient();
 
-  const handleDelete = useMutation({
-    mutationFn: (id: string) => {
-      return toast.promise(DeleteTestCase(id), {
-        loading: "Deleting Testcase",
-        success: "Success!",
-        error: (err: ApiError) => err.message,
-      });
-    },
+  const deleteMutation = useMutation({
+    mutationFn: (testCaseID: string) =>
+      toast.promise(DeleteTestCase(testCaseID), {
+        loading: "Deleting Testcase...",
+        success: "Testcase deleted successfully!",
+        error: (err: unknown) => {
+          if (err instanceof Error) return err.message;
+          return "Error updating testcase";
+        },
+      }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["testcases"] });
+      if (questionID) {
+        await queryClient.invalidateQueries({
+          queryKey: ["testcases", questionID],
+        });
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["testcases"] });
+      }
     },
   });
 
-  const onSubmit = () => {
-    handleDelete.mutate(id);
+  const handleDelete = () => {
+    deleteMutation.mutate(id);
   };
 
   return (
@@ -52,13 +59,13 @@ const ModalDelete = ({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the
-            Testcase. Dekh lo.
+            testcase.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={onSubmit}
+            onClick={handleDelete}
             className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
           >
             Continue

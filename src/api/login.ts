@@ -6,7 +6,7 @@ import api from ".";
 
 export async function login(body: z.infer<typeof loginFormSchema>) {
   try {
-    const { data } = await api.post<ApiResponse>(`/login/user`, body);
+    const { data } = await api.post<ApiResponse>(`/login`, body);
     return data.message;
   } catch (e) {
     throw handleAPIError(e);
