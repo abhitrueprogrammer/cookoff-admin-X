@@ -1,6 +1,6 @@
 "use client";
 
-import { SetUserRound, type SetUserRoundProps, type User } from "@/api/users";
+import { SetUserRound, type SetUserRoundProps } from "@/api/users";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { type Table } from "@tanstack/react-table";
@@ -36,7 +36,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  // const [rowsPerPage, setRowsPerPage] = useState(10); // State for rows per page
+
   const pathname = usePathname();
   const { register, handleSubmit, setValue, reset } =
     useForm<SetUserRoundProps>();
@@ -61,15 +61,18 @@ export function DataTableToolbar<TData>({
 
   const OnSubmit = (data: SetUserRoundProps) => {
     const selectedRows = table.getSelectedRowModel().rows;
-    const userIds: string[] = selectedRows.map(
-      (row) => (row.original as User).ID,
-    );
+
+    const userIds: string[] = selectedRows
+      .map((row) => row.original.ID)
+      .filter((id): id is string => !!id);
 
     if (userIds.length > 0) {
       setValue("user_ids", userIds);
+
       promoteUsers.mutate({ ...data, user_ids: userIds });
     } else {
       console.error("No users selected.");
+      toast.error("No users selected for promotion.");
     }
   };
 

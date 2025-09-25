@@ -72,23 +72,21 @@ const CreateButton = () => {
     const fetchQuestion = async () => {
       try {
         const q = await GetQuestionById(params.qid);
+        console.log("Fetched question:", q);
+        setQuestion(q.question);
+        setDescription(q.question.Description ?? "");
 
-        setQuestion(q);
-        setDescription(q.Description);
-        setExplanations(q.Explanation);
-        setInputFormats(q.InputFormat);
-        setSampleOutputs(q.SampleTestOutput);
-        setSampleInputs(q.SampleTestInput);
+        setExplanations(q.question.Explanation ?? [""]);
+        setInputFormats(q.question.InputFormat ?? [""]);
+        setSampleOutputs(q.question.SampleTestOutput ?? [""]);
+        setSampleInputs(q.question.SampleTestInput ?? [""]);
 
-        if (q.Constraints) {
-          setValue("constraints.0", q.Constraints.join("\n"));
-        }
-        if (q.OutputFormat) {
-          setValue("output_format.0", q.OutputFormat.join("\n"));
-        }
-        if (q.Round) {
-          setValue("round", q.Round);
-        }
+        setValue("Title", q.question.Title ?? "");
+        setValue("Description", q.question.Description ?? "");
+        setValue("Points", q.question.Points ?? 0);
+        setValue("Round", q.question.Round ?? 1);
+        setValue("Constraints.0", (q.question.Constraints ?? []).join("\n"));
+        setValue("OutputFormat.0", (q.question.OutputFormat ?? []).join("\n"));
       } catch (error) {
         console.error("Error fetching question:", error);
       }
@@ -99,15 +97,15 @@ const CreateButton = () => {
 
   const createQuestion = useMutation({
     mutationFn: (data: UpdateQuestionParams) => {
-      data.id = params.qid;
-      data.input_format = inputFormats;
-      data.points = +data.points;
-      data.round = +data.round;
-      data.constraints = data.constraints?.[0]?.split("\n") ?? [];
-      data.output_format = data.output_format?.[0]?.split("\n") ?? [];
-      data.sample_test_input = sampleInputs;
-      data.sample_test_output = sampleOutputs;
-      data.sample_explanation = explanations;
+      data.ID = params.qid;
+      data.InputFormat = inputFormats;
+      data.Points = +data.Points;
+      data.Round = +data.Round;
+      data.Constraints = data.Constraints?.[0]?.split("\n") ?? [];
+      data.OutputFormat = data.OutputFormat?.[0]?.split("\n") ?? [];
+      data.SampleTestInput = sampleInputs;
+      data.SampleTestOutput = sampleOutputs;
+      data.Explanation = explanations;
       console.log("data", data);
       return toast.promise(UpdateQuestion(data), {
         loading: "Updating Question",
@@ -159,7 +157,7 @@ const CreateButton = () => {
             placeholder="OP Question"
             className="col-span-3"
             defaultValue={question?.Title}
-            {...register("title")}
+            {...register("Title")}
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
@@ -175,7 +173,7 @@ const CreateButton = () => {
               id="description"
               defaultValue={question?.Description}
               className="w-full"
-              {...register("description")}
+              {...register("Description")}
               onChange={(e) => setDescription(e.target.value)}
               rows={10}
             ></Textarea>
@@ -198,7 +196,7 @@ const CreateButton = () => {
             </Button>
           </div>
           <div className="col-span-3 flex w-full flex-col gap-2">
-            {inputFormats.map((format, index) => (
+            {(inputFormats ?? []).map((format, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Textarea
                   value={format}
@@ -219,21 +217,6 @@ const CreateButton = () => {
             ))}
           </div>
         </div>
-        {/* <div className="grid grid-cols-4 items-center gap-4">
-          <Label
-            htmlFor="input_format"
-            className="text-right text-lg font-bold text-white"
-          >
-            Input Format
-          </Label>
-          <Textarea
-            id="input_format"
-            placeholder="3 integers"
-            className="col-span-3"
-            defaultValue={question?.InputFormat.join("\n")}
-            {...register("input_format.0")}
-          />
-        </div> */}
         <div className="grid grid-cols-4 items-center gap-4">
           <Label
             htmlFor="points"
@@ -247,7 +230,7 @@ const CreateButton = () => {
             placeholder="30"
             className="col-span-3"
             defaultValue={question?.Points}
-            {...register("points")}
+            {...register("Points")}
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
@@ -258,7 +241,7 @@ const CreateButton = () => {
             Round
           </Label>
           <select
-            {...register("round")}
+            {...register("Round")}
             defaultValue={question?.Round}
             id="round"
             className="rounded-md border bg-gray-200 p-2 text-black"
@@ -280,7 +263,7 @@ const CreateButton = () => {
             placeholder="1 < x < 10"
             className="col-span-3"
             defaultValue={question?.Constraints?.join("\n")}
-            {...register("constraints.0")}
+            {...register("Constraints.0")}
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
@@ -294,8 +277,8 @@ const CreateButton = () => {
             id="output_format"
             placeholder="Number"
             className="col-span-3"
-            defaultValue={question?.OutputFormat.join("\n")}
-            {...register("output_format.0")}
+            defaultValue={(question?.OutputFormat ?? []).join("\n")}
+            {...register("OutputFormat.0")}
           />
         </div>
         {/* Sample Test Output Section */}

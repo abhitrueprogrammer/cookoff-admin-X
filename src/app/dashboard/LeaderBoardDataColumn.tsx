@@ -1,20 +1,10 @@
-import {type  LeaderBoardUser } from "@/api/adminDashboard";
+import { type LeaderboardUser } from "@/api/users";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-const columnHelper = createColumnHelper<LeaderBoardUser>();
+const columnHelper = createColumnHelper<LeaderboardUser>();
 
 export const LeaderBoardDataColumn = [
-  // columnHelper.accessor("ID", {
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Round" />
-  //     ),
-  //     enableSorting: true,
-  //     meta: {
-  //       className: "text-left",
-  //       displayName: "Round",
-  //     },
-  //   }),
   columnHelper.accessor("Name", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
@@ -35,4 +25,4 @@ export const LeaderBoardDataColumn = [
       displayName: "Score",
     },
   }),
-] as ColumnDef<LeaderBoardUser>[];
+] as ColumnDef<LeaderboardUser>[];

@@ -3,7 +3,7 @@
 import cookoff from "@/assets/images/codechef_logo.svg";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { FaHome, FaQuestion, FaUser } from "react-icons/fa";
+import { FaClock, FaHome, FaQuestion, FaUser } from "react-icons/fa";
 
 // import { Router } from "";
 export default function Sidebar() {
@@ -59,6 +59,18 @@ export default function Sidebar() {
           <div className="flex items-center gap-3">
             <FaUser />
             Users
+          </div>{" "}
+        </button>
+        <button
+          onClick={() => {
+            router.push("/timer");
+          }}
+          //p-5 originally no m-2
+          className={`m-2 mx-3 rounded-md border border-transparent p-3 text-left text-lg text-white hover:border hover:border-white ${pathname == "/timer" ? "border bg-accent hover:bg-[#f25c2d]" : "hover:bg-black"}`}
+        >
+          <div className="flex items-center gap-3">
+            <FaClock />
+            Timer
           </div>{" "}
         </button>
       </>

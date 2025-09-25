@@ -1,11 +1,13 @@
 import { handleAPIError } from "@/lib/error";
 import api from ".";
+
 export interface TestCaseUpdateParams {
-  expected_output: string;
-  input: string;
-  memory: number;
-  runtime: number;
-  hidden: boolean;
+  ExpectedOutput?: string;
+  Input?: string;
+  Memory?: string;
+  Runtime?: string;
+  Hidden?: boolean;
+  QuestionID?: string;
 }
 
 export interface TestCaseResponse {
@@ -17,55 +19,92 @@ export interface TestCaseResponse {
   QuestionID: string;
   Runtime: number;
 }
-export interface getTestcaseByQuestion {
-  data: TestCaseResponse[];
-  message: string;
+
+export interface GetTestCasesByQuestionResponse {
+  status: string;
+  test_cases: TestCaseResponse[];
+  total_count: number;
 }
+
 export interface CreateTestCaseParams {
   expected_output: string;
-  memory: number;
   input: string;
+  memory: string;
+  runtime?: string | null;
   hidden: boolean;
-  runtime: number | null;
-  question_iD: string;
+  question_id: string;
 }
+
 export async function CreateTestCase(data: CreateTestCaseParams) {
   try {
-    console.log("Given data" + JSON.stringify(data));
-    const response = await api.post<CreateTestCaseParams>("/testcase", data);
+    const response = await api.post<TestCaseResponse>("/testcase", data);
     return response.data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     throw handleAPIError(e);
   }
 }
 
-export async function getTestcaseByQuestion(id: string) {
+export async function getTestCasesByQuestion(questionID: string) {
   try {
-    const response = await api.get<getTestcaseByQuestion>(
-      `/questions/${id}/testcases`,
+    const response = await api.get<GetTestCasesByQuestionResponse>(
+      `/question/${questionID}/testcases`,
     );
-    return response.data.data;
+    return response.data.test_cases;
   } catch (e) {
-    console.log(e);
-    // handleAPIError(e)
+    console.error(e);
     return [];
   }
 }
-export async function DeleteTestCase(id: string) {
+
+export async function getPublicTestCasesByQuestion(questionID: string) {
   try {
-    const response = await api.delete<{ message: string }>(`/testcase/${id}`);
+    const response = await api.get<GetTestCasesByQuestionResponse>(
+      `/question/${questionID}/testcases/public`,
+    );
+    return response.data.test_cases;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
+
+export async function DeleteTestCase(testCaseID: string) {
+  try {
+    const response = await api.delete<{ message: string }>(
+      `/testcase/${testCaseID}`,
+    );
     return response.data;
   } catch (e) {
     throw handleAPIError(e);
   }
 }
 
-export async function UpdateTestCase(id: string, data: TestCaseUpdateParams) {
+export async function UpdateTestCase(
+  testCaseID: string,
+  data: TestCaseUpdateParams,
+) {
   try {
-    const response = await api.put<TestCaseResponse>(`/testcase/${id}`, data);
+    const response = await api.put<TestCaseResponse>(
+      `/testcase/${testCaseID}`,
+      data,
+    );
     return response.data;
   } catch (e) {
     throw handleAPIError(e);
+  }
+}
+
+export async function GetAllTestCases() {
+  try {
+    const response = await api.get<{
+      status: string;
+      test_cases: TestCaseResponse[];
+      total_count: number;
+    }>("/testcases");
+    return response.data.test_cases;
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 }

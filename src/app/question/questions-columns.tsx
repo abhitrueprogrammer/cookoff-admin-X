@@ -2,14 +2,16 @@ import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader"
 import { DataTableRowActions } from "@/components/Table/DataTableRowActions";
 import { Button } from "@/components/ui/button";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import ModalUpdate from "./ModalUpdate";
 import ModalDelete from "./ModalDelete";
-import ModalDetails from "./ModalView";
 import ModalGetTestcase from "./ModalGetTestcase";
+import ModalUpdate from "./ModalUpdate";
+import ModalDetails from "./ModalView";
+
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
   Title: string;
+  Isbountyactive: boolean;
   InputFormat: string[];
   Points: number;
   Round: number;
@@ -21,6 +23,7 @@ export interface QuestionsDataProps {
 }
 
 const columnHelper = createColumnHelper<QuestionsDataProps>();
+
 export const QuestionsDataColumn = [
   columnHelper.accessor("Title", {
     header: ({ column }) => (
@@ -28,10 +31,16 @@ export const QuestionsDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: {
-      className: "text-left",
-      displayName: "Title",
-    },
+    meta: { className: "text-left", displayName: "Title" },
+  }),
+  columnHelper.accessor("Isbountyactive", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Bounty Active" />
+    ),
+    enableSorting: true,
+    enableHiding: false,
+    cell: ({ getValue }) => <span>{getValue() ? "Yes" : "No"}</span>,
+    meta: { className: "text-left", displayName: "Bounty Active" },
   }),
   columnHelper.accessor("Points", {
     header: ({ column }) => (
@@ -39,32 +48,22 @@ export const QuestionsDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: {
-      className: "text-left",
-      displayName: "Points",
-    },
+    meta: { className: "text-left", displayName: "Points" },
   }),
   columnHelper.accessor("Round", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Round" />
     ),
-
     enableSorting: true,
     enableHiding: false,
-    meta: {
-      className: "text-left",
-      displayName: "Round",
-    },
+    meta: { className: "text-left", displayName: "Round" },
   }),
   columnHelper.display({
     id: "view-more",
     header: "View More",
     enableSorting: false,
     enableHiding: true,
-    meta: {
-      className: "text-center",
-      displayName: "view-more",
-    },
+    meta: { className: "text-center", displayName: "view-more" },
     cell: ({ row }) => (
       <div className="flex justify-center gap-2">
         <ModalDetails row={row}>
@@ -73,16 +72,12 @@ export const QuestionsDataColumn = [
       </div>
     ),
   }),
-
   columnHelper.display({
     id: "questions",
-    header: "Questions",
+    header: "Actions",
     enableSorting: false,
     enableHiding: true,
-    meta: {
-      className: "text-center",
-      displayName: "questions",
-    },
+    meta: { className: "text-center", displayName: "actions" },
     cell: ({ row }) => (
       <DataTableRowActions row={row}>
         <div className="flex flex-col justify-center gap-1">
@@ -94,16 +89,12 @@ export const QuestionsDataColumn = [
       </DataTableRowActions>
     ),
   }),
-
   columnHelper.display({
     id: "test-cases",
     header: "Test Cases",
     enableSorting: false,
     enableHiding: true,
-    meta: {
-      className: "text-center",
-      displayName: "test-cases",
-    },
+    meta: { className: "text-center", displayName: "test-cases" },
     cell: ({ row }) => (
       <div className="flex justify-center">
         <ModalGetTestcase id={row.original.ID}></ModalGetTestcase>

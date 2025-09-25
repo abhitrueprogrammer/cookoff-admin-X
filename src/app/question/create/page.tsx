@@ -12,9 +12,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
-
-// const Editor = dynamic(() => import("./editor"), { ssr: false });
-
 const Create = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -28,14 +25,14 @@ const Create = () => {
   const [description, setDescription] = useState<string>("teri-mummy");
   const createQuestion = useMutation({
     mutationFn: async (data: CreateQuestionParams) => {
-      data.input_format = inputFormats;
-      data.points = +data.points;
-      data.round = +data.round;
-      data.constraints = data.constraints?.[0]?.split("\n") ?? [];
-      data.output_format = data.output_format?.[0]?.split("\n") ?? [];
-      data.sample_test_input = sampleInputs;
-      data.sample_test_output = sampleOutputs;
-      data.sample_explanation = explanations;
+      data.InputFormat = inputFormats;
+      data.Points = +data.Points;
+      data.Round = +data.Round;
+      data.Constraints = data.Constraints?.[0]?.split("\n") ?? [];
+      data.OutputFormat = data.OutputFormat?.[0]?.split("\n") ?? [];
+      data.SampleTestInput = sampleInputs;
+      data.SampleTestOutput = sampleOutputs;
+      data.Explanation = explanations;
 
       return toast.promise(CreateQuestion(data), {
         loading: "Adding Question",
@@ -124,7 +121,7 @@ const Create = () => {
             id="title"
             placeholder="OP Question"
             className="col-span-3"
-            {...register("title")}
+            {...register("Title")}
           />
         </div>
 
@@ -136,12 +133,11 @@ const Create = () => {
             Description
           </Label>
           <div className="col-span-3 flex gap-2">
-            {/* <Editor /> */}
             <Textarea
               id="description"
               defaultValue={description}
               className="w-full"
-              {...register("description")}
+              {...register("Description")}
               onChange={(e) => setDescription(e.target.value)}
               rows={10}
             ></Textarea>
@@ -151,7 +147,6 @@ const Create = () => {
           </div>
         </div>
 
-        {/* Input Format Section */}
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="flex flex-row items-center justify-end gap-2">
             <Label
@@ -199,7 +194,7 @@ const Create = () => {
             type="number"
             placeholder="30"
             className="col-span-3"
-            {...register("points")}
+            {...register("Points")}
           />
         </div>
 
@@ -211,7 +206,7 @@ const Create = () => {
             Round
           </Label>
           <select
-            {...register("round")}
+            {...register("Round")}
             defaultValue={1}
             id="round"
             className="col-span-3 rounded-md border bg-gray-200 p-2 text-black"
@@ -234,7 +229,7 @@ const Create = () => {
             id="constraints"
             placeholder="1 < x < 10"
             className="col-span-3"
-            {...register("constraints.0")}
+            {...register("Constraints.0")}
           />
         </div>
 
@@ -249,11 +244,10 @@ const Create = () => {
             id="output_format"
             placeholder="Number"
             className="col-span-3"
-            {...register("output_format.0")}
+            {...register("OutputFormat.0")}
           />
         </div>
 
-        {/* Sample Test Output Section */}
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="flex flex-row items-center justify-end gap-2">
             <Label
@@ -289,7 +283,6 @@ const Create = () => {
           </div>
         </div>
 
-        {/* Sample Test Input Section */}
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="flex flex-row items-center justify-end gap-2">
             <Label
@@ -325,7 +318,6 @@ const Create = () => {
           </div>
         </div>
 
-        {/* Sample Explanation Section */}
         <div className="grid grid-cols-4 items-center gap-4">
           <div className="flex flex-row items-center justify-end gap-2">
             <Label
