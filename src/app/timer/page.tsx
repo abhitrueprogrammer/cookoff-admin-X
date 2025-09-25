@@ -109,7 +109,6 @@ function Timer() {
       <h1 className="mb-8 text-3xl font-bold">Timer</h1>
 
       <div className="flex w-full max-w-lg flex-col items-center gap-6 rounded-xl bg-gray-800 p-8">
-        {/* Round Selection + Duration */}
         <div className="flex w-full items-center gap-3">
           <select
             className="w-28 rounded-lg bg-gray-700 p-2 text-white"
@@ -121,7 +120,6 @@ function Timer() {
             <option value="3">Round 3</option>
           </select>
 
-          {/* Duration Inputs */}
           <div className="flex items-center gap-1">
             <input
               type="number"
@@ -165,7 +163,6 @@ function Timer() {
           </button>
         </div>
 
-        {/* Timer Display + Start/Stop */}
         <div className="flex w-full items-center justify-between gap-4">
           <div className="font-mono text-4xl">
             {formatTime(remainingSeconds)}
@@ -191,7 +188,6 @@ function Timer() {
           </button>
         </div>
 
-        {/* Add Time Section */}
         <div className="flex w-full items-center justify-center gap-2">
           <input
             type="number"
