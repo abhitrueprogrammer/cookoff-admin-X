@@ -1,5 +1,6 @@
 "use client";
 import { getLeaderboard, type LeaderboardUser } from "@/api/users";
+import NotificationsSender from "@/components/NotificationsSender";
 import Round from "@/components/round";
 import { useQuery } from "@tanstack/react-query";
 
@@ -19,6 +20,13 @@ function Dashboard() {
           Round Select
         </span>
         <Round />
+      </div>
+
+      <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
+        Notifications
+      </div>
+      <div className="flex w-full justify-center text-black">
+        <NotificationsSender />
       </div>
 
       <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
