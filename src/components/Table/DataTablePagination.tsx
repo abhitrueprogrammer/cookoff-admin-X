@@ -8,6 +8,11 @@ import {
 } from "react-icons/ri";
 import { Button } from "../ui/button";
 
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const MUTE_TEXT = "text-gray-500";
+const BUTTON_BG = "bg-[#182319]";
+
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   pageSize: number;
@@ -54,33 +59,48 @@ export function DataTablePagination<TData>({
   const lastRowIndex = Math.min(totalRows, firstRowIndex + pageSize - 1);
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between pt-2">
       <div className="text-sm tabular-nums text-gray-500"></div>
-      <div className="flex items-center gap-x-6 lg:gap-x-8">
-        <p className="hidden text-sm tabular-nums text-gray-500 sm:block">
+      <div className="flex w-full items-center justify-between gap-x-4 sm:justify-end lg:gap-x-6">
+        <p className={`text-sm tabular-nums ${MUTE_TEXT} flex-1 text-left`}>
           Showing{" "}
-          <span className="font-medium text-white dark:text-gray-50">
+          <span className={`font-medium text-white`}>
             {firstRowIndex}-{lastRowIndex}
           </span>{" "}
           of{" "}
-          <span className="font-medium text-white dark:text-gray-50">
+          <span className={`font-medium ${ACCENT_COLOR_TEXT}`}>
             {totalRows}
           </span>
         </p>
+
         <div className="flex items-center gap-x-1.5">
           {paginationButtons.map((button, index) => (
             <Button
               key={index}
-              variant="secondary"
-              className={cn(button.mobileView, "p-1.5")}
+              className={cn(
+                button.mobileView,
+                `h-8 w-8 rounded-md border border-gray-700 p-1.5 ${BUTTON_BG} transition-colors duration-150`,
+
+                button.disabled
+                  ? "cursor-not-allowed opacity-40"
+                  : `hover:border-[${ACCENT_GREEN}] hover:bg-[${ACCENT_GREEN}]/10`,
+              )}
               onClick={() => {
                 button.onClick();
+
                 table.resetRowSelection();
               }}
               disabled={button.disabled}
             >
               <span className="sr-only">{button.srText}</span>
-              <button.icon className="size-4 shrink-0" aria-hidden="true" />
+              <button.icon
+                className={cn(
+                  "size-5 shrink-0 transition-colors duration-150",
+
+                  button.disabled ? "text-gray-500" : ACCENT_COLOR_TEXT,
+                )}
+                aria-hidden="true"
+              />
             </Button>
           ))}
         </div>

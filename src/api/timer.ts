@@ -8,17 +8,18 @@ export interface GetTimeResponse {
 }
 
 export interface SetTimeParams {
-  round: string;
+  round_id: string;
   time: string;
 }
 
 export interface UpdateTimeParams {
-  duration: number;
+  round_id: string;
+  duration: string;
 }
 
 export interface StartRoundResponse {
   success: boolean;
-  round: number;
+  round_id: number;
 }
 
 /**
@@ -26,7 +27,7 @@ export interface StartRoundResponse {
  */
 export async function getTime(): Promise<GetTimeResponse | null> {
   try {
-    const response = await api.get<GetTimeResponse>("/GetTime");
+    const response = await api.get<GetTimeResponse>("/getTime");
     return response.data;
   } catch (e) {
     console.error(e);
@@ -41,7 +42,10 @@ export async function setTime(
   data: SetTimeParams,
 ): Promise<{ success: boolean }> {
   try {
-    const response = await api.post<{ success: boolean }>("/SetTime", data);
+    const response = await api.post<{ success: boolean }>(
+      "/admin/setTime",
+      data,
+    );
     return response.data;
   } catch (e) {
     throw handleAPIError(e);
@@ -53,7 +57,7 @@ export async function setTime(
  */
 export async function updateTime(data: UpdateTimeParams): Promise<void> {
   try {
-    await api.post("/UpdateTime", data);
+    await api.post("/admin/updateTime", data);
   } catch (e) {
     throw handleAPIError(e);
   }
@@ -64,7 +68,7 @@ export async function updateTime(data: UpdateTimeParams): Promise<void> {
  */
 export async function startRound(): Promise<StartRoundResponse> {
   try {
-    const response = await api.post<StartRoundResponse>("/StartRound");
+    const response = await api.get<StartRoundResponse>("/admin/startRound");
     return response.data;
   } catch (e) {
     throw handleAPIError(e);

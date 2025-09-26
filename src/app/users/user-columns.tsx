@@ -2,12 +2,16 @@ import { type User } from "@/api/users";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { FaCrown } from "react-icons/fa6";
+import { FaCrown, FaEye } from "react-icons/fa6";
 
 import Link from "next/dist/client/link";
 import BanBtn from "./user-ban";
 
 const columnHelper = createColumnHelper<User>();
+
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const CARD_BG = "bg-[#182319]";
 
 export const UserDataColumn = [
   {
@@ -20,7 +24,7 @@ export const UserDataColumn = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
-        className="translate-y-[2px]"
+        className={`h-4 w-4 translate-y-[2px] rounded-sm border border-gray-500 bg-transparent data-[state=checked]:${ACCENT_COLOR_TEXT} data-[state=checked]:bg-[${ACCENT_GREEN}] data-[state=indeterminate]:${ACCENT_COLOR_TEXT} data-[state=indeterminate]:bg-[${ACCENT_GREEN}] focus-visible:ring-2 focus-visible:ring-[${ACCENT_GREEN}] focus-visible:ring-offset-1 focus-visible:ring-offset-${CARD_BG.slice(3)} `}
       />
     ),
     cell: ({ row }) => (
@@ -102,9 +106,10 @@ export const UserDataColumn = [
     cell: ({ row }) => (
       <Link
         href={`/admin/users/${row.original.ID}/submissions`}
-        className="text-blue-400 hover:underline"
+        // Use the Accent Green for the text and hover effect
+        className={`${ACCENT_COLOR_TEXT} hover:underline`}
       >
-        View
+        View <FaEye className="inline" />
       </Link>
     ),
   }),

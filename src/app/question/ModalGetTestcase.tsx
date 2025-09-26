@@ -2,7 +2,6 @@
 
 import { getTestCasesByQuestion, type TestCaseResponse } from "@/api/testcases";
 import ClientTable from "@/components/Table/ClientTable";
-import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/CopyButton";
 import {
   Dialog,
@@ -16,7 +15,18 @@ import { useQuery } from "@tanstack/react-query";
 import ModalCreateTestcase from "./ModalCreateTestcase";
 import { TestcaseDataColumn } from "./TestcaseColumns";
 
-const Page = ({ id }: { id: string }) => {
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const CARD_BG = "bg-[#182319]";
+const PRIMARY_BUTTON_BG = `bg-[${ACCENT_GREEN}]`;
+const PRIMARY_BUTTON_HOVER = `hover:bg-[#15803d]`;
+
+interface ModalGetTestcaseProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+const ModalGetTestcase = ({ id, children }: ModalGetTestcaseProps) => {
   const { data, error, isLoading } = useQuery<TestCaseResponse[], Error>({
     queryKey: ["testcases", id],
     queryFn: async () => {
@@ -27,23 +37,32 @@ const Page = ({ id }: { id: string }) => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger asChild>
-          <Button className="bg-slate-900 text-white hover:bg-slate-700">
-            Test Case Info
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-h-[83.33vh] max-w-fit overflow-y-auto bg-black text-white">
-          <DialogHeader>
-            <DialogTitle>
-              QID: {id} <CopyButton content={id} />
+        <DialogTrigger asChild>{children}</DialogTrigger>
+
+        <DialogContent
+          className={`max-h-[90vh] max-w-[95vw] overflow-y-auto rounded-xl border md:max-w-7xl border-[${ACCENT_GREEN}]/40 ${CARD_BG} p-6 text-white shadow-2xl`}
+        >
+          <DialogHeader className="mb-4">
+            <DialogTitle
+              className={`text-2xl font-bold uppercase tracking-wider ${ACCENT_COLOR_TEXT}`}
+            >
+              Test Cases for Question
             </DialogTitle>
-            <DialogDescription>
-              A table with all test cases for this question
+            <DialogDescription className="text-gray-400">
+              QID: <span className="font-mono text-white/90">{id}</span>
+              <CopyButton
+                content={id}
+                className="ml-2 inline-flex items-center text-gray-400 hover:text-white"
+              />
             </DialogDescription>
           </DialogHeader>
-          <div className="bg-black p-2">
-            <ModalCreateTestcase id={id}>Create</ModalCreateTestcase>
-            <div className="mt-4 max-w-xl md:max-w-7xl">
+
+          <div className={`p-1`}>
+            <ModalCreateTestcase id={id}>
+              + Create New Test Case
+            </ModalCreateTestcase>
+
+            <div className="mt-6">
               <ClientTable
                 data={data ?? []}
                 error={error}
@@ -58,4 +77,4 @@ const Page = ({ id }: { id: string }) => {
   );
 };
 
-export default Page;
+export default ModalGetTestcase;

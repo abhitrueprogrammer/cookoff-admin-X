@@ -1,3 +1,4 @@
+"use client";
 import { type TestCaseResponse } from "@/api/testcases";
 import { DataTableColumnHeader } from "@/components/Table/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/Table/DataTableRowActions";
@@ -8,6 +9,10 @@ import { GrHide } from "react-icons/gr";
 import TestcaseDelete from "./ModalTestcaseDelete";
 import ModalTestcaseUpdate from "./ModalTestcaseUpdate";
 
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const CARD_BG = "bg-[#182319]";
+
 const columnHelper = createColumnHelper<TestCaseResponse>();
 
 export const TestcaseDataColumn = [
@@ -16,14 +21,16 @@ export const TestcaseDataColumn = [
       <DataTableColumnHeader column={column} title="ID" />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        {row.original.Hidden && <GrHide size={16} />}
+      <div className={`flex items-center gap-2 font-mono text-white`}>
+        {row.original.Hidden && (
+          <GrHide size={16} className={ACCENT_COLOR_TEXT} />
+        )}
         {row.getValue("ID")}
       </div>
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "ID" },
+    meta: { className: "text-left font-mono", displayName: "ID" },
   }),
 
   columnHelper.display({
@@ -35,13 +42,21 @@ export const TestcaseDataColumn = [
     cell: ({ row }) => (
       <div className="flex justify-center">
         <Dialog>
-          <DialogTrigger>
-            <Button className="bg-black" variant="outline">
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className={`border border-gray-700 bg-transparent ${ACCENT_COLOR_TEXT} hover:bg-[${ACCENT_GREEN}]/10 hover:border-[${ACCENT_GREEN}] transition-colors`}
+            >
               View Input
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-[85vh] overflow-y-auto break-words">
-            {row.original.Input}
+
+          <DialogContent
+            className={`max-h-[85vh] overflow-y-auto break-words rounded-xl border border-[${ACCENT_GREEN}]/40 ${CARD_BG} p-6 text-white shadow-2xl`}
+          >
+            <pre className="whitespace-pre-wrap font-mono text-sm text-white/90">
+              {row.original.Input}
+            </pre>
           </DialogContent>
         </Dialog>
       </div>
@@ -54,7 +69,7 @@ export const TestcaseDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "Memory" },
+    meta: { className: "text-center font-mono", displayName: "Memory" },
   }),
 
   columnHelper.accessor("ExpectedOutput", {
@@ -63,7 +78,7 @@ export const TestcaseDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "ExpectedOutput" },
+    meta: { className: "text-left font-mono", displayName: "ExpectedOutput" },
   }),
 
   columnHelper.accessor("Runtime", {
@@ -72,7 +87,7 @@ export const TestcaseDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "Runtime" },
+    meta: { className: "text-center font-mono", displayName: "Runtime" },
   }),
 
   columnHelper.display({

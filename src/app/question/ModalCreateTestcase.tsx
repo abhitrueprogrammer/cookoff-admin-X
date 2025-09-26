@@ -19,6 +19,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const CARD_BG = "bg-[#182319]";
+const INPUT_BG = "bg-[#253026]";
+const PRIMARY_BUTTON_BG = `bg-[${ACCENT_GREEN}]`;
+const PRIMARY_BUTTON_HOVER = `hover:bg-[#15803d]`;
+const BUTTON_TEXT_COLOR = "text-black";
+
 const CreateTestcaseButton = ({
   id,
   children,
@@ -29,7 +37,13 @@ const CreateTestcaseButton = ({
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const { register, handleSubmit, reset } = useForm<CreateTestCaseParams>();
+  const { register, handleSubmit, reset } = useForm<CreateTestCaseParams>({
+    defaultValues: {
+      memory: (0).toString(),
+      runtime: (0).toString(),
+      hidden: "false" as unknown as boolean,
+    },
+  });
 
   const createTestCase = useMutation({
     mutationFn: (data: CreateTestCaseParams) => {
@@ -57,7 +71,7 @@ const CreateTestcaseButton = ({
       });
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["testcases"] });
+      await queryClient.invalidateQueries({ queryKey: ["testcases", id] });
       reset();
       setIsOpen(false);
     },
@@ -75,85 +89,110 @@ const CreateTestcaseButton = ({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
-            className="m-1 ml-auto bg-white text-orange-500 hover:bg-slate-200 hover:text-orange-600"
-            variant="outline"
+            className={`m-1 ml-auto h-10 rounded-md px-4 font-semibold ${BUTTON_TEXT_COLOR} shadow-md transition-all duration-200 ${PRIMARY_BUTTON_BG} ${PRIMARY_BUTTON_HOVER} shadow-[${ACCENT_GREEN}]/50`}
           >
             {children}
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+
+        <DialogContent
+          className={`rounded-xl border sm:max-w-[425px] border-[${ACCENT_GREEN}]/40 ${CARD_BG} p-6 text-white shadow-2xl`}
+        >
           <DialogHeader>
-            <DialogTitle>Create Test Case</DialogTitle>
-            <DialogDescription>Add test cases here</DialogDescription>
+            <DialogTitle
+              className={`text-xl font-bold uppercase tracking-wider ${ACCENT_COLOR_TEXT}`}
+            >
+              Create New Test Case
+            </DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Add test cases for QID:{" "}
+              <span className="font-mono text-white/90">{id}</span>
+            </DialogDescription>
           </DialogHeader>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-2">
-                <Label htmlFor="input" className="text-right">
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label htmlFor="input" className="pt-2 text-right text-white">
                   Input
                 </Label>
                 <Textarea
                   id="input"
                   placeholder="Test case input"
-                  className="col-span-3"
-                  {...register("input")}
+                  className={`col-span-3 min-h-[100px] border border-gray-700 ${INPUT_BG} text-white placeholder-gray-500 focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
+                  {...register("input", { required: true })}
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-2">
-                <Label htmlFor="expected_output" className="text-right">
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label
+                  htmlFor="expected_output"
+                  className="pt-2 text-right text-white"
+                >
                   Expected Output
                 </Label>
                 <Textarea
                   id="expected_output"
                   placeholder="Expected output"
-                  className="col-span-3"
+                  className={`col-span-3 min-h-[100px] border border-gray-700 ${INPUT_BG} text-white placeholder-gray-500 focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
                   {...register("expected_output", { required: true })}
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-2">
-                <Label htmlFor="memory" className="text-right">
-                  Memory
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="memory" className="text-right text-white">
+                  Memory (MB)
                 </Label>
                 <Input
                   id="memory"
                   type="number"
-                  placeholder="Memory limit"
-                  className="col-span-3"
+                  placeholder="e.g., 256"
+                  className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
                   {...register("memory")}
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-2">
-                <Label htmlFor="hidden" className="text-right">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="runtime" className="text-right text-white">
+                  Runtime (s)
+                </Label>
+                <Input
+                  id="runtime"
+                  type="number"
+                  placeholder="e.g., 1.5"
+                  step="any"
+                  className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
+                  {...register("runtime")}
+                />
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="hidden" className="text-right text-white">
                   Hidden
                 </Label>
                 <select
                   {...register("hidden")}
                   id="hidden"
-                  className="col-span-3 rounded-md border bg-white p-2"
+                  className={`col-span-3 rounded-md border border-gray-700 ${INPUT_BG} p-2 text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
                 >
-                  <option value="false">No</option>
-                  <option value="true">Yes</option>
+                  <option value="false" className={CARD_BG}>
+                    No (Visible)
+                  </option>
+                  <option value="true" className={CARD_BG}>
+                    Yes (Hidden)
+                  </option>
                 </select>
               </div>
-
-              <div className="grid grid-cols-4 items-center gap-2">
-                <Label htmlFor="runtime" className="text-right">
-                  Runtime
-                </Label>
-                <Input
-                  id="runtime"
-                  type="number"
-                  placeholder="Runtime limit"
-                  className="col-span-3"
-                  {...register("runtime")}
-                />
-              </div>
             </div>
-            <DialogFooter>
-              <Button type="submit">Submit</Button>
+
+            <DialogFooter className="pt-4">
+              <Button
+                type="submit"
+                disabled={createTestCase.isPending}
+                className={`h-10 rounded-md px-4 font-semibold ${BUTTON_TEXT_COLOR} shadow-md transition-all duration-200 ${PRIMARY_BUTTON_BG} ${PRIMARY_BUTTON_HOVER}`}
+              >
+                {createTestCase.isPending ? "Submitting..." : "Submit"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
