@@ -1,80 +1,110 @@
-// Sidebar.tsx
 "use client";
 import cookoff from "@/assets/images/codechef_logo.svg";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { FaClock, FaHome, FaQuestion, FaUser } from "react-icons/fa";
+import {
+  FaChartLine,
+  FaClock,
+  FaHome,
+  FaQuestion,
+  FaUser,
+} from "react-icons/fa";
 
-// import { Router } from "";
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const DARK_BG = "bg-[#0E150F]";
+const HOVER_BG = "hover:bg-[#182319]";
+
 export default function Sidebar() {
-  // const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
+  const navItems = [
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: FaHome,
+
+      isActive: pathname === "/dashboard",
+    },
+    {
+      name: "Questions",
+      path: "/question",
+      icon: FaQuestion,
+
+      isActive: pathname.startsWith("/question"),
+    },
+    {
+      name: "Users",
+      path: "/users",
+      icon: FaUser,
+      isActive: pathname === "/users",
+    },
+    {
+      name: "Timer",
+      path: "/timer",
+      icon: FaClock,
+      isActive: pathname === "/timer",
+    },
+    {
+      name: "Leader",
+      path: "/leaderboard",
+      icon: FaChartLine,
+      isActive: pathname === "/leaderboard",
+    },
+  ];
+
+  const getLinkClasses = (isActive: boolean) => {
+    const baseClasses = `m-2 mx-3 rounded-md p-3 text-left text-lg transition-all duration-150`;
+    if (isActive) {
+      return `${baseClasses} bg-[${ACCENT_GREEN}]/20 border border-[${ACCENT_GREEN}] ${ACCENT_COLOR_TEXT} font-semibold`;
+    } else {
+      return `${baseClasses} text-white/90 border border-transparent ${HOVER_BG} hover:${ACCENT_COLOR_TEXT}`;
+    }
+  };
+
   return (
     <nav
-      className={`${pathname === "/" ? "hidden" : "flex"} fixed z-10 float-left flex h-screen w-44 flex-col border-r border-black bg-[#101010] transition-all duration-300`}
+      className={`${pathname === "/" ? "hidden" : "flex"} fixed z-10 float-left flex h-screen w-52 flex-col border-r border-[${ACCENT_GREEN}]/20 ${DARK_BG} transition-all duration-300`}
     >
-      (
-      <>
-        <div className="s-sling text- ml-3 flex items-center gap-2 text-lg text-white">
-          <Image
-            className="border-r border-gray-300 pr-2"
-            src={cookoff as HTMLImageElement}
-            alt="cookoff text"
-            width={40}
-            height={40}
-          />
-          Cookoff
-        </div>
-        <button
-          onClick={() => {
-            router.push("/dashboard");
-          }}
-          className={`m-2 mx-3 mt-11 rounded-md border border-transparent p-3 text-left text-lg text-white hover:border hover:border-white ${pathname == "/dashboard" ? "border bg-accent hover:bg-[#f25c2d]" : "hover:bg-black"} `}
-        >
-          <div className="flex items-center gap-3">
-            <FaHome />
-            Dashboard
-          </div>
-        </button>
-        <button
-          onClick={() => {
-            router.push("/question");
-          }}
-          className={`m-2 mx-3 rounded-md border border-transparent bg-[#101010] p-3 text-left text-lg text-white hover:border hover:border-white ${pathname.startsWith("/question") ? "border bg-accent hover:bg-[#f25c2d]" : "hover:bg-black"} `}
-        >
-          <div className="flex items-center gap-3">
-            <FaQuestion />
-            Questions
-          </div>
-        </button>
-        <button
-          onClick={() => {
-            router.push("/users");
-          }}
-          //p-5 originally no m-2
-          className={`m-2 mx-3 rounded-md border border-transparent p-3 text-left text-lg text-white hover:border hover:border-white ${pathname == "/users" ? "border bg-accent hover:bg-[#f25c2d]" : "hover:bg-black"}`}
-        >
-          <div className="flex items-center gap-3">
-            <FaUser />
-            Users
-          </div>{" "}
-        </button>
-        <button
-          onClick={() => {
-            router.push("/timer");
-          }}
-          //p-5 originally no m-2
-          className={`m-2 mx-3 rounded-md border border-transparent p-3 text-left text-lg text-white hover:border hover:border-white ${pathname == "/timer" ? "border bg-accent hover:bg-[#f25c2d]" : "hover:bg-black"}`}
-        >
-          <div className="flex items-center gap-3">
-            <FaClock />
-            Timer
-          </div>{" "}
-        </button>
-      </>
-      )
+      <div
+        className={`flex items-center gap-2 p-4 pt-6 text-xl font-bold uppercase tracking-wider ${ACCENT_COLOR_TEXT}`}
+      >
+        <Image
+          className="border-r border-gray-600 pr-2"
+          src={cookoff as HTMLImageElement}
+          alt="cookoff text"
+          width={40}
+          height={40}
+        />
+        COOK OFF
+      </div>
+
+      <div className="mt-8 flex flex-col gap-1">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.path}
+              onClick={() => {
+                router.push(item.path);
+              }}
+              className={getLinkClasses(item.isActive)}
+            >
+              <div className="flex items-center gap-3">
+                <Icon
+                  className={
+                    item.isActive
+                      ? ""
+                      : `text-white/60 hover:${ACCENT_COLOR_TEXT}`
+                  }
+                />
+                {item.name}
+              </div>
+            </button>
+          );
+        })}
+      </div>
     </nav>
   );
 }

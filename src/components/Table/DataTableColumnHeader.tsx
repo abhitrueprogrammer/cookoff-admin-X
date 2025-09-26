@@ -4,6 +4,10 @@ import { type Column } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
 
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const HOVER_BG = `hover:bg-[${ACCENT_GREEN}]/20`;
+
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
@@ -16,32 +20,43 @@ export function DataTableColumnHeader<TData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return (
+      <div className={cn("font-medium text-white/90", className)}>{title}</div>
+    );
   }
 
   return (
     <div
       onClick={column.getToggleSortingHandler()}
       className={cn(
+        "flex items-center space-x-2",
+
         column.columnDef.enableSorting === true
-          ? "-mx-2 inline-flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1 hover:bg-[#F14A16] hover:dark:bg-gray-900"
+          ? `cursor-pointer select-none rounded-md p-1 transition-colors duration-150 ${HOVER_BG} ${ACCENT_COLOR_TEXT}`
           : "",
+
+        className,
       )}
     >
-      <span>{title}</span>
+      <span className="font-semibold">{title}</span>
+
       {column.getCanSort() ? (
-        <div className="-space-y-2">
+        <div className="flex flex-col justify-center leading-none">
           <RiArrowUpSLine
             className={cn(
-              "size-3.5 text-white dark:text-gray-50",
-              column.getIsSorted() === "desc" ? "opacity-30" : "",
+              "size-4 transition-opacity duration-150",
+              column.getIsSorted() === "asc"
+                ? `${ACCENT_COLOR_TEXT} opacity-100`
+                : "text-white/40 opacity-100",
             )}
             aria-hidden="true"
           />
           <RiArrowDownSLine
             className={cn(
-              "size-3.5 text-white dark:text-gray-50",
-              column.getIsSorted() === "asc" ? "opacity-30" : "",
+              "-mt-1 size-4 transition-opacity duration-150",
+              column.getIsSorted() === "desc"
+                ? `${ACCENT_COLOR_TEXT} opacity-100`
+                : "text-white/40 opacity-100",
             )}
             aria-hidden="true"
           />

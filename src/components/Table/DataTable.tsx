@@ -7,7 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  RowSelectionState,
+  type RowSelectionState,
   useReactTable,
 } from "@tanstack/react-table";
 import { cx } from "class-variance-authority";
@@ -22,6 +22,14 @@ import {
 } from "../ui/tableReact";
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableToolbar } from "./DataTableToolbar";
+
+const ACCENT_GREEN = "#1ba94c";
+
+const CARD_BG = "bg-[#182319]";
+const BORDER_COLOR = `border-[${ACCENT_GREEN}]/30`;
+const HOVER_BG = `hover:bg-[${ACCENT_GREEN}]/20`;
+const SELECTED_BG = `bg-[${ACCENT_GREEN}]/30`;
+const TEXT_ACCENT = `text-[${ACCENT_GREEN}]`;
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
@@ -50,7 +58,7 @@ export function DataTable<TData>({
     enableRowSelection,
     onRowSelectionChange: (updater) => {
       setRowSelection(updater);
-      onRowSelectionChange?.(updater); // expose selected rows to parent
+      onRowSelectionChange?.(updater);
     },
     initialState: {
       pagination: {
@@ -65,25 +73,29 @@ export function DataTable<TData>({
   });
 
   return (
-    <div className="space-y-3 rounded-md border-[1px] border-white/50 p-4">
+    <div
+      className={`space-y-3 rounded-xl border ${BORDER_COLOR} p-4 ${CARD_BG}`}
+    >
       <DataTableToolbar table={table} />
-      <div className="relative overflow-hidden overflow-x-auto">
-        <Table className="border-[1px] border-white">
-          <TableHead>
+
+      <div className="relative overflow-hidden overflow-x-auto rounded-lg">
+        <Table className={`w-full border-collapse`}>
+          <TableHead className={`bg-[${ACCENT_GREEN}]/10`}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-y border-gray-200"
+                className={`border-b ${BORDER_COLOR}`}
               >
                 {headerGroup.headers.map((header) => (
                   <TableHeaderCell
                     key={header.id}
                     className={cx(
-                      "whitespace-nowrap px-0.5 py-1.5 text-sm sm:text-xs",
+                      "whitespace-nowrap px-0.5 py-1.5 text-sm font-bold uppercase sm:text-xs",
+                      TEXT_ACCENT,
                       header.column.columnDef.meta?.className,
                     )}
                   >
-                    <div className="px-3 py-1.5">
+                    <div className="px-3 py-2">
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
@@ -95,24 +107,32 @@ export function DataTable<TData>({
             ))}
           </TableHead>
 
-          <TableBody>
+          <TableBody className="text-white">
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className={cx("group hover:bg-[#F14A16]")}
+                  className={cx(
+                    "transition-colors duration-150",
+                    row.getIsSelected() ? SELECTED_BG : HOVER_BG,
+                  )}
                 >
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
                       key={cell.id}
                       className={cx(
-                        row.getIsSelected() ? "bg-[#F14A16]" : "",
-                        "relative whitespace-nowrap px-1 py-1.5 text-white first:w-10 dark:text-gray-400",
+                        "relative whitespace-nowrap px-1 py-1.5 text-sm text-white/90 first:w-10",
+
+                        "border-gray-700/50 last:border-r-0",
+
+                        row.getIsSelected() ? SELECTED_BG : "",
                         cell.column.columnDef.meta?.className,
                       )}
                     >
                       {index === 0 && row.getIsSelected() && (
-                        <div className="absolute inset-y-0 left-0 w-0.5 bg-indigo-600 dark:bg-indigo-500" />
+                        <div
+                          className={`absolute inset-y-0 left-0 w-1 bg-[${ACCENT_GREEN}]`}
+                        />
                       )}
                       <div className="px-3 py-1.5">
                         {flexRender(
@@ -128,7 +148,7 @@ export function DataTable<TData>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-gray-500"
                 >
                   No results.
                 </TableCell>
@@ -137,6 +157,7 @@ export function DataTable<TData>({
           </TableBody>
         </Table>
       </div>
+
       <DataTablePagination
         table={table}
         pageSize={table.getState().pagination.pageSize}

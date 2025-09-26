@@ -1,7 +1,6 @@
 "use client";
 
-import { type Row } from "@tanstack/react-table";
-import { type QuestionsDataProps } from "./questions-columns";
+import { DeleteQuestion } from "@/api/questions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,10 +12,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { DeleteQuestion } from "@/api/questions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type Row } from "@tanstack/react-table";
 import { type ApiError } from "next/dist/server/api-utils";
 import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type QuestionsDataProps } from "./questions-columns";
+
+const ACCENT_GREEN = "#1ba94c";
+const CARD_BG = "bg-[#182319]";
+const RED_BG = "bg-red-600";
+const RED_HOVER = "hover:bg-red-500";
+const BUTTON_TEXT_COLOR = "text-white";
 
 const ModalDelete = ({
   children,
@@ -33,11 +39,15 @@ const ModalDelete = ({
       return toast.promise(DeleteQuestion(id), {
         loading: "Deleting Question",
         success: "Success!",
-        error: (err: ApiError) => err.message,
+        error: (err: ApiError) =>
+          (err as any).message || "Error deleting question",
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["questions"] });
+    },
+    onError: () => {
+      console.log("Error occurred while deleting question");
     },
   });
 
@@ -47,24 +57,40 @@ const ModalDelete = ({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="w-full cursor-pointer rounded-sm bg-red-600 p-1 text-left text-sm text-white hover:bg-red-500">
-        {children}
+      <AlertDialogTrigger asChild>
+        <div
+          className={`w-full cursor-pointer p-1 text-left text-sm ${RED_HOVER} text-red-500 transition-colors duration-150`}
+        >
+          {children}
+        </div>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+
+      <AlertDialogContent
+        className={`rounded-xl border border-red-700/50 ${CARD_BG} p-6 text-white shadow-2xl`}
+      >
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-xl font-bold uppercase tracking-wider text-red-500">
+            Confirm Deletion
+          </AlertDialogTitle>
+          <AlertDialogDescription className="mt-2 text-gray-400">
             This action cannot be undone. This will permanently delete the
-            question. Dekh lo.
+            question and all associated data. **Are you absolutely sure?** Dekh
+            lo.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogFooter className="pt-4">
+          <AlertDialogCancel
+            className={`h-10 rounded-md border border-gray-600 bg-transparent px-4 text-white transition-colors hover:bg-gray-800`}
+          >
+            Cancel
+          </AlertDialogCancel>
+
           <AlertDialogAction
             onClick={onSubmit}
-            className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
+            disabled={handleDelete.isPending}
+            className={`h-10 rounded-md px-4 font-semibold ${BUTTON_TEXT_COLOR} ${RED_BG} ${RED_HOVER} shadow-md shadow-red-700/50 transition-colors duration-200`}
           >
-            Continue
+            {handleDelete.isPending ? "Deleting..." : "Delete Permanently"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

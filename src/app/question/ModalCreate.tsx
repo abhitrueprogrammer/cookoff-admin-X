@@ -2,11 +2,15 @@ import { Button } from "@/components/ui/button";
 
 import { useRouter } from "next/navigation";
 
+const ACCENT_GREEN = "#1ba94c";
+const BUTTON_TEXT_COLOR = "text-black";
+const PRIMARY_BUTTON_HOVER = `hover:bg-[#15803d]`;
+
 const CreateButton = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   return (
     <Button
-      className="m-2 bg-slate-800 text-orange-500 hover:bg-slate-600 hover:text-orange-600"
+      className={`mb-5 h-10 rounded-md px-4 font-semibold ${BUTTON_TEXT_COLOR} shadow-md transition-all duration-200 bg-[${ACCENT_GREEN}] ${PRIMARY_BUTTON_HOVER} shadow-[${ACCENT_GREEN}]/50`}
       onClick={() => {
         router.push("/question/create");
       }}

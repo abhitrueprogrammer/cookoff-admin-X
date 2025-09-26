@@ -7,6 +7,13 @@ import ModalGetTestcase from "./ModalGetTestcase";
 import ModalUpdate from "./ModalUpdate";
 import ModalDetails from "./ModalView";
 
+const ACCENT_GREEN = "#1ba94c";
+const ACCENT_COLOR_TEXT = "text-[#1ba94c]";
+const PRIMARY_BUTTON_BG = `bg-[${ACCENT_GREEN}]`;
+const PRIMARY_BUTTON_HOVER = `hover:bg-[#15803d]`;
+const BUTTON_TEXT_COLOR = "text-black";
+const DARK_BG = "bg-[#182319]";
+
 export interface QuestionsDataProps {
   ID: string;
   Description: string;
@@ -39,7 +46,12 @@ export const QuestionsDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    cell: ({ getValue }) => <span>{getValue() ? "Yes" : "No"}</span>,
+
+    cell: ({ getValue }) => (
+      <span className={getValue() ? ACCENT_COLOR_TEXT : "text-white/70"}>
+        {getValue() ? "Yes" : "No"}
+      </span>
+    ),
     meta: { className: "text-left", displayName: "Bounty Active" },
   }),
   columnHelper.accessor("Points", {
@@ -48,7 +60,7 @@ export const QuestionsDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "Points" },
+    meta: { className: "text-center font-bold", displayName: "Points" },
   }),
   columnHelper.accessor("Round", {
     header: ({ column }) => (
@@ -56,7 +68,7 @@ export const QuestionsDataColumn = [
     ),
     enableSorting: true,
     enableHiding: false,
-    meta: { className: "text-left", displayName: "Round" },
+    meta: { className: "text-center", displayName: "Round" },
   }),
   columnHelper.display({
     id: "view-more",
@@ -67,13 +79,17 @@ export const QuestionsDataColumn = [
     cell: ({ row }) => (
       <div className="flex justify-center gap-2">
         <ModalDetails row={row}>
-          <Button className="px-2 py-1">View More Details</Button>
+          <Button
+            className={`rounded-md border border-gray-700 px-3 py-1.5 ${DARK_BG} text-white transition-colors duration-150 ${PRIMARY_BUTTON_HOVER} hover:border-[${ACCENT_GREEN}]/70`}
+          >
+            View More Details
+          </Button>
         </ModalDetails>
       </div>
     ),
   }),
   columnHelper.display({
-    id: "questions",
+    id: "actions",
     header: "Actions",
     enableSorting: false,
     enableHiding: true,
@@ -97,7 +113,13 @@ export const QuestionsDataColumn = [
     meta: { className: "text-center", displayName: "test-cases" },
     cell: ({ row }) => (
       <div className="flex justify-center">
-        <ModalGetTestcase id={row.original.ID}></ModalGetTestcase>
+        <ModalGetTestcase id={row.original.ID}>
+          <Button
+            className={`rounded-md border border-gray-700 px-3 py-1.5 ${DARK_BG} text-white transition-colors duration-150 ${PRIMARY_BUTTON_HOVER} hover:border-[${ACCENT_GREEN}]/70`}
+          >
+            Test Case Info
+          </Button>
+        </ModalGetTestcase>
       </div>
     ),
   }),
