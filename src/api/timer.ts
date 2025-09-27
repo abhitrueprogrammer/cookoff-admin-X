@@ -64,6 +64,17 @@ export async function updateTime(data: UpdateTimeParams): Promise<void> {
 }
 
 /**
+ * Reset the round.
+ */
+export async function resetRound(): Promise<void> {
+  try {
+    await api.get("/admin/resetRound");
+  } catch (e) {
+    throw handleAPIError(e);
+  }
+}
+
+/**
  * Start a new round. Increments internal round counter and sets start times.
  */
 export async function startRound(): Promise<StartRoundResponse> {

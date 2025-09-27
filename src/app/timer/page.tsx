@@ -3,6 +3,7 @@
 import {
   getTime,
   type GetTimeResponse,
+  resetRound,
   setTime,
   type SetTimeParams,
   startRound,
@@ -112,13 +113,18 @@ function Timer() {
     };
 
     await setTime(payload);
-    void fetchTimer();
   }
 
   async function handleStartRound() {
     setIsStarting(true);
     await startRound();
-    await handleSetTime();
+    void fetchTimer();
+    setIsStarting(false);
+  }
+
+  async function handleResetRound() {
+    await resetRound();
+    void fetchTimer();
     setIsStarting(false);
   }
 
@@ -229,10 +235,16 @@ function Timer() {
             </div>
 
             <button
-              className={`ml-0 whitespace-nowrap rounded-lg sm:ml-2 bg-[${ACCENT_GREEN}]/70 px-4 py-2 text-center font-semibold text-white transition hover:bg-[${ACCENT_GREEN}] mt-3 hover:text-black sm:mt-0`}
+              className={`ml-0 whitespace-nowrap rounded-lg sm:ml-2 bg-[${ACCENT_GREEN}] mt-3 px-4 py-2 text-center font-semibold text-white transition hover:bg-[#1ba94c]/70 hover:text-white sm:mt-0`}
               onClick={handleSetTime}
             >
               Set Duration
+            </button>
+            <button
+              className={`ml-0 mt-3 whitespace-nowrap rounded-lg bg-red-600 px-4 py-2 text-center font-semibold text-white transition hover:bg-red-700 hover:text-white sm:ml-2 sm:mt-0`}
+              onClick={handleResetRound}
+            >
+              Reset
             </button>
           </div>
         </div>
@@ -260,12 +272,12 @@ function Timer() {
             </div>
 
             <button
-              disabled={isStarting}
+              disabled={isStarting || isRunning}
               className={`rounded-lg px-6 py-3 font-bold uppercase text-white shadow-md transition-all duration-200 ${
                 isStarting
                   ? "cursor-not-allowed bg-gray-500"
                   : isRunning
-                    ? "bg-red-600 hover:scale-105 hover:bg-red-500"
+                    ? "cursor-not-allowed bg-gray-500" /* New: Use gray and disable hover effects */
                     : `bg-[${ACCENT_GREEN}] hover:scale-105 hover:bg-[#15803d]`
               }`}
               onClick={handleStartRound}
