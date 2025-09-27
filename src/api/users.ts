@@ -48,15 +48,15 @@ export interface SubmissionResult {
   Description?: string;
 }
 
+export interface SetUserRoundProps {
+  user_ids: string[];
+  round?: number;
+}
+
 export interface GetUsersResponse {
   status: string;
   users: User[];
   next_cursor?: string;
-}
-
-export interface SetUserRoundProps {
-  user_ids: string[];
-  round?: number;
 }
 
 export async function getUsers(limit?: number, cursor?: string) {
@@ -68,10 +68,15 @@ export async function getUsers(limit?: number, cursor?: string) {
     const response = await api.get<GetUsersResponse>("/admin/users", {
       params,
     });
-    return response.data;
+
+    const data = response.data;
+    return {
+      ...data,
+      next_cursor: data.next_cursor ?? undefined,
+    };
   } catch (error) {
     console.error(error);
-    return { status: "error", users: [] as User[] };
+    return { status: "error", users: [], next_cursor: undefined };
   }
 }
 
