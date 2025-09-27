@@ -1,6 +1,5 @@
 "use client";
 import { getLeaderboard, type LeaderboardUser } from "@/api/users";
-import AnalyticsCard from "@/components/Analytics";
 import NotificationsSender from "@/components/NotificationsSender";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,12 +14,12 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen text-white">
-      <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
+      {/* <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
         Analytics
       </div>
       <div className="flex w-full justify-center text-black">
         <AnalyticsCard />
-      </div>
+      </div> */}
 
       <div className="s-sling m-3 mt-10 text-center text-xl font-semibold">
         Notifications
