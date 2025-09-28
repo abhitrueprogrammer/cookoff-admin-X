@@ -9,6 +9,8 @@ const generateSampleData = (): QuestionResponse[] => {
       ID: `Q${i}`,
       Description: `Description for question ${i}. This question involves understanding the problem and providing a solution.`,
       Title: `Sample Question ${i}`,
+      Qtype: `Type${Math.floor(Math.random() * 3) + 1}`, // Random question type
+      Isbountyactive: Math.random() > 0.5, // Random boolean for bounty active status
       InputFormat: [`Input format for question ${i}.`],
       Points: Math.floor(Math.random() * 20) + 1, // Random points between 1 and 20
       Round: Math.floor(Math.random() * 3) + 1, // Random round between 1 and 3
