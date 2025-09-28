@@ -39,8 +39,8 @@ const CreateTestcaseButton = ({
 
   const { register, handleSubmit, reset } = useForm<CreateTestCaseParams>({
     defaultValues: {
-      memory: (0).toString(),
-      runtime: (0).toString(),
+      memory: 0,
+      runtime: 0,
       hidden: "false" as unknown as boolean,
     },
   });
@@ -55,8 +55,8 @@ const CreateTestcaseButton = ({
       const payload = {
         expected_output: data.expected_output,
         input: data.input,
-        memory: data.memory ? String(data.memory) : "0",
-        runtime: data.runtime ? String(data.runtime) : "0",
+        memory: data.memory ?? 0,
+        runtime: data.runtime ?? 0,
         hidden,
         question_id: id,
       };
@@ -148,7 +148,7 @@ const CreateTestcaseButton = ({
                   type="number"
                   placeholder="e.g., 256"
                   className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
-                  {...register("memory")}
+                  {...register("memory", { valueAsNumber: true })}
                 />
               </div>
 
@@ -162,7 +162,7 @@ const CreateTestcaseButton = ({
                   placeholder="e.g., 1.5"
                   step="any"
                   className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
-                  {...register("runtime")}
+                  {...register("runtime", { valueAsNumber: true })}
                 />
               </div>
 

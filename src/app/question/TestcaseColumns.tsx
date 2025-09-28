@@ -72,15 +72,6 @@ export const TestcaseDataColumn = [
     meta: { className: "text-center font-mono", displayName: "Memory" },
   }),
 
-  columnHelper.accessor("ExpectedOutput", {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Expected Output" />
-    ),
-    enableSorting: true,
-    enableHiding: false,
-    meta: { className: "text-left font-mono", displayName: "ExpectedOutput" },
-  }),
-
   columnHelper.accessor("Runtime", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Runtime" />

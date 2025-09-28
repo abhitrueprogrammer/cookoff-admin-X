@@ -4,8 +4,8 @@ import api from ".";
 export interface TestCaseUpdateParams {
   ExpectedOutput?: string;
   Input?: string;
-  Memory?: string;
-  Runtime?: string;
+  Memory?: number;
+  Runtime?: number;
   Hidden?: boolean;
   QuestionID?: string;
 }
@@ -29,8 +29,8 @@ export interface GetTestCasesByQuestionResponse {
 export interface CreateTestCaseParams {
   expected_output: string;
   input: string;
-  memory: string;
-  runtime?: string | null;
+  memory: number;
+  runtime?: number | null;
   hidden: boolean;
   question_id: string;
 }

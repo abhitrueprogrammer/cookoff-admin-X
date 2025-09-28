@@ -46,25 +46,15 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
     defaultValues: {
       Input: row.original.Input,
       ExpectedOutput: row.original.ExpectedOutput,
-      Memory: String(row.original.Memory),
-      Runtime: String(row.original.Runtime),
+      Memory: row.original.Memory,
+      Runtime: row.original.Runtime,
       Hidden: row.original.Hidden,
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: (data: TestCaseUpdateParams) => {
-      const payload: TestCaseUpdateParams = {
-        ...data,
-        Memory: String(data.Memory),
-        Runtime: data.Runtime !== undefined ? String(data.Runtime) : undefined,
-        Hidden:
-          typeof data.Hidden === "string"
-            ? data.Hidden === "true"
-            : data.Hidden,
-      };
-
-      return toast.promise(UpdateTestCase(row.original.ID, payload), {
+      return toast.promise(UpdateTestCase(row.original.ID, data), {
         loading: "Updating testcase...",
         success: "Testcase updated successfully!",
         error: (err: unknown) => {
@@ -118,6 +108,7 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
+              {/* Input */}
               <div className="grid grid-cols-4 items-start gap-4">
                 <Label htmlFor="input" className="pt-2 text-right text-white">
                   Input
@@ -130,6 +121,7 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
                 />
               </div>
 
+              {/* Expected Output */}
               <div className="grid grid-cols-4 items-start gap-4">
                 <Label
                   htmlFor="expected_output"
@@ -145,6 +137,7 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
                 />
               </div>
 
+              {/* Memory */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="memory" className="text-right text-white">
                   Memory (MB)
@@ -154,10 +147,11 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
                   type="number"
                   placeholder="Memory limit"
                   className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
-                  {...register("Memory")}
+                  {...register("Memory", { valueAsNumber: true })}
                 />
               </div>
 
+              {/* Runtime */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="runtime" className="text-right text-white">
                   Runtime (s)
@@ -168,16 +162,19 @@ const ModalTestcaseUpdate = ({ row, children }: ModalTestcaseUpdateProps) => {
                   placeholder="Runtime limit"
                   step="any"
                   className={`col-span-3 border border-gray-700 ${INPUT_BG} text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
-                  {...register("Runtime")}
+                  {...register("Runtime", { valueAsNumber: true })}
                 />
               </div>
 
+              {/* Hidden */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="hidden" className="text-right text-white">
                   Hidden
                 </Label>
                 <select
-                  {...register("Hidden")}
+                  {...register("Hidden", {
+                    setValueAs: (v) => v === "true",
+                  })}
                   id="hidden"
                   className={`col-span-3 rounded-md border border-gray-700 ${INPUT_BG} p-2 text-white focus:border-[${ACCENT_GREEN}] focus:ring-1 focus:ring-[${ACCENT_GREEN}]`}
                 >
